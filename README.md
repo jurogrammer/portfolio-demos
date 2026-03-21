@@ -1,8 +1,11 @@
-# portfolio-demos
+# portfolio
 
 Full-stack demo projects by Injae Ju — Backend & Automation Engineer.
 
 Each demo is an independently deployable app inside this monorepo.
+
+> Migrated from `resume/portfolio-demos` for separation of concerns.
+> Resume/job-search materials live in the sibling `resume` repo.
 
 ## Projects
 
