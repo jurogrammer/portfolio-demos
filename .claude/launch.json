@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "website-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "website-builder/projects", "-l", "3000", "--no-clipboard"],
+      "port": 3000
+    }
+  ]
+}
