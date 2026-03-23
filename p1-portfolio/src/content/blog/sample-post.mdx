@@ -1,0 +1,37 @@
+---
+title: "Next.js App Router에서 MDX 콘텐츠 파이프라인 구축하기"
+description: "gray-matter, next-mdx-remote, rehype-pretty-code를 활용한 타입 안전 MDX 파이프라인 구축"
+date: "2024-02-10"
+tags: ["Next.js", "MDX", "TypeScript"]
+---
+
+## 왜 MDX인가?
+
+MDX는 Markdown에 JSX를 결합한 포맷으로, 콘텐츠와 컴포넌트를 함께 사용할 수 있습니다.
+
+## 파이프라인 구성 요소
+
+### gray-matter로 프론트매터 파싱
+
+```typescript
+import matter from 'gray-matter';
+const { data, content } = matter(rawMdxString);
+```
+
+### rehype-pretty-code로 구문 강조
+
+```typescript
+import rehypePrettyCode from 'rehype-pretty-code';
+const options = { theme: 'one-dark-pro' };
+```
+
+## 성능 고려사항
+
+| 항목 | 접근 방식 |
+|------|-----------|
+| 빌드 타임 파싱 | SSG에서 MDX를 빌드 시 처리 |
+| 코드 하이라이팅 | shiki는 서버 사이드에서만 실행 |
+
+## 결론
+
+타입 안전한 MDX 파이프라인으로 콘텐츠 관리가 간단해졌습니다.
