@@ -14,7 +14,7 @@ export default async function NotificationsPage() {
   if (!user) redirect('/auth/login')
 
   const { data } = await supabase
-    .from('notifications')
+    .from('dt_notifications')
     .select('*')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })

@@ -15,7 +15,7 @@ export function MarkAllReadButton({ userId }: { userId: string }) {
     try {
       const supabase = createClient()
       await supabase
-        .from('notifications')
+        .from('dt_notifications')
         .update({ is_read: true })
         .eq('user_id', userId)
         .eq('is_read', false)

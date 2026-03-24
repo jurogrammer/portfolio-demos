@@ -9,7 +9,7 @@ import type { Post } from '@/types/database'
 async function getLatestPosts(): Promise<Post[]> {
   const supabase = await createClient()
   const { data } = await supabase
-    .from('posts')
+    .from('dt_posts')
     .select('*, author:profiles(*)')
     .eq('is_deleted', false)
     .order('is_pinned', { ascending: false })
@@ -32,7 +32,7 @@ async function getPopularPosts(period: 'today' | 'week' | 'month'): Promise<Post
   }
 
   const { data } = await supabase
-    .from('posts')
+    .from('dt_posts')
     .select('*, author:profiles(*)')
     .eq('is_deleted', false)
     .gte('created_at', since.toISOString())

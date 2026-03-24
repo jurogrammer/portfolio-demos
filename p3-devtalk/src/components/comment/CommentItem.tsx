@@ -50,7 +50,7 @@ export function CommentItem({ comment, postId, postAuthorId, depth = 0, onRefres
     setIsVoting(true)
     try {
       const supabase = createClient()
-      const { data, error } = await supabase.rpc('toggle_vote', {
+      const { data, error } = await supabase.rpc('dt_toggle_vote', {
         p_user_id: user.id,
         p_target_type: 'comment',
         p_target_id: comment.id,
@@ -76,7 +76,7 @@ export function CommentItem({ comment, postId, postAuthorId, depth = 0, onRefres
     try {
       const supabase = createClient()
       const { error } = await supabase
-        .from('comments')
+        .from('dt_comments')
         .update({ content: trimmed })
         .eq('id', comment.id)
         .eq('author_id', user!.id)
@@ -96,7 +96,7 @@ export function CommentItem({ comment, postId, postAuthorId, depth = 0, onRefres
     try {
       const supabase = createClient()
       const { error } = await supabase
-        .from('comments')
+        .from('dt_comments')
         .update({ is_deleted: true, content: '삭제된 댓글입니다.' })
         .eq('id', comment.id)
         .eq('author_id', user!.id)
@@ -117,7 +117,7 @@ export function CommentItem({ comment, postId, postAuthorId, depth = 0, onRefres
     if (!reason?.trim()) return
     try {
       const supabase = createClient()
-      const { error } = await supabase.from('reports').insert({
+      const { error } = await supabase.from('dt_reports').insert({
         reporter_id: user.id,
         target_type: 'comment',
         target_id: comment.id,

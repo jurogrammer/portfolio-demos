@@ -19,11 +19,11 @@ async function getStats() {
     { count: todayPosts },
     { count: pendingReports },
   ] = await Promise.all([
-    supabase.from('profiles').select('*', { count: 'exact', head: true }),
-    supabase.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', todayIso),
-    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_deleted', false),
-    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('is_deleted', false).gte('created_at', todayIso),
-    supabase.from('reports').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+    supabase.from('dt_profiles').select('*', { count: 'exact', head: true }),
+    supabase.from('dt_profiles').select('*', { count: 'exact', head: true }).gte('created_at', todayIso),
+    supabase.from('dt_posts').select('*', { count: 'exact', head: true }).eq('is_deleted', false),
+    supabase.from('dt_posts').select('*', { count: 'exact', head: true }).eq('is_deleted', false).gte('created_at', todayIso),
+    supabase.from('dt_reports').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
   ])
 
   return {
@@ -38,7 +38,7 @@ async function getStats() {
 async function getRecentReports() {
   const supabase = createAdminClient()
   const { data } = await supabase
-    .from('reports')
+    .from('dt_reports')
     .select('*, reporter:profiles!reporter_id(id, username)')
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
@@ -63,7 +63,7 @@ async function getActivityData() {
     days.map(async ({ date }, idx) => {
       const nextDate = idx < days.length - 1 ? days[idx + 1].date : new Date().toISOString()
       const { count } = await supabase
-        .from('posts')
+        .from('dt_posts')
         .select('*', { count: 'exact', head: true })
         .gte('created_at', date)
         .lt('created_at', nextDate)

@@ -91,7 +91,7 @@ export function Header() {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       if (authUser) {
         const { data: profile } = await supabase
-          .from('profiles')
+          .from('dt_profiles')
           .select('*')
           .eq('id', authUser.id)
           .single()
@@ -107,7 +107,7 @@ export function Header() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         const { data: profile } = await supabase
-          .from('profiles')
+          .from('dt_profiles')
           .select('*')
           .eq('id', session.user.id)
           .single()

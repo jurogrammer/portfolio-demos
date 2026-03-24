@@ -21,7 +21,7 @@ export default async function EditPostPage({
   }
 
   const { data: post, error } = await supabase
-    .from('posts')
+    .from('dt_posts')
     .select('*')
     .eq('id', id)
     .eq('is_deleted', false)
@@ -35,7 +35,7 @@ export default async function EditPostPage({
   if (post.author_id !== user.id) {
     // Check if admin
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('dt_profiles')
       .select('role')
       .eq('id', user.id)
       .single()
@@ -47,7 +47,7 @@ export default async function EditPostPage({
 
   // Fetch existing tags for autocomplete
   const { data: tags } = await supabase
-    .from('tags')
+    .from('dt_tags')
     .select('name')
     .order('post_count', { ascending: false })
     .limit(50)

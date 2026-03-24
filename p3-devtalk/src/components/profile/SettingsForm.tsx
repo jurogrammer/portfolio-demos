@@ -85,7 +85,7 @@ export function SettingsForm({ profile }: SettingsFormProps) {
       }
 
       const { data, error } = await supabase
-        .from('profiles')
+        .from('dt_profiles')
         .update(updates)
         .eq('id', profile.id)
         .select()

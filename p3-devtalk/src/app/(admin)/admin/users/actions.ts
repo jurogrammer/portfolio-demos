@@ -11,7 +11,7 @@ async function requireAdmin() {
   if (!user) redirect('/auth/login')
 
   const { data: profile } = await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .select('role')
     .eq('id', user.id)
     .single()
@@ -23,7 +23,7 @@ export async function warnUser(userId: string, reason: string) {
   await requireAdmin()
   const supabase = createAdminClient()
   await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .update({ ban_reason: `[경고] ${reason}` })
     .eq('id', userId)
 }
@@ -32,7 +32,7 @@ export async function banUser(userId: string, reason: string, banUntil: string |
   await requireAdmin()
   const supabase = createAdminClient()
   await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .update({ is_banned: true, ban_reason: reason, ban_until: banUntil })
     .eq('id', userId)
 }
@@ -41,7 +41,7 @@ export async function unbanUser(userId: string) {
   await requireAdmin()
   const supabase = createAdminClient()
   await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .update({ is_banned: false, ban_reason: null, ban_until: null })
     .eq('id', userId)
 }
@@ -51,7 +51,7 @@ export async function toggleAdminRole(userId: string, currentRole: UserRole) {
   const supabase = createAdminClient()
   const newRole: UserRole = currentRole === 'admin' ? 'user' : 'admin'
   await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .update({ role: newRole })
     .eq('id', userId)
 }

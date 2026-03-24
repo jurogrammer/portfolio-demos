@@ -19,7 +19,7 @@ export function CommentSection({ postId, postAuthorId, initialCommentCount = 0 }
   const fetchComments = useCallback(async () => {
     const supabase = createClient()
     const { data, error } = await supabase
-      .from('comments')
+      .from('dt_comments')
       .select('*, author:profiles(*)')
       .eq('post_id', postId)
       .order('created_at', { ascending: true })

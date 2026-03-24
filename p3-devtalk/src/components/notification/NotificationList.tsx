@@ -27,7 +27,7 @@ export function NotificationList({ notifications }: NotificationListProps) {
   const handleClick = async (n: Notification) => {
     if (!n.is_read) {
       const supabase = createClient()
-      await supabase.from('notifications').update({ is_read: true }).eq('id', n.id)
+      await supabase.from('dt_notifications').update({ is_read: true }).eq('id', n.id)
       markAsRead(n.id)
     }
     if (n.link) router.push(n.link)

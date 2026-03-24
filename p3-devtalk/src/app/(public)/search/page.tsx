@@ -16,14 +16,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   let popularTags: string[] = []
 
   if (query) {
-    const { data } = await supabase.rpc('search_posts', { query_text: query })
+    const { data } = await supabase.rpc('dt_search_posts', { query_text: query })
     posts = (data ?? []) as Post[]
   }
 
   // Always fetch popular tags for empty state
   if (!query || posts.length === 0) {
     const { data: tagData } = await supabase
-      .from('tags')
+      .from('dt_tags')
       .select('name')
       .order('post_count', { ascending: false })
       .limit(10)

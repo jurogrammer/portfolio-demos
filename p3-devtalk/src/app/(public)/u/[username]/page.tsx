@@ -19,7 +19,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
 
   // Get profile
   const { data: profile } = await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .select('*')
     .eq('username', username)
     .single()

@@ -62,7 +62,7 @@ export function PostForm({ existingPost, tagSuggestions = [] }: PostFormProps) {
     try {
       if (isEditing && existingPost) {
         const { error } = await supabase
-          .from('posts')
+          .from('dt_posts')
           .update({
             title: title.trim(),
             category,
@@ -79,7 +79,7 @@ export function PostForm({ existingPost, tagSuggestions = [] }: PostFormProps) {
         router.refresh()
       } else {
         const { data, error } = await supabase
-          .from('posts')
+          .from('dt_posts')
           .insert({
             author_id: user.id,
             title: title.trim(),
@@ -93,7 +93,7 @@ export function PostForm({ existingPost, tagSuggestions = [] }: PostFormProps) {
         if (error) throw error
 
         // Award points for writing a post
-        await supabase.rpc('add_points', { p_user_id: user.id, p_points: 10 })
+        await supabase.rpc('dt_add_points', { p_user_id: user.id, p_points: 10 })
 
         toast.success('게시글이 작성되었습니다')
         router.push(`/post/${data.id}`)

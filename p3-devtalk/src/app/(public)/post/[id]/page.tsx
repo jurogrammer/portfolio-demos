@@ -30,7 +30,7 @@ export default async function PostDetailPage({
 
   // Fetch post with author
   const { data: post, error } = await supabase
-    .from('posts')
+    .from('dt_posts')
     .select('*, author:profiles(*)')
     .eq('id', id)
     .eq('is_deleted', false)
@@ -41,7 +41,7 @@ export default async function PostDetailPage({
   }
 
   // Increment view count (fire-and-forget via RPC)
-  supabase.rpc('increment_view_count', { p_post_id: id }).then(() => {})
+  supabase.rpc('dt_increment_view_count', { p_post_id: id }).then(() => {})
 
   // Get current user
   const { data: { user } } = await supabase.auth.getUser()
@@ -52,14 +52,14 @@ export default async function PostDetailPage({
   if (user) {
     const [voteResult, bookmarkResult] = await Promise.all([
       supabase
-        .from('votes')
+        .from('dt_votes')
         .select('*')
         .eq('user_id', user.id)
         .eq('target_type', 'post')
         .eq('target_id', id)
         .maybeSingle(),
       supabase
-        .from('bookmarks')
+        .from('dt_bookmarks')
         .select('*')
         .eq('user_id', user.id)
         .eq('post_id', id)
@@ -196,7 +196,7 @@ export async function generateMetadata({
   const { id } = await params
   const supabase = await createClient()
   const { data: post } = await supabase
-    .from('posts')
+    .from('dt_posts')
     .select('title, content')
     .eq('id', id)
     .eq('is_deleted', false)

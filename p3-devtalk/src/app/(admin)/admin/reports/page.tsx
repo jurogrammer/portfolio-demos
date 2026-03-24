@@ -16,7 +16,7 @@ import { ReportActions } from '@/components/admin/ReportActions'
 async function getReports(status?: string) {
   const supabase = createAdminClient()
   let query = supabase
-    .from('reports')
+    .from('dt_reports')
     .select('*, reporter:profiles!reporter_id(id, username)')
     .order('created_at', { ascending: false })
     .limit(100)

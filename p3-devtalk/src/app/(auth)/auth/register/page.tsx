@@ -46,7 +46,7 @@ export default function RegisterPage() {
 
     // Check username uniqueness
     const { data: existing } = await supabase
-      .from('profiles')
+      .from('dt_profiles')
       .select('id')
       .eq('username', username)
       .single()

@@ -17,7 +17,7 @@ import { PostActions } from '@/components/admin/PostActions'
 async function getPosts(searchParams: { q?: string; category?: string; deleted?: string }) {
   const supabase = createAdminClient()
   let query = supabase
-    .from('posts')
+    .from('dt_posts')
     .select('*, author:profiles!author_id(id, username)')
     .order('created_at', { ascending: false })
     .limit(100)

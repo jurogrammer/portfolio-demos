@@ -46,7 +46,7 @@ export function PostActions({ post, isAuthor, isBookmarked }: PostActionsProps) 
     try {
       if (bookmarked) {
         await supabase
-          .from('bookmarks')
+          .from('dt_bookmarks')
           .delete()
           .eq('user_id', user.id)
           .eq('post_id', post.id)
@@ -54,7 +54,7 @@ export function PostActions({ post, isAuthor, isBookmarked }: PostActionsProps) 
         toast.success('북마크가 해제되었습니다')
       } else {
         await supabase
-          .from('bookmarks')
+          .from('dt_bookmarks')
           .insert({ user_id: user.id, post_id: post.id })
         setBookmarked(true)
         toast.success('북마크에 추가되었습니다')
@@ -71,7 +71,7 @@ export function PostActions({ post, isAuthor, isBookmarked }: PostActionsProps) 
     setDeleteLoading(true)
     try {
       const { error } = await supabase
-        .from('posts')
+        .from('dt_posts')
         .update({ is_deleted: true })
         .eq('id', post.id)
       if (error) throw error
@@ -101,7 +101,7 @@ export function PostActions({ post, isAuthor, isBookmarked }: PostActionsProps) 
 
     setReportLoading(true)
     try {
-      const { error } = await supabase.from('reports').insert({
+      const { error } = await supabase.from('dt_reports').insert({
         reporter_id: user.id,
         target_type: 'post',
         target_id: post.id,

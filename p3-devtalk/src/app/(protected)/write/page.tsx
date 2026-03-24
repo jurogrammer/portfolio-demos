@@ -16,7 +16,7 @@ export default async function WritePage() {
 
   // Fetch existing tags for autocomplete
   const { data: tags } = await supabase
-    .from('tags')
+    .from('dt_tags')
     .select('name')
     .order('post_count', { ascending: false })
     .limit(50)

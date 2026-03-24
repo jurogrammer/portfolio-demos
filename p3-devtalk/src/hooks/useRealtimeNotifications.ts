@@ -17,7 +17,7 @@ export function useRealtimeNotifications(userId: string | undefined) {
     // Initial load
     const loadNotifications = async () => {
       const { data } = await supabase
-        .from('notifications')
+        .from('dt_notifications')
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
@@ -28,7 +28,7 @@ export function useRealtimeNotifications(userId: string | undefined) {
       }
 
       const { count } = await supabase
-        .from('notifications')
+        .from('dt_notifications')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
         .eq('is_read', false)
@@ -46,7 +46,7 @@ export function useRealtimeNotifications(userId: string | undefined) {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'notifications',
+          table: 'dt_notifications',
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {

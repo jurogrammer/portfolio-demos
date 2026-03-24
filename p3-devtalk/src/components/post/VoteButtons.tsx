@@ -39,7 +39,7 @@ export function VoteButtons({
 
     setLoading(true)
     try {
-      const { data, error } = await supabase.rpc('toggle_vote', {
+      const { data, error } = await supabase.rpc('dt_toggle_vote', {
         p_target_type: targetType,
         p_target_id: targetId,
         p_value: value,

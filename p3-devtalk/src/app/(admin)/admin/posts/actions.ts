@@ -10,7 +10,7 @@ async function requireAdmin() {
   if (!user) redirect('/auth/login')
 
   const { data: profile } = await supabase
-    .from('profiles')
+    .from('dt_profiles')
     .select('role')
     .eq('id', user.id)
     .single()
@@ -22,7 +22,7 @@ export async function deletePost(postId: string) {
   await requireAdmin()
   const supabase = createAdminClient()
   await supabase
-    .from('posts')
+    .from('dt_posts')
     .update({ is_deleted: true })
     .eq('id', postId)
 }
@@ -31,7 +31,7 @@ export async function restorePost(postId: string) {
   await requireAdmin()
   const supabase = createAdminClient()
   await supabase
-    .from('posts')
+    .from('dt_posts')
     .update({ is_deleted: false })
     .eq('id', postId)
 }
@@ -40,7 +40,7 @@ export async function togglePinPost(postId: string, isPinned: boolean) {
   await requireAdmin()
   const supabase = createAdminClient()
   await supabase
-    .from('posts')
+    .from('dt_posts')
     .update({ is_pinned: !isPinned })
     .eq('id', postId)
 }
@@ -48,5 +48,5 @@ export async function togglePinPost(postId: string, isPinned: boolean) {
 export async function changeCategory(postId: string, category: string) {
   await requireAdmin()
   const supabase = createAdminClient()
-  await supabase.from('posts').update({ category }).eq('id', postId)
+  await supabase.from('dt_posts').update({ category }).eq('id', postId)
 }

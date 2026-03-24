@@ -16,7 +16,7 @@ import { UserActions } from '@/components/admin/UserActions'
 async function getUsers(searchParams: { q?: string; role?: string; banned?: string }) {
   const supabase = createAdminClient()
   let query = supabase
-    .from('profiles')
+    .from('dt_profiles')
     .select('*')
     .order('created_at', { ascending: false })
 
