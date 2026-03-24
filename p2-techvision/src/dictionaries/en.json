@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "news": "News",
+    "careers": "Careers",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero_cta": "Get Project Consultation",
+    "services_title": "Core Services",
+    "services_subtitle": "Professional IT solutions for your business growth",
+    "clients_title": "Trusted Clients",
+    "stats_projects": "Completed Projects",
+    "stats_clients": "Clients",
+    "stats_team": "Team Members",
+    "stats_years": "Years in Business",
+    "cta_title": "Ready to Start Your Project?",
+    "cta_subtitle": "Consult with our experts right now",
+    "cta_button": "Free Consultation"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Transforming the world with innovative technology",
+    "vision_title": "Vision",
+    "vision_text": "Creating a better world through technological innovation",
+    "mission_title": "Mission",
+    "mission_text": "Becoming the best technology partner for our clients' business success",
+    "history_title": "Company History",
+    "team_title": "Our Team"
+  },
+  "services": {
+    "title": "Services",
+    "subtitle": "Customized IT solutions for business growth",
+    "detail_button": "Learn More",
+    "process_title": "Our Process"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Successfully completed projects",
+    "filter_all": "All",
+    "filter_web": "Web",
+    "filter_mobile": "Mobile",
+    "filter_consulting": "Consulting",
+    "empty": "No projects found",
+    "tech_stack": "Tech Stack",
+    "client": "Client"
+  },
+  "news": {
+    "title": "News & Blog",
+    "subtitle": "Latest updates and technology insights",
+    "category_news": "News",
+    "category_blog": "Blog",
+    "read_more": "Read More",
+    "empty": "No posts found",
+    "related": "Related Posts",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "careers": {
+    "title": "Careers",
+    "subtitle": "Grow with TechVision",
+    "apply": "Apply Now",
+    "type_full": "Full-time",
+    "type_contract": "Contract",
+    "type_part": "Part-time",
+    "requirements": "Requirements",
+    "empty": "No open positions at this time",
+    "department": "Department",
+    "location": "Location"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Let's talk about your project",
+    "name": "Name",
+    "name_placeholder": "John Doe",
+    "email": "Email",
+    "email_placeholder": "example@email.com",
+    "phone": "Phone",
+    "phone_placeholder": "Phone number (optional)",
+    "company": "Company",
+    "company_placeholder": "Company name (optional)",
+    "message": "Message",
+    "message_placeholder": "Please describe your project...",
+    "submit": "Send Inquiry",
+    "submitting": "Sending...",
+    "success": "Your inquiry has been submitted successfully. We will contact you shortly.",
+    "error": "An error occurred. Please try again.",
+    "address": "Address",
+    "address_value": "123 Teheran-ro, Gangnam-gu, Seoul",
+    "phone_label": "Phone",
+    "phone_value": "02-1234-5678",
+    "email_label": "Email",
+    "email_value": "info@techvision.co.kr",
+    "hours": "Business Hours",
+    "hours_value": "Mon-Fri 09:00-18:00"
+  },
+  "footer": {
+    "description": "A professional IT solutions company transforming businesses with innovative technology",
+    "company": "Company",
+    "services": "Services",
+    "contact": "Contact",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "not_found": "Page not found",
+    "back": "Go Back",
+    "featured": "Featured",
+    "new": "New"
+  }
+}

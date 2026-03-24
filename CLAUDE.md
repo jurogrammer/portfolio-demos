@@ -11,7 +11,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```
 portfolio-demos/
 ├── CLAUDE.md               ← this file (repo-level guidance)
-├── vercel.json             ← Vercel deployment config (builds p1-portfolio)
 ├── requirements/
 │   ├── p1-requirements.md  ← P1 개인 포트폴리오
 │   ├── p2-requirements.md  ← P2 기업 홈페이지 (TechVision Solutions)
@@ -148,16 +147,15 @@ p2-techvision/src/
 
 ## Vercel Deployment
 
-현재 `vercel.json`은 `p1-portfolio`만 빌드/배포하도록 설정:
+모노레포 내 각 프로젝트는 Vercel Dashboard에서 **Root Directory** 설정으로 독립 배포:
 
-```json
-{
-  "framework": "nextjs",
-  "buildCommand": "cd p1-portfolio && pnpm install --frozen-lockfile && pnpm build",
-  "outputDirectory": "p1-portfolio/.next",
-  "installCommand": "npm install -g pnpm"
-}
-```
+| Vercel Project | Root Directory | GitHub Repo |
+|---|---|---|
+| p1-portfolio | `p1-portfolio` | `jurogrammer/portfolio-demos` |
+| p2-techvision | `p2-techvision` | `jurogrammer/portfolio-demos` |
+
+- root `vercel.json` 없음 — 각 프로젝트 내부 설정으로 관리
+- `git push` 시 두 프로젝트 모두 자동 빌드/배포
 
 ## File Naming Conventions
 

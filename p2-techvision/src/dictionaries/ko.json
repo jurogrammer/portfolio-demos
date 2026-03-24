@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "home": "홈",
+    "about": "회사소개",
+    "services": "서비스",
+    "portfolio": "포트폴리오",
+    "news": "뉴스",
+    "careers": "채용",
+    "contact": "문의"
+  },
+  "home": {
+    "hero_cta": "프로젝트 상담 받기",
+    "services_title": "핵심 서비스",
+    "services_subtitle": "고객의 비즈니스 성장을 위한 전문 IT 솔루션",
+    "clients_title": "신뢰하는 고객사",
+    "stats_projects": "완료 프로젝트",
+    "stats_clients": "고객사",
+    "stats_team": "팀 인원",
+    "stats_years": "년 업력",
+    "cta_title": "프로젝트를 시작할 준비가 되셨나요?",
+    "cta_subtitle": "지금 바로 전문가와 상담하세요",
+    "cta_button": "무료 상담 신청"
+  },
+  "about": {
+    "title": "회사 소개",
+    "subtitle": "혁신적인 기술로 세상을 변화시킵니다",
+    "vision_title": "비전",
+    "vision_text": "기술 혁신으로 더 나은 세상을 만듭니다",
+    "mission_title": "미션",
+    "mission_text": "고객의 비즈니스 성공을 위한 최고의 기술 파트너가 됩니다",
+    "history_title": "회사 연혁",
+    "team_title": "우리 팀"
+  },
+  "services": {
+    "title": "서비스",
+    "subtitle": "비즈니스 성장을 위한 맞춤형 IT 솔루션",
+    "detail_button": "자세히 보기",
+    "process_title": "진행 프로세스"
+  },
+  "portfolio": {
+    "title": "포트폴리오",
+    "subtitle": "성공적으로 완료한 프로젝트들",
+    "filter_all": "전체",
+    "filter_web": "웹",
+    "filter_mobile": "모바일",
+    "filter_consulting": "컨설팅",
+    "empty": "프로젝트가 없습니다",
+    "tech_stack": "기술 스택",
+    "client": "클라이언트"
+  },
+  "news": {
+    "title": "뉴스 & 블로그",
+    "subtitle": "최신 소식과 기술 인사이트",
+    "category_news": "뉴스",
+    "category_blog": "블로그",
+    "read_more": "더 읽기",
+    "empty": "게시글이 없습니다",
+    "related": "관련 게시글",
+    "prev": "이전",
+    "next": "다음"
+  },
+  "careers": {
+    "title": "채용",
+    "subtitle": "TechVision과 함께 성장하세요",
+    "apply": "지원하기",
+    "type_full": "정규직",
+    "type_contract": "계약직",
+    "type_part": "파트타임",
+    "requirements": "자격 요건",
+    "empty": "현재 채용 공고가 없습니다",
+    "department": "부서",
+    "location": "근무지"
+  },
+  "contact": {
+    "title": "문의하기",
+    "subtitle": "프로젝트에 대해 이야기해보세요",
+    "name": "이름",
+    "name_placeholder": "홍길동",
+    "email": "이메일",
+    "email_placeholder": "example@email.com",
+    "phone": "전화번호",
+    "phone_placeholder": "010-0000-0000 (선택)",
+    "company": "회사명",
+    "company_placeholder": "회사명 (선택)",
+    "message": "문의 내용",
+    "message_placeholder": "프로젝트에 대해 설명해 주세요...",
+    "submit": "문의 보내기",
+    "submitting": "전송 중...",
+    "success": "문의가 성공적으로 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.",
+    "error": "오류가 발생했습니다. 다시 시도해주세요.",
+    "address": "주소",
+    "address_value": "서울특별시 강남구 테헤란로 123",
+    "phone_label": "전화",
+    "phone_value": "02-1234-5678",
+    "email_label": "이메일",
+    "email_value": "info@techvision.co.kr",
+    "hours": "업무시간",
+    "hours_value": "월-금 09:00-18:00"
+  },
+  "footer": {
+    "description": "혁신적인 기술로 비즈니스를 변화시키는 IT 솔루션 전문 기업",
+    "company": "회사",
+    "services": "서비스",
+    "contact": "문의",
+    "rights": "All rights reserved.",
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관"
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "not_found": "페이지를 찾을 수 없습니다",
+    "back": "뒤로 가기",
+    "featured": "추천",
+    "new": "신규"
+  }
+}

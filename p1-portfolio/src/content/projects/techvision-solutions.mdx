@@ -1,0 +1,48 @@
+---
+title: "TechVision Solutions 기업 웹사이트"
+description: "IT 솔루션 전문 기업의 다국어(한/영) 반응형 웹사이트. Next.js 16 + Supabase 기반, 관리자 대시보드 포함."
+tech: ["Next.js 16", "TypeScript", "Supabase", "Tailwind CSS", "shadcn/ui", "Vercel"]
+liveUrl: "https://p2-techvision.vercel.app"
+thumbnail: "https://placehold.co/800x450/0f172a/38bdf8?text=TechVision+Solutions"
+category: "Enterprise"
+duration: "3주"
+date: "2025-03-24"
+featured: true
+---
+
+## 프로젝트 개요
+
+IT 솔루션 전문 기업 "TechVision Solutions"의 기업 웹사이트를 설계 및 구현했습니다. 한국어/영어 다국어 지원, Supabase 기반 CMS 관리자 대시보드, 반응형 디자인을 적용한 풀스택 프로젝트입니다.
+
+## 주요 기능
+
+### 공개 페이지 (다국어 지원)
+- **홈** — 히어로 섹션, 서비스 하이라이트, 포트폴리오 미리보기
+- **회사소개** — 기업 비전, 팀 소개
+- **서비스** — IT 컨설팅, 웹/모바일 개발, 클라우드 솔루션
+- **포트폴리오** — 프로젝트 갤러리 (Supabase Storage 이미지)
+- **뉴스** — 기업 소식 및 블로그
+- **채용** — 채용 공고 및 지원
+- **문의** — Resend API 기반 이메일 발송 폼
+
+### 관리자 대시보드
+- 게시물/포트폴리오/채용공고 CRUD
+- 문의 접수 목록 관리
+- Supabase Auth 기반 로그인
+
+## 기술적 특징
+
+| 항목 | 구현 |
+|------|------|
+| 다국어 라우팅 | `[locale]` 동적 세그먼트 (ko/en) |
+| 데이터베이스 | Supabase (PostgreSQL + Storage) |
+| 인증 | Supabase Auth (관리자 전용) |
+| 이메일 발송 | Resend API (Server Actions) |
+| SEO | JSON-LD 구조화 데이터, OG 메타, sitemap/robots |
+| 빌드 | Turbopack, SSG + Dynamic 혼합 렌더링 |
+
+## 결과
+
+- Lighthouse 성능 90+ 달성
+- 한/영 전환 시 URL 기반 라우팅으로 SEO 최적화
+- 관리자가 코드 수정 없이 콘텐츠를 직접 관리 가능
