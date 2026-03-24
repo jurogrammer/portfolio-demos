@@ -52,7 +52,7 @@ export function CommentForm({
       const supabase = createClient()
 
       const { data: comment, error } = await supabase
-        .from('comments')
+        .from('dt_comments')
         .insert({
           post_id: postId,
           author_id: user.id,
@@ -65,10 +65,10 @@ export function CommentForm({
       if (error) throw error
 
       // Update post comment_count
-      await supabase.rpc('increment_comment_count', { post_id: postId })
+      await supabase.rpc('dt_increment_comment_count', { p_post_id: postId })
 
       // Add points to comment author (+3)
-      await supabase.rpc('add_points', { user_id: user.id, points: 3 })
+      await supabase.rpc('dt_add_points', { user_id: user.id, points: 3 })
 
       // Create notifications
       const notificationsToInsert: {
@@ -103,7 +103,7 @@ export function CommentForm({
       }
 
       if (notificationsToInsert.length > 0) {
-        await supabase.from('notifications').insert(notificationsToInsert)
+        await supabase.from('dt_notifications').insert(notificationsToInsert)
       }
 
       setContent('')
