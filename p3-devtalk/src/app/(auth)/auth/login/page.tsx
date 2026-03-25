@@ -55,6 +55,7 @@ function LoginForm() {
       provider: 'kakao',
       options: {
         redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
+        scopes: 'profile_nickname profile_image',
       },
     })
     if (oauthError) {
