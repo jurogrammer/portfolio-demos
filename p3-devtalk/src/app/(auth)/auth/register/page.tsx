@@ -19,6 +19,21 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
+  const handleKakaoRegister = async () => {
+    setError('')
+    const supabase = createClient()
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: {
+        redirectTo: `${siteUrl}/auth/callback?redirect=/`,
+      },
+    })
+    if (oauthError) {
+      setError('카카오 회원가입에 실패했습니다.')
+    }
+  }
+
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
@@ -150,6 +165,25 @@ export default function RegisterPage() {
             {loading ? '처리 중...' : '회원가입'}
           </Button>
         </form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs text-muted-foreground">
+            <span className="bg-card px-2">또는</span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={handleKakaoRegister}
+          disabled={loading}
+        >
+          카카오로 회원가입
+        </Button>
       </CardContent>
       <CardFooter className="flex justify-center text-sm text-muted-foreground">
         이미 계정이 있으신가요?&nbsp;

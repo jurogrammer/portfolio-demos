@@ -51,11 +51,11 @@ function LoginForm() {
   const handleKakaoLogin = async () => {
     setError('')
     const supabase = createClient()
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
-        scopes: 'profile_nickname profile_image',
+        redirectTo: `${siteUrl}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
       },
     })
     if (oauthError) {

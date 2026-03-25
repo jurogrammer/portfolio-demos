@@ -24,12 +24,35 @@ CREATE TABLE IF NOT EXISTS profiles (
 -- Auto-create profile on signup
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  _username TEXT;
 BEGIN
+  -- Try multiple metadata fields for username (covers email, kakao, google, github, etc.)
+  _username := COALESCE(
+    NEW.raw_user_meta_data->>'username',
+    NEW.raw_user_meta_data->>'preferred_username',
+    NEW.raw_user_meta_data->>'name',
+    NEW.raw_user_meta_data->>'full_name',
+    NEW.raw_user_meta_data->>'user_name',
+    CASE WHEN NEW.email IS NOT NULL AND NEW.email != '' THEN split_part(NEW.email, '@', 1) ELSE NULL END,
+    'user_' || substr(NEW.id::text, 1, 8)
+  );
+
+  -- Ensure uniqueness by appending random suffix if username already exists
+  IF EXISTS (SELECT 1 FROM profiles WHERE username = _username) THEN
+    _username := _username || '_' || substr(md5(random()::text), 1, 4);
+  END IF;
+
   INSERT INTO profiles (id, username, avatar_url)
   VALUES (
     NEW.id,
-    COALESCE(NEW.raw_user_meta_data->>'username', NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
-    COALESCE(NEW.raw_user_meta_data->>'avatar_url', NEW.raw_user_meta_data->>'picture')
+    _username,
+    COALESCE(
+      NEW.raw_user_meta_data->>'avatar_url',
+      NEW.raw_user_meta_data->>'picture',
+      NEW.raw_user_meta_data->>'profile_image',
+      NEW.raw_user_meta_data->>'profile_image_url'
+    )
   );
   RETURN NEW;
 END;
