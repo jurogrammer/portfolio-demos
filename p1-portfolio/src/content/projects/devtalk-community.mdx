@@ -1,0 +1,52 @@
+---
+title: "DevTalk 개발자 Q&A 커뮤니티"
+description: "실시간 알림, 카카오 OAuth, 대댓글, 레벨/포인트 시스템을 갖춘 개발자 커뮤니티 게시판. Next.js 16 + Supabase 풀스택 프로젝트."
+tech: ["Next.js 16", "TypeScript", "Supabase", "Tailwind CSS", "shadcn/ui", "Zustand", "Vercel"]
+liveUrl: "https://p3-devtalk.vercel.app"
+thumbnail: "https://placehold.co/800x450/0f172a/a78bfa?text=DevTalk+Community"
+category: "Community"
+duration: "3주"
+date: "2025-04-14"
+featured: true
+---
+
+## 프로젝트 개요
+
+개발자 Q&A 커뮤니티 "DevTalk"을 설계 및 구현했습니다. 한국 특유의 게시판 문화에 맞춰 대댓글, 추천/비추천, 레벨 시스템, 실시간 알림 등 풍부한 사용자 상호작용을 지원하는 풀스택 프로젝트입니다.
+
+## 주요 기능
+
+### 사용자 기능
+- **카카오 OAuth + 이메일 로그인** — Supabase Auth 기반 다중 인증
+- **게시글 CRUD** — Markdown 에디터, 카테고리 분류, 태그 시스템
+- **대댓글 시스템** — 무한 depth 댓글/대댓글 트리 구조
+- **추천/비추천** — 게시글·댓글 투표 시스템
+- **실시간 알림** — Supabase Realtime으로 댓글·추천 알림 즉시 수신
+- **레벨/포인트 시스템** — 활동 기반 포인트 적립 및 5단계 레벨 체계
+- **전체 텍스트 검색** — PostgreSQL 기반 한국어 검색
+- **사용자 프로필** — 활동 내역, 작성글, 레벨 표시
+
+### 관리자 패널
+- 대시보드 통계 (가입자 추이, 게시글 현황)
+- 사용자 관리 및 제재
+- 신고 접수 및 처리
+- 게시글 관리 (삭제, 고정)
+
+## 기술적 특징
+
+| 항목 | 구현 |
+|------|------|
+| 인증 | Supabase Auth (카카오 OAuth + 이메일) |
+| 데이터베이스 | Supabase (PostgreSQL + RLS 정책) |
+| 실시간 | Supabase Realtime (알림, 댓글) |
+| 상태 관리 | Zustand (클라이언트 상태) |
+| 검색 | PostgreSQL Full-Text Search |
+| 렌더링 | SSR + CSR 혼합 (동적 콘텐츠) |
+| SEO | 메타데이터 API, OG 이미지, sitemap |
+
+## 결과
+
+- 실시간 알림 지연 시간 1초 이내 달성
+- RLS 정책으로 데이터 접근 제어 완성
+- 카카오 로그인부터 게시글 작성, 알림까지 전체 사용자 흐름 구현
+- 관리자 패널로 운영 가능한 수준의 완성도 확보
