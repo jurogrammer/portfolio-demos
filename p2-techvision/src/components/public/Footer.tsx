@@ -16,7 +16,7 @@ export default function Footer() {
               <li><Link href="/ko/about" className="hover:text-white transition-colors">회사소개</Link></li>
               <li><Link href="/ko/services" className="hover:text-white transition-colors">서비스</Link></li>
               <li><Link href="/ko/portfolio" className="hover:text-white transition-colors">포트폴리오</Link></li>
-              <li><Link href="/ko/careers" className="hover:text-white transition-colors">채용</Link></li>
+<li><Link href="/ko/careers" className="hover:text-white transition-colors">채용</Link></li>
             </ul>
           </div>
           <div>

@@ -40,7 +40,7 @@ export default function Header() {
     { href: `/${locale}/about`, label: dict.nav?.about || '회사소개' },
     { href: `/${locale}/services`, label: dict.nav?.services || '서비스' },
     { href: `/${locale}/portfolio`, label: dict.nav?.portfolio || '포트폴리오' },
-    { href: `/${locale}/news`, label: dict.nav?.news || '뉴스' },
+{ href: `/${locale}/news`, label: dict.nav?.news || '뉴스' },
     { href: `/${locale}/careers`, label: dict.nav?.careers || '채용' },
     { href: `/${locale}/contact`, label: dict.nav?.contact || '문의' },
   ]
