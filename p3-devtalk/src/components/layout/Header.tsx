@@ -123,9 +123,22 @@ export function Header() {
       }
     }
 
-    // Use onAuthStateChange as the SOLE auth initializer to avoid lock contention.
-    // It fires INITIAL_SESSION on mount, then SIGNED_IN / SIGNED_OUT / TOKEN_REFRESHED.
+    // ① Primary: read session directly from cookie storage (no lock contention, no event timing).
+    //    getSession() bypasses the GoTrue lock and directly deserialises the cookie-stored JWT.
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!isMounted) return
+      if (session?.user) {
+        await fetchAndSetProfile(session.user)
+      } else {
+        setUser(null)
+        setLoading(false)
+      }
+    })
+
+    // ② Reactive: listen for subsequent sign-in / sign-out / token refresh events.
+    //    Skip INITIAL_SESSION — already handled synchronously above via getSession().
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'INITIAL_SESSION') return
       if (!isMounted) return
       if (session?.user) {
         await fetchAndSetProfile(session.user)
