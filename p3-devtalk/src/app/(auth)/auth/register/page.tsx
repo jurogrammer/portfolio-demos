@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { registerUser } from './actions'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -17,7 +18,6 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
 
   const handleKakaoRegister = async () => {
     setError('')
@@ -57,59 +57,30 @@ export default function RegisterPage() {
       return
     }
 
-    const supabase = createClient()
+    // Server action: create user with auto-confirm + profile
+    const result = await registerUser(email, username, password)
 
-    // Check username uniqueness
-    const { data: existing } = await supabase
-      .from('dt_profiles')
-      .select('id')
-      .eq('username', username)
-      .single()
-
-    if (existing) {
-      setError('이미 사용 중인 사용자 이름입니다.')
+    if (!result.success) {
+      setError(result.error || '회원가입에 실패했습니다.')
       setLoading(false)
       return
     }
 
-    const { error: signUpError } = await supabase.auth.signUp({
+    // Auto-login after successful registration
+    const supabase = createClient()
+    const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
-      options: {
-        data: { username },
-      },
     })
 
-    if (signUpError) {
-      if (signUpError.message.includes('already registered')) {
-        setError('이미 가입된 이메일입니다.')
-      } else {
-        setError('회원가입에 실패했습니다. 다시 시도해주세요.')
-      }
-      setLoading(false)
+    if (signInError) {
+      // Registration succeeded but auto-login failed — send to login page
+      router.push('/auth/login')
       return
     }
 
-    setSuccess(true)
-    setLoading(false)
-  }
-
-  if (success) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>회원가입 완료</CardTitle>
-          <CardDescription>
-            이메일 확인 링크를 발송했습니다. 이메일을 확인해주세요.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className="flex justify-center">
-          <Button render={<Link href="/auth/login" />}>
-            로그인 페이지로
-          </Button>
-        </CardFooter>
-      </Card>
-    )
+    router.push('/')
+    router.refresh()
   }
 
   return (
