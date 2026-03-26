@@ -86,79 +86,59 @@ export function Header() {
 
   useEffect(() => {
     const supabase = createClient()
+    let isMounted = true
 
-    const initAuth = async () => {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (authUser) {
+    const profileFromUser = (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }): Profile => {
+      const meta = authUser.user_metadata ?? {}
+      return {
+        id: authUser.id,
+        username: (meta.username ?? meta.name ?? meta.preferred_username ?? authUser.email?.split('@')[0] ?? 'user') as string,
+        avatar_url: (meta.avatar_url ?? meta.picture ?? null) as string | null,
+        bio: null,
+        points: 0,
+        level: 1,
+        role: 'user' as const,
+        is_banned: false,
+        ban_reason: null,
+        ban_until: null,
+        notify_comments: true,
+        notify_votes: true,
+        notify_email: false,
+        created_at: authUser.created_at ?? new Date().toISOString(),
+      }
+    }
+
+    const fetchAndSetProfile = async (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }) => {
+      if (!isMounted) return
+      try {
         const { data: profile } = await supabase
           .from('dt_profiles')
           .select('*')
           .eq('id', authUser.id)
           .single()
-        if (profile) {
-          setUser(profile as Profile)
-        } else {
-          // Profile row missing — use auth metadata as fallback so UI doesn't show logged-out
-          const meta = authUser.user_metadata ?? {}
-          setUser({
-            id: authUser.id,
-            username: meta.username ?? meta.name ?? meta.preferred_username ?? authUser.email?.split('@')[0] ?? 'user',
-            avatar_url: meta.avatar_url ?? meta.picture ?? null,
-            bio: null,
-            points: 0,
-            level: 1,
-            role: 'user',
-            is_banned: false,
-            ban_reason: null,
-            ban_until: null,
-            notify_comments: true,
-            notify_votes: true,
-            notify_email: false,
-            created_at: authUser.created_at ?? new Date().toISOString(),
-          })
-        }
+        if (!isMounted) return
+        setUser(profile ? (profile as Profile) : profileFromUser(authUser))
+      } catch {
+        if (isMounted) setUser(profileFromUser(authUser))
+      }
+    }
+
+    // Use onAuthStateChange as the SOLE auth initializer to avoid lock contention.
+    // It fires INITIAL_SESSION on mount, then SIGNED_IN / SIGNED_OUT / TOKEN_REFRESHED.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!isMounted) return
+      if (session?.user) {
+        await fetchAndSetProfile(session.user)
       } else {
         setUser(null)
       }
       setLoading(false)
-    }
-
-    initAuth()
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from('dt_profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single()
-        if (profile) {
-          setUser(profile as Profile)
-        } else {
-          const meta = session.user.user_metadata ?? {}
-          setUser({
-            id: session.user.id,
-            username: meta.username ?? meta.name ?? meta.preferred_username ?? session.user.email?.split('@')[0] ?? 'user',
-            avatar_url: meta.avatar_url ?? meta.picture ?? null,
-            bio: null,
-            points: 0,
-            level: 1,
-            role: 'user',
-            is_banned: false,
-            ban_reason: null,
-            ban_until: null,
-            notify_comments: true,
-            notify_votes: true,
-            notify_email: false,
-            created_at: session.user.created_at ?? new Date().toISOString(),
-          })
-        }
-      } else {
-        setUser(null)
-      }
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      isMounted = false
+      subscription.unsubscribe()
+    }
   }, [setUser, setLoading])
 
   const handleSignOut = async () => {
