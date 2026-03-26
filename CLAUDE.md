@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-위시켓 (Wishket) 플랫폼 타겟 한국 프리랜서 개발자의 포트폴리오 데모 프로젝트 모음. 각 프로젝트(`p1`~`p5`)는 독립된 Next.js 16 앱이며, 요구사항 명세서는 `requirements/`에 정리되어 있다.
+위시켓 (Wishket) 플랫폼 타겟 한국 프리랜서 개발자의 포트폴리오 데모 프로젝트 모음. 각 프로젝트(`p1`~`p6`)는 독립된 Next.js 16 앱이며, 요구사항 명세서는 `requirements/`에 정리되어 있다.
 
 ## Repository Layout
 
@@ -18,7 +18,9 @@ portfolio-demos/
 │   ├── p4-requirements.md  ← P4 SaaS 웹앱 (TaskFlow)
 │   └── p5-requirements.md  ← P5 AI 통합 콘텐츠 도구 (ContentAI)
 ├── p1-portfolio/           ← ✅ built — personal portfolio site
-└── p2-techvision/          ← ✅ built — corporate homepage with admin CMS
+├── p2-techvision/          ← ✅ built — corporate homepage with admin CMS
+├── p6-sheets-dashboard/    ← ✅ built — Google Sheets inventory dashboard
+└── p7-n8n-automation/      ← ✅ built — n8n customer inquiry automation
 ```
 
 ---
@@ -145,6 +147,174 @@ p2-techvision/src/
 
 ---
 
+## P6 — Google Sheets Inventory Dashboard (`p6-sheets-dashboard/`)
+
+Requirements: `requirements/p6-requirements.md`
+
+| Concern | Choice |
+|---|---|
+| Data store | Google Sheets API v4 (no database) |
+| Auth | Service Account + base64-encoded private key |
+| Mutations | Server Actions + `revalidatePath` |
+| UI state | `useOptimistic` (ADD), `useTransition` (EDIT/DELETE) |
+| Notifications | Sonner toasts |
+
+### Structure
+
+```
+p6-sheets-dashboard/src/
+├── app/
+│   ├── layout.tsx                        ← Root layout: Geist font, Toaster
+│   ├── page.tsx                          ← Redirect to /dashboard
+│   └── (dashboard)/
+│       ├── layout.tsx                    ← Dashboard layout (sidebar + header)
+│       ├── actions.ts                    ← refreshDashboardLayout server action
+│       └── dashboard/
+│           ├── page.tsx                  ← Overview page (stats + recent activity)
+│           ├── loading.tsx               ← Overview skeleton
+│           ├── error.tsx                 ← Error boundary
+│           ├── actions.ts                ← getDashboardStats, getRecentChanges
+│           ├── inventory/
+│           │   ├── page.tsx              ← Inventory page (Server Component)
+│           │   ├── InventoryPageClient.tsx ← Client wrapper with useOptimistic
+│           │   ├── loading.tsx           ← Skeleton
+│           │   ├── error.tsx             ← Error boundary
+│           │   └── actions.ts            ← fetchInventory, createItem, editItem, removeItem
+│           ├── categories/
+│           │   ├── page.tsx              ← Categories page (Server Component)
+│           │   ├── loading.tsx           ← Skeleton
+│           │   ├── error.tsx             ← Error boundary
+│           │   └── actions.ts            ← fetchCategories, createCategory, editCategory, removeCategory
+│           └── settings/
+│               └── page.tsx              ← Settings page (spreadsheet info)
+├── components/
+│   ├── layout/                           ← DashboardSidebar, DashboardHeader, ThemeToggle
+│   ├── inventory/                        ← InventoryTable, InventoryFilters, InventoryActions, InventoryForm, LowStockAlert
+│   ├── categories/                       ← CategoryList
+│   └── ui/                              ← shadcn/ui components
+├── lib/
+│   ├── constants.ts                      ← Sheet names, column mappings, PAGE_SIZE=20, SKU_PREFIX
+│   ├── utils.ts                          ← cn() utility
+│   └── google/
+│       ├── sheets.ts                     ← getSheets(), withRetry() (exponential backoff on 429)
+│       ├── inventory.ts                  ← getInventoryItems, addInventoryItem, updateInventoryItem, deleteInventoryItem, getCategories, addCategory, updateCategory, deleteCategory
+│       └── helpers.ts                    ← rowToInventoryItem, inventoryItemToRow, rowToCategory, categoryToRow, generateNextSku
+└── types/
+    └── inventory.ts                      ← InventoryItem, Category, InventoryFilters, ActionResult<T>
+```
+
+### Environment Variables
+
+| Variable | Purpose |
+|---|---|
+| `GOOGLE_SPREADSHEET_ID` | Target Google Sheets spreadsheet ID |
+| `GOOGLE_CLIENT_EMAIL` | Service Account email |
+| `GOOGLE_PRIVATE_KEY_BASE64` | Service Account private key (base64-encoded) |
+| `NEXT_PUBLIC_SITE_URL` | Site URL for metadata |
+
+### Commands
+
+```bash
+cd p6-sheets-dashboard
+pnpm dev          # start dev server
+pnpm build        # production build
+pnpm lint         # ESLint
+```
+
+### Key Patterns
+
+- **Sheets as DB**: Google Sheets is the sole data store. Every mutation appends/updates/deletes rows and calls `revalidatePath`.
+- **SKU-based mutation lookup**: `updateInventoryItem`/`deleteInventoryItem` always fetch fresh rows first to resolve current row position by SKU — never use stale `rowIndex` from client. Same pattern for categories (by name).
+- **`force-dynamic`**: Every dashboard page exports `export const dynamic = 'force-dynamic'` to prevent static rendering at build time.
+- **Rate limit retry**: All Sheets API calls go through `withRetry(fn, maxRetries=3)` with exponential backoff (1s, 2s, 4s) on HTTP 429.
+- **Referential integrity**: `removeCategory` checks for inventory items using the category before deleting; blocks with Korean error message if found.
+- **Optimistic updates**: ADD operations use `useOptimistic`; EDIT/DELETE use `useTransition` + `isPending` spinners.
+
+### Performance Targets
+
+First Load JS < 150KB per route. All dashboard pages are `force-dynamic` Server Components.
+
+---
+
+## P7 — n8n Customer Inquiry Automation (`p7-n8n-automation/`)
+
+Requirements: `requirements/p7-requirements.md`
+
+| Concern | Choice |
+|---|---|
+| Workflow engine | n8n (self-hosted, Docker) |
+| AI classification | OpenAI API (n8n built-in node) |
+| Notifications | Slack API (n8n built-in node) |
+| Data store | Google Sheets API v4 (no database) |
+| Email | Resend API (n8n HTTP Request node) |
+| n8n hosting | Render (free Docker hosting) |
+
+### Structure
+
+```
+p7-n8n-automation/src/
+├── app/
+│   ├── layout.tsx                  ← Root layout: Geist font, ThemeProvider, Toaster
+│   ├── page.tsx                    ← Landing: 프로젝트 소개 + 워크플로우 설명
+│   ├── inquiry/
+│   │   ├── page.tsx                ← 문의 접수 폼
+│   │   ├── actions.ts              ← 문의 제출 Server Action
+│   │   └── status/
+│   │       └── [ticketId]/
+│   │           ├── page.tsx         ← 상태 조회 타임라인
+│   │           └── actions.ts       ← 상태 조회 Server Action
+│   ├── dashboard/
+│   │   ├── page.tsx                ← 문의 현황 (읽기 전용)
+│   │   └── actions.ts              ← 대시보드 데이터 Server Action
+│   └── api/
+│       └── inquiry/
+│           └── route.ts            ← n8n 웹훅 프록시 (POST)
+├── components/
+│   ├── layout/                     ← Header, Footer
+│   ├── home/                       ← Hero, WorkflowCards, TechStack
+│   ├── inquiry/                    ← InquiryForm, StatusTimeline
+│   ├── dashboard/                  ← StatsCards, InquiryTable
+│   └── ui/                         ← shadcn/ui components
+├── lib/
+│   ├── utils.ts                    ← cn() utility
+│   ├── constants.ts                ← 상태 맵, 카테고리 목록, 색상
+│   ├── n8n/
+│   │   └── webhook.ts              ← n8n 웹훅 호출 유틸 (서버 전용)
+│   └── google/
+│       ├── sheets.ts               ← Service Account 인증 클라이언트
+│       └── inquiries.ts            ← 문의 데이터 읽기 함수
+└── types/
+    └── inquiry.ts                  ← Inquiry, InquiryStatus, ActionResult 타입
+```
+
+### Environment Variables
+
+| Variable | Purpose |
+|---|---|
+| `N8N_WEBHOOK_URL` | n8n 웹훅 베이스 URL |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service Account 이메일 |
+| `GOOGLE_PRIVATE_KEY_BASE64` | Service Account 프라이빗 키 (base64) |
+| `GOOGLE_SPREADSHEET_ID` | 문의 로그 스프레드시트 ID |
+| `NEXT_PUBLIC_SITE_URL` | 사이트 기본 URL |
+
+### Commands
+
+```bash
+cd p7-n8n-automation
+pnpm dev          # start dev server
+pnpm build        # production build
+pnpm lint         # ESLint
+```
+
+### Key Patterns
+
+- **n8n URL 미노출**: 클라이언트에서 n8n URL 접근 불가. Server Action → API Route → n8n 웹훅 프록시 구조.
+- **Google Sheets as DB**: n8n에서 저장, Next.js에서 읽기. `googleapis` 패키지로 Service Account 인증.
+- **Docker 개발환경**: `docker/docker-compose.yml`로 n8n 로컬 실행 (localhost:5678).
+- **워크플로우 버전 관리**: `workflows/*.json`에 n8n export 파일 저장. credential은 미포함.
+
+---
+
 ## Vercel Deployment
 
 모노레포 내 각 프로젝트는 Vercel Dashboard에서 **Root Directory** 설정으로 독립 배포:
@@ -153,6 +323,8 @@ p2-techvision/src/
 |---|---|---|
 | p1-portfolio | `p1-portfolio` | `jurogrammer/portfolio-demos` |
 | p2-techvision | `p2-techvision` | `jurogrammer/portfolio-demos` |
+| p6-sheets-dashboard | `p6-sheets-dashboard` | `jurogrammer/portfolio-demos` |
+| p7-n8n-automation | `p7-n8n-automation` | `jurogrammer/portfolio-demos` |
 
 - root `vercel.json` 없음 — 각 프로젝트 내부 설정으로 관리
 - `git push` 시 두 프로젝트 모두 자동 빌드/배포
