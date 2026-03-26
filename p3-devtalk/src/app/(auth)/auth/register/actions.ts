@@ -37,6 +37,7 @@ export async function registerUser(
     if (createError.message.includes('already been registered') || createError.message.includes('already exists')) {
       return { success: false, error: '이미 가입된 이메일입니다.' }
     }
+    console.error('User creation failed:', createError)
     return { success: false, error: '회원가입에 실패했습니다. 다시 시도해주세요.' }
   }
 

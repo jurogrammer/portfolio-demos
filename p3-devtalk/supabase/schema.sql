@@ -1,10 +1,13 @@
 -- DevTalk P3 Schema
 -- Run this in Supabase SQL Editor
+--
+-- NOTE: All tables use the "dt_" prefix to avoid collisions with other
+-- projects (e.g. P2 TechVision) sharing the same Supabase instance.
 
 -- ============================================================
 -- PROFILES (extends auth.users)
 -- ============================================================
-CREATE TABLE IF NOT EXISTS profiles (
+CREATE TABLE IF NOT EXISTS dt_profiles (
   id UUID PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
   username TEXT UNIQUE NOT NULL,
   avatar_url TEXT,
@@ -39,11 +42,11 @@ BEGIN
   );
 
   -- Ensure uniqueness by appending random suffix if username already exists
-  IF EXISTS (SELECT 1 FROM profiles WHERE username = _username) THEN
+  IF EXISTS (SELECT 1 FROM dt_profiles WHERE username = _username) THEN
     _username := _username || '_' || substr(md5(random()::text), 1, 4);
   END IF;
 
-  INSERT INTO profiles (id, username, avatar_url)
+  INSERT INTO dt_profiles (id, username, avatar_url)
   VALUES (
     NEW.id,
     _username,
@@ -66,7 +69,7 @@ CREATE TRIGGER on_auth_user_created
 -- ============================================================
 -- TAGS
 -- ============================================================
-CREATE TABLE IF NOT EXISTS tags (
+CREATE TABLE IF NOT EXISTS dt_tags (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT UNIQUE NOT NULL,
   post_count INT DEFAULT 0,
@@ -76,9 +79,9 @@ CREATE TABLE IF NOT EXISTS tags (
 -- ============================================================
 -- POSTS
 -- ============================================================
-CREATE TABLE IF NOT EXISTS posts (
+CREATE TABLE IF NOT EXISTS dt_posts (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  author_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  author_id UUID NOT NULL REFERENCES dt_profiles(id) ON DELETE CASCADE,
   category TEXT NOT NULL CHECK (category IN ('qna', 'free', 'tech', 'career')),
   title TEXT NOT NULL,
   content TEXT NOT NULL,
@@ -100,11 +103,11 @@ CREATE TABLE IF NOT EXISTS posts (
 -- ============================================================
 -- COMMENTS (self-referencing for replies)
 -- ============================================================
-CREATE TABLE IF NOT EXISTS comments (
+CREATE TABLE IF NOT EXISTS dt_comments (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-  author_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  parent_id UUID REFERENCES comments(id) ON DELETE CASCADE,
+  post_id UUID NOT NULL REFERENCES dt_posts(id) ON DELETE CASCADE,
+  author_id UUID NOT NULL REFERENCES dt_profiles(id) ON DELETE CASCADE,
+  parent_id UUID REFERENCES dt_comments(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
   upvote_count INT DEFAULT 0,
   is_deleted BOOLEAN DEFAULT false,
@@ -114,9 +117,9 @@ CREATE TABLE IF NOT EXISTS comments (
 -- ============================================================
 -- VOTES
 -- ============================================================
-CREATE TABLE IF NOT EXISTS votes (
+CREATE TABLE IF NOT EXISTS dt_votes (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES dt_profiles(id) ON DELETE CASCADE,
   target_type TEXT NOT NULL CHECK (target_type IN ('post', 'comment')),
   target_id UUID NOT NULL,
   value INT NOT NULL CHECK (value IN (-1, 1)),
@@ -127,10 +130,10 @@ CREATE TABLE IF NOT EXISTS votes (
 -- ============================================================
 -- BOOKMARKS
 -- ============================================================
-CREATE TABLE IF NOT EXISTS bookmarks (
+CREATE TABLE IF NOT EXISTS dt_bookmarks (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES dt_profiles(id) ON DELETE CASCADE,
+  post_id UUID NOT NULL REFERENCES dt_posts(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT now(),
   UNIQUE(user_id, post_id)
 );
@@ -138,9 +141,9 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 -- ============================================================
 -- NOTIFICATIONS
 -- ============================================================
-CREATE TABLE IF NOT EXISTS notifications (
+CREATE TABLE IF NOT EXISTS dt_notifications (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES dt_profiles(id) ON DELETE CASCADE,
   type TEXT NOT NULL CHECK (type IN ('comment', 'reply', 'vote', 'mention')),
   message TEXT NOT NULL,
   link TEXT,
@@ -151,9 +154,9 @@ CREATE TABLE IF NOT EXISTS notifications (
 -- ============================================================
 -- REPORTS
 -- ============================================================
-CREATE TABLE IF NOT EXISTS reports (
+CREATE TABLE IF NOT EXISTS dt_reports (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  reporter_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  reporter_id UUID NOT NULL REFERENCES dt_profiles(id) ON DELETE CASCADE,
   target_type TEXT NOT NULL CHECK (target_type IN ('post', 'comment')),
   target_id UUID NOT NULL,
   reason TEXT NOT NULL,
@@ -165,15 +168,15 @@ CREATE TABLE IF NOT EXISTS reports (
 -- ============================================================
 -- INDEXES
 -- ============================================================
-CREATE INDEX IF NOT EXISTS posts_fts_idx ON posts USING gin(fts);
-CREATE INDEX IF NOT EXISTS posts_category_idx ON posts(category, created_at DESC);
-CREATE INDEX IF NOT EXISTS posts_author_idx ON posts(author_id, created_at DESC);
-CREATE INDEX IF NOT EXISTS comments_post_idx ON comments(post_id, created_at);
-CREATE INDEX IF NOT EXISTS comments_author_idx ON comments(author_id);
-CREATE INDEX IF NOT EXISTS notifications_user_idx ON notifications(user_id, is_read, created_at DESC);
-CREATE INDEX IF NOT EXISTS votes_target_idx ON votes(target_type, target_id);
-CREATE INDEX IF NOT EXISTS bookmarks_user_idx ON bookmarks(user_id);
-CREATE INDEX IF NOT EXISTS reports_status_idx ON reports(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS dt_posts_fts_idx ON dt_posts USING gin(fts);
+CREATE INDEX IF NOT EXISTS dt_posts_category_idx ON dt_posts(category, created_at DESC);
+CREATE INDEX IF NOT EXISTS dt_posts_author_idx ON dt_posts(author_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS dt_comments_post_idx ON dt_comments(post_id, created_at);
+CREATE INDEX IF NOT EXISTS dt_comments_author_idx ON dt_comments(author_id);
+CREATE INDEX IF NOT EXISTS dt_notifications_user_idx ON dt_notifications(user_id, is_read, created_at DESC);
+CREATE INDEX IF NOT EXISTS dt_votes_target_idx ON dt_votes(target_type, target_id);
+CREATE INDEX IF NOT EXISTS dt_bookmarks_user_idx ON dt_bookmarks(user_id);
+CREATE INDEX IF NOT EXISTS dt_reports_status_idx ON dt_reports(status, created_at DESC);
 
 -- ============================================================
 -- RPC FUNCTIONS
@@ -183,7 +186,7 @@ CREATE INDEX IF NOT EXISTS reports_status_idx ON reports(status, created_at DESC
 CREATE OR REPLACE FUNCTION increment_view_count(p_post_id UUID)
 RETURNS void AS $$
 BEGIN
-  UPDATE posts SET view_count = view_count + 1 WHERE id = p_post_id;
+  UPDATE dt_posts SET view_count = view_count + 1 WHERE id = p_post_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
@@ -196,60 +199,60 @@ CREATE OR REPLACE FUNCTION toggle_vote(
 )
 RETURNS JSON AS $$
 DECLARE
-  existing_vote votes%ROWTYPE;
+  existing_vote dt_votes%ROWTYPE;
   result JSON;
 BEGIN
   SELECT * INTO existing_vote
-  FROM votes
+  FROM dt_votes
   WHERE user_id = p_user_id AND target_type = p_target_type AND target_id = p_target_id;
 
   IF existing_vote IS NOT NULL THEN
     IF existing_vote.value = p_value THEN
       -- Remove vote
-      DELETE FROM votes WHERE id = existing_vote.id;
+      DELETE FROM dt_votes WHERE id = existing_vote.id;
       IF p_target_type = 'post' THEN
         IF p_value = 1 THEN
-          UPDATE posts SET upvote_count = upvote_count - 1 WHERE id = p_target_id;
+          UPDATE dt_posts SET upvote_count = upvote_count - 1 WHERE id = p_target_id;
         ELSE
-          UPDATE posts SET downvote_count = downvote_count - 1 WHERE id = p_target_id;
+          UPDATE dt_posts SET downvote_count = downvote_count - 1 WHERE id = p_target_id;
         END IF;
       ELSE
         IF p_value = 1 THEN
-          UPDATE comments SET upvote_count = upvote_count - 1 WHERE id = p_target_id;
+          UPDATE dt_comments SET upvote_count = upvote_count - 1 WHERE id = p_target_id;
         END IF;
       END IF;
       result := json_build_object('action', 'removed', 'value', 0);
     ELSE
       -- Change vote
-      UPDATE votes SET value = p_value WHERE id = existing_vote.id;
+      UPDATE dt_votes SET value = p_value WHERE id = existing_vote.id;
       IF p_target_type = 'post' THEN
         IF p_value = 1 THEN
-          UPDATE posts SET upvote_count = upvote_count + 1, downvote_count = downvote_count - 1 WHERE id = p_target_id;
+          UPDATE dt_posts SET upvote_count = upvote_count + 1, downvote_count = downvote_count - 1 WHERE id = p_target_id;
         ELSE
-          UPDATE posts SET upvote_count = upvote_count - 1, downvote_count = downvote_count + 1 WHERE id = p_target_id;
+          UPDATE dt_posts SET upvote_count = upvote_count - 1, downvote_count = downvote_count + 1 WHERE id = p_target_id;
         END IF;
       ELSE
         IF p_value = 1 THEN
-          UPDATE comments SET upvote_count = upvote_count + 1 WHERE id = p_target_id;
+          UPDATE dt_comments SET upvote_count = upvote_count + 1 WHERE id = p_target_id;
         ELSE
-          UPDATE comments SET upvote_count = upvote_count - 1 WHERE id = p_target_id;
+          UPDATE dt_comments SET upvote_count = upvote_count - 1 WHERE id = p_target_id;
         END IF;
       END IF;
       result := json_build_object('action', 'changed', 'value', p_value);
     END IF;
   ELSE
     -- New vote
-    INSERT INTO votes (user_id, target_type, target_id, value)
+    INSERT INTO dt_votes (user_id, target_type, target_id, value)
     VALUES (p_user_id, p_target_type, p_target_id, p_value);
     IF p_target_type = 'post' THEN
       IF p_value = 1 THEN
-        UPDATE posts SET upvote_count = upvote_count + 1 WHERE id = p_target_id;
+        UPDATE dt_posts SET upvote_count = upvote_count + 1 WHERE id = p_target_id;
       ELSE
-        UPDATE posts SET downvote_count = downvote_count + 1 WHERE id = p_target_id;
+        UPDATE dt_posts SET downvote_count = downvote_count + 1 WHERE id = p_target_id;
       END IF;
     ELSE
       IF p_value = 1 THEN
-        UPDATE comments SET upvote_count = upvote_count + 1 WHERE id = p_target_id;
+        UPDATE dt_comments SET upvote_count = upvote_count + 1 WHERE id = p_target_id;
       END IF;
     END IF;
     result := json_build_object('action', 'created', 'value', p_value);
@@ -266,7 +269,7 @@ DECLARE
   new_points INT;
   new_level INT;
 BEGIN
-  UPDATE profiles SET points = points + p_amount WHERE id = p_user_id
+  UPDATE dt_profiles SET points = points + p_amount WHERE id = p_user_id
   RETURNING points INTO new_points;
 
   new_level := CASE
@@ -277,7 +280,7 @@ BEGIN
     ELSE 1
   END;
 
-  UPDATE profiles SET level = new_level WHERE id = p_user_id AND level != new_level;
+  UPDATE dt_profiles SET level = new_level WHERE id = p_user_id AND level != new_level;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
@@ -310,7 +313,7 @@ BEGIN
     p.view_count, p.upvote_count, p.downvote_count, p.comment_count,
     p.is_pinned, p.created_at, p.updated_at,
     ts_rank(p.fts, to_tsquery('simple', p_query)) AS rank
-  FROM posts p
+  FROM dt_posts p
   WHERE p.is_deleted = false
     AND p.fts @@ to_tsquery('simple', p_query)
   ORDER BY rank DESC, p.created_at DESC
@@ -323,61 +326,61 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- ROW LEVEL SECURITY
 -- ============================================================
 
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
-ALTER TABLE bookmarks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
-ALTER TABLE tags ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_votes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_bookmarks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE dt_tags ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: public read, self update
-CREATE POLICY "profiles_select" ON profiles FOR SELECT USING (true);
-CREATE POLICY "profiles_update" ON profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "dt_profiles_select" ON dt_profiles FOR SELECT USING (true);
+CREATE POLICY "dt_profiles_update" ON dt_profiles FOR UPDATE USING (auth.uid() = id);
 
 -- Posts: public read (non-deleted), auth create, author update/delete
-CREATE POLICY "posts_select" ON posts FOR SELECT USING (is_deleted = false);
-CREATE POLICY "posts_insert" ON posts FOR INSERT WITH CHECK (auth.uid() = author_id);
-CREATE POLICY "posts_update" ON posts FOR UPDATE USING (auth.uid() = author_id);
-CREATE POLICY "posts_delete" ON posts FOR DELETE USING (auth.uid() = author_id);
+CREATE POLICY "dt_posts_select" ON dt_posts FOR SELECT USING (is_deleted = false);
+CREATE POLICY "dt_posts_insert" ON dt_posts FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "dt_posts_update" ON dt_posts FOR UPDATE USING (auth.uid() = author_id);
+CREATE POLICY "dt_posts_delete" ON dt_posts FOR DELETE USING (auth.uid() = author_id);
 
 -- Comments: public read (non-deleted), auth create, author update/delete
-CREATE POLICY "comments_select" ON comments FOR SELECT USING (is_deleted = false);
-CREATE POLICY "comments_insert" ON comments FOR INSERT WITH CHECK (auth.uid() = author_id);
-CREATE POLICY "comments_update" ON comments FOR UPDATE USING (auth.uid() = author_id);
-CREATE POLICY "comments_delete" ON comments FOR DELETE USING (auth.uid() = author_id);
+CREATE POLICY "dt_comments_select" ON dt_comments FOR SELECT USING (is_deleted = false);
+CREATE POLICY "dt_comments_insert" ON dt_comments FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "dt_comments_update" ON dt_comments FOR UPDATE USING (auth.uid() = author_id);
+CREATE POLICY "dt_comments_delete" ON dt_comments FOR DELETE USING (auth.uid() = author_id);
 
 -- Votes: self CRUD
-CREATE POLICY "votes_select" ON votes FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "votes_insert" ON votes FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "votes_delete" ON votes FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "dt_votes_select" ON dt_votes FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "dt_votes_insert" ON dt_votes FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "dt_votes_delete" ON dt_votes FOR DELETE USING (auth.uid() = user_id);
 
 -- Bookmarks: self CRUD
-CREATE POLICY "bookmarks_select" ON bookmarks FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "bookmarks_insert" ON bookmarks FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "bookmarks_delete" ON bookmarks FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "dt_bookmarks_select" ON dt_bookmarks FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "dt_bookmarks_insert" ON dt_bookmarks FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "dt_bookmarks_delete" ON dt_bookmarks FOR DELETE USING (auth.uid() = user_id);
 
 -- Notifications: self read
-CREATE POLICY "notifications_select" ON notifications FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "notifications_update" ON notifications FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "dt_notifications_select" ON dt_notifications FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "dt_notifications_update" ON dt_notifications FOR UPDATE USING (auth.uid() = user_id);
 
 -- Reports: auth create, admin read/update
-CREATE POLICY "reports_insert" ON reports FOR INSERT WITH CHECK (auth.uid() = reporter_id);
-CREATE POLICY "reports_select_admin" ON reports FOR SELECT USING (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+CREATE POLICY "dt_reports_insert" ON dt_reports FOR INSERT WITH CHECK (auth.uid() = reporter_id);
+CREATE POLICY "dt_reports_select_admin" ON dt_reports FOR SELECT USING (
+  EXISTS (SELECT 1 FROM dt_profiles WHERE id = auth.uid() AND role = 'admin')
 );
-CREATE POLICY "reports_update_admin" ON reports FOR UPDATE USING (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+CREATE POLICY "dt_reports_update_admin" ON dt_reports FOR UPDATE USING (
+  EXISTS (SELECT 1 FROM dt_profiles WHERE id = auth.uid() AND role = 'admin')
 );
 
 -- Tags: public read
-CREATE POLICY "tags_select" ON tags FOR SELECT USING (true);
+CREATE POLICY "dt_tags_select" ON dt_tags FOR SELECT USING (true);
 
 -- ============================================================
 -- REALTIME
 -- ============================================================
-ALTER PUBLICATION supabase_realtime ADD TABLE notifications;
+ALTER PUBLICATION supabase_realtime ADD TABLE dt_notifications;
 
 -- ============================================================
 -- STORAGE BUCKETS

@@ -95,7 +95,28 @@ export function Header() {
           .select('*')
           .eq('id', authUser.id)
           .single()
-        setUser(profile as Profile | null)
+        if (profile) {
+          setUser(profile as Profile)
+        } else {
+          // Profile row missing — use auth metadata as fallback so UI doesn't show logged-out
+          const meta = authUser.user_metadata ?? {}
+          setUser({
+            id: authUser.id,
+            username: meta.username ?? meta.name ?? meta.preferred_username ?? authUser.email?.split('@')[0] ?? 'user',
+            avatar_url: meta.avatar_url ?? meta.picture ?? null,
+            bio: null,
+            points: 0,
+            level: 1,
+            role: 'user',
+            is_banned: false,
+            ban_reason: null,
+            ban_until: null,
+            notify_comments: true,
+            notify_votes: true,
+            notify_email: false,
+            created_at: authUser.created_at ?? new Date().toISOString(),
+          })
+        }
       } else {
         setUser(null)
       }
@@ -111,7 +132,27 @@ export function Header() {
           .select('*')
           .eq('id', session.user.id)
           .single()
-        setUser(profile as Profile | null)
+        if (profile) {
+          setUser(profile as Profile)
+        } else {
+          const meta = session.user.user_metadata ?? {}
+          setUser({
+            id: session.user.id,
+            username: meta.username ?? meta.name ?? meta.preferred_username ?? session.user.email?.split('@')[0] ?? 'user',
+            avatar_url: meta.avatar_url ?? meta.picture ?? null,
+            bio: null,
+            points: 0,
+            level: 1,
+            role: 'user',
+            is_banned: false,
+            ban_reason: null,
+            ban_until: null,
+            notify_comments: true,
+            notify_votes: true,
+            notify_email: false,
+            created_at: session.user.created_at ?? new Date().toISOString(),
+          })
+        }
       } else {
         setUser(null)
       }

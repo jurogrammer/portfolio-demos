@@ -67,14 +67,32 @@ export async function GET(request: NextRequest) {
           .single()
 
         if (taken) {
-          username = `user_${userId.replace(/-/g, '').slice(0, 12)}`
+          const longId = userId.replace(/-/g, '').slice(0, 12)
+          username = `user_${longId}`
+          // Final uniqueness fallback: append random suffix
+          const { data: taken2 } = await admin
+            .from('dt_profiles')
+            .select('id')
+            .eq('username', username)
+            .single()
+          if (taken2) {
+            username = `user_${longId}_${Date.now().toString(36).slice(-4)}`
+          }
         }
 
-        await admin.from('dt_profiles').insert({
+        const avatarUrl: string | null =
+          meta.avatar_url ?? meta.picture ?? meta.profile_image ?? meta.profile_image_url ?? null
+
+        const { error: profileError } = await admin.from('dt_profiles').upsert({
           id: userId,
           username,
-          avatar_url: meta.avatar_url ?? null,
-        })
+          avatar_url: avatarUrl,
+        }, { onConflict: 'id' })
+
+        if (profileError) {
+          console.error('OAuth profile upsert failed:', profileError)
+          // Don't block login — user is authenticated, profile can be created later
+        }
       }
 
       return response
