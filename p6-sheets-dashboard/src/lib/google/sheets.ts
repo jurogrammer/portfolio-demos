@@ -28,12 +28,12 @@ let sheetsClient: ReturnType<typeof sheets> | null = null
 export function getSheets() {
   if (sheetsClient) return sheetsClient
 
-  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
+  const email = process.env.GOOGLE_CLIENT_EMAIL
   const keyBase64 = process.env.GOOGLE_PRIVATE_KEY_BASE64
 
   if (!email || !keyBase64) {
     throw new Error(
-      'Google Sheets 환경변수가 설정되지 않았습니다. GOOGLE_SERVICE_ACCOUNT_EMAIL과 GOOGLE_PRIVATE_KEY_BASE64를 확인하세요.'
+      'Google Sheets 환경변수가 설정되지 않았습니다. GOOGLE_CLIENT_EMAIL과 GOOGLE_PRIVATE_KEY_BASE64를 확인하세요.'
     )
   }
 
