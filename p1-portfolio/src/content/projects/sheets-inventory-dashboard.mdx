@@ -1,0 +1,55 @@
+---
+title: "Google Sheets 재고관리 대시보드"
+description: "Google Spreadsheet를 유일한 데이터 저장소로 사용하는 소규모 재고관리 대시보드. DB 없이 Google Sheets API v4로 CRUD를 수행하는 실용적 솔루션."
+tech: ["Next.js 16", "TypeScript", "Google Sheets API", "Tailwind CSS", "shadcn/ui", "Vercel"]
+liveUrl: "https://p6-sheets-dashboard.vercel.app"
+thumbnail: "https://placehold.co/800x450/0f172a/4ade80?text=Sheets+Dashboard"
+category: "SaaS"
+duration: "2.5일"
+date: "2026-03-26"
+featured: true
+---
+
+## 프로젝트 개요
+
+한국 소규모 사업체가 이미 사용 중인 Google Spreadsheet 위에 전용 관리 UI를 얹는 재고관리 대시보드입니다. 별도 데이터베이스 없이 Google Sheets API v4만으로 CRUD를 수행하며, Service Account 인증으로 서버 측에서 안전하게 시트 데이터에 접근합니다.
+
+## 주요 기능
+
+### 대시보드 개요
+- **통계 카드** — 전체 품목 수, 재고부족 경고, 총 재고 가치(₩), 카테고리 수
+- **최근 변경** — 최근 수정된 재고 5개 항목 테이블
+
+### 재고관리
+- **검색/필터** — SKU·상품명 검색, 카테고리 필터, 재고부족 토글
+- **정렬/페이지네이션** — 컬럼 헤더 클릭 정렬, 20행 단위 페이지
+- **CRUD** — Dialog 기반 항목 추가/수정/삭제, SKU 자동 생성
+- **낙관적 업데이트** — 추가 시 즉시 UI 반영, 수정/삭제 시 로딩 스피너
+
+### 카테고리 관리
+- 카테고리별 재고부족 기준 수량 설정
+- 참조 무결성 — 재고가 있는 카테고리 삭제 차단
+
+### 설정
+- 연결된 스프레드시트 정보 표시
+- Google Sheets 외부 링크, 수동 새로고침
+
+## 기술적 특징
+
+| 항목 | 구현 |
+|------|------|
+| 데이터 저장소 | Google Sheets API v4 (DB 없음) |
+| 인증 | Service Account + base64 인코딩 프라이빗 키 |
+| 뮤테이션 | Server Actions + SKU 기반 행 조회 후 업데이트 |
+| 캐시 전략 | `force-dynamic` + 스코프별 `revalidatePath` |
+| API 안정성 | 429 에러 시 지수 백오프 재시도 (최대 3회) |
+| 상태 관리 | React 19 `useOptimistic` (추가) + `useTransition` (수정/삭제) |
+| 알림 | Sonner 토스트 (성공/실패) |
+| 반응형 | 360px~1920px, 모바일 Sheet 사이드바 |
+| 다크 모드 | OS 연동 + 수동 토글 (class 전략) |
+
+## 핵심 도전 과제
+
+**Google Sheets를 DB로 사용할 때의 행 인덱스 불안정성 해결**: 행 삭제 시 후속 행 인덱스가 시프트되는 문제를 SKU 기반 조회-후-변경 패턴으로 해결. 모든 업데이트/삭제 시 먼저 전체 행을 읽어 SKU로 현재 위치를 찾은 뒤 해당 행을 조작합니다.
+
+**API 속도 제한 대응**: Google Sheets 무료 한도(분당 60회)에 대비하여 지수 백오프 재시도 래퍼를 구현하고, 뮤테이션별 스코프 재검증으로 불필요한 API 호출을 최소화했습니다.
