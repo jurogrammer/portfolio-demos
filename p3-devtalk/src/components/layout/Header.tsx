@@ -108,26 +108,27 @@ export function Header() {
       }
     }
 
-    const fetchAndSetProfile = async (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }) => {
-      try {
-        const { data: profile } = await supabase
-          .from('dt_profiles')
-          .select('*')
-          .eq('id', authUser.id)
-          .single()
-        if (!isMounted) return
-        setUser(profile ? (profile as Profile) : profileFromUser(authUser))
-      } catch {
-        if (isMounted) setUser(profileFromUser(authUser))
-      }
-    }
-
-    // Single source of truth: onAuthStateChange fires INITIAL_SESSION on subscribe
-    // (after any needed token refresh), then SIGNED_IN / SIGNED_OUT / TOKEN_REFRESHED.
-    // No parallel getSession() call — avoids competing for the GoTrue lock.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // IMPORTANT: onAuthStateChange callbacks run inside the GoTrue browser lock.
+    // Any async supabase.from() call inside the callback tries to re-acquire the
+    // same lock → deadlock. Keep the callback SYNCHRONOUS; schedule the DB fetch
+    // with setTimeout(0) so it runs after the lock scope exits.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        await fetchAndSetProfile(session.user)
+        // Immediately render the header from auth metadata (no DB call needed)
+        setUser(profileFromUser(session.user))
+        // Enrich with the full dt_profiles row once the GoTrue lock is released
+        const userId = session.user.id
+        setTimeout(() => {
+          if (!isMounted) return
+          supabase
+            .from('dt_profiles')
+            .select('*')
+            .eq('id', userId)
+            .single()
+            .then(({ data: profile }) => {
+              if (isMounted && profile) setUser(profile as Profile)
+            })
+        }, 0)
       } else {
         setUser(null)
         setLoading(false)
