@@ -8,19 +8,19 @@ const slides = [
   {
     id: 1,
     title: { ko: '혁신적인 기술로\n비즈니스를 변화시킵니다', en: 'We Transform Business\nwith Innovative Technology' },
-    subtitle: { ko: 'TechVision Solutions는 최신 기술로 고객사의 디지털 혁신을 이끕니다', en: 'TechVision Solutions leads digital innovation with cutting-edge technology' },
+    subtitle: { ko: '※ 포트폴리오 데모 사이트입니다 · Next.js 16 · Supabase · 어드민 CMS · 다국어(i18n)', en: '※ This is a portfolio demo site · Next.js 16 · Supabase · Admin CMS · i18n' },
     gradient: 'from-blue-600 to-indigo-700',
   },
   {
     id: 2,
     title: { ko: '검증된 전문가 팀과\n함께 성장하세요', en: 'Grow with Our\nProven Expert Team' },
-    subtitle: { ko: '8년간의 경험, 150개 이상의 성공 프로젝트로 신뢰를 쌓아왔습니다', en: '8 years of experience, 150+ successful projects build our trust' },
+    subtitle: { ko: '실제 회사가 아닌 개발 포트폴리오입니다. 어드민 CMS와 다국어 지원을 직접 체험해보세요.', en: 'This is a developer portfolio, not a real company. Try the admin CMS and multilingual support.' },
     gradient: 'from-purple-600 to-pink-600',
   },
   {
     id: 3,
     title: { ko: '디지털 전환의 파트너\nTechVision Solutions', en: 'Your Digital Transformation Partner\nTechVision Solutions' },
-    subtitle: { ko: '웹, 모바일, 클라우드 — 모든 디지털 솔루션을 한곳에서', en: 'Web, Mobile, Cloud — All digital solutions in one place' },
+    subtitle: { ko: '이런 기업 홈페이지가 필요하신가요? 아래 CTA를 통해 개발 문의를 남겨보세요.', en: 'Need a corporate site like this? Leave a development inquiry via the CTA below.' },
     gradient: 'from-teal-500 to-cyan-600',
   },
 ]
