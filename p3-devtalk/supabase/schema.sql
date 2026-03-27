@@ -25,8 +25,11 @@ CREATE TABLE IF NOT EXISTS dt_profiles (
 );
 
 -- Auto-create profile on signup
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = public
+AS $$
 DECLARE
   _username TEXT;
 BEGIN
@@ -59,7 +62,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
@@ -335,9 +338,11 @@ ALTER TABLE dt_notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE dt_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE dt_tags ENABLE ROW LEVEL SECURITY;
 
--- Profiles: public read, self update
+-- Profiles: public read, self update, trigger/service insert
 CREATE POLICY "dt_profiles_select" ON dt_profiles FOR SELECT USING (true);
 CREATE POLICY "dt_profiles_update" ON dt_profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "dt_profiles_trigger_insert" ON dt_profiles FOR INSERT TO postgres, service_role WITH CHECK (true);
+CREATE POLICY "dt_profiles_insert" ON dt_profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Posts: public read (non-deleted), auth create, author update/delete
 CREATE POLICY "dt_posts_select" ON dt_posts FOR SELECT USING (is_deleted = false);
