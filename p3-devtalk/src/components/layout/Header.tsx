@@ -108,42 +108,44 @@ export function Header() {
       }
     }
 
-    const fetchAndSetProfile = async (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }) => {
-      if (!isMounted) return
+    const fetchAndSetProfile = async (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }, source: string) => {
+      console.log('[DevTalk Auth] fetchAndSetProfile called from', source, 'isMounted:', isMounted, 'userId:', authUser.id)
+      if (!isMounted) { console.log('[DevTalk Auth] fetchAndSetProfile: isMounted=false, returning'); return }
       try {
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from('dt_profiles')
           .select('*')
           .eq('id', authUser.id)
           .single()
-        if (!isMounted) return
+        console.log('[DevTalk Auth] dt_profiles result:', { hasProfile: !!profile, profileError: profileError?.message, isMounted })
+        if (!isMounted) { console.log('[DevTalk Auth] after await: isMounted=false, returning'); return }
         setUser(profile ? (profile as Profile) : profileFromUser(authUser))
-      } catch {
+        console.log('[DevTalk Auth] setUser called')
+      } catch (e) {
+        console.log('[DevTalk Auth] fetchAndSetProfile caught error:', e)
         if (isMounted) setUser(profileFromUser(authUser))
       }
     }
 
     // ① Primary: read session directly from cookie storage (no lock contention, no event timing).
-    //    getSession() bypasses the GoTrue lock and directly deserialises the cookie-stored JWT.
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
-      console.log('[DevTalk Auth] getSession result:', { hasSession: !!session, userId: session?.user?.id, error: error?.message })
+      console.log('[DevTalk Auth] getSession result:', { hasSession: !!session, userId: session?.user?.id, error: error?.message, isMounted })
       if (!isMounted) return
       if (session?.user) {
-        await fetchAndSetProfile(session.user)
+        await fetchAndSetProfile(session.user, 'getSession')
       } else {
         setUser(null)
         setLoading(false)
       }
     })
 
-    // ② Reactive: listen for subsequent sign-in / sign-out / token refresh events.
-    //    Skip INITIAL_SESSION — already handled synchronously above via getSession().
+    // ② Reactive: subsequent sign-in / sign-out / token refresh events.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('[DevTalk Auth] onAuthStateChange:', event, { hasSession: !!session, userId: session?.user?.id })
+      console.log('[DevTalk Auth] onAuthStateChange:', event, { hasUser: !!session?.user, userId: session?.user?.id, isMounted })
       if (event === 'INITIAL_SESSION') return
-      if (!isMounted) return
+      if (!isMounted) { console.log('[DevTalk Auth] onAuthStateChange: isMounted=false, skipping'); return }
       if (session?.user) {
-        await fetchAndSetProfile(session.user)
+        await fetchAndSetProfile(session.user, event)
       } else {
         setUser(null)
       }
