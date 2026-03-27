@@ -15,7 +15,7 @@ export default function Hero() {
             <span className="text-primary">풀스택 엔지니어 · Spring · React</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl">
-            5년+ 풀스택 경력. 대형 IT 플랫폼에서 500만+ 사용자 서버 구축, 처리량 90% 향상, React/Next.js 어드민 개발.
+            5년+ 풀스택 경력. 대형 IT 플랫폼에서 500만+ 사용자 서비스 개발 경험, 배치 처리 1시간→5분 단축, React/Next.js 어드민 개발.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link href="/projects" className={buttonVariants({ size: 'lg' })}>프로젝트 보기</Link>
