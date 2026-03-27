@@ -36,7 +36,7 @@ export function ActivityTabs({ profileId, profileUsername, isOwner }: ActivityTa
       if (tab === 'posts') {
         const { data } = await supabase
           .from('dt_posts')
-          .select('*, author:profiles(*)')
+          .select('*, author:dt_profiles(*)')
           .eq('author_id', profileId)
           .eq('is_deleted', false)
           .order('created_at', { ascending: false })
@@ -45,7 +45,7 @@ export function ActivityTabs({ profileId, profileUsername, isOwner }: ActivityTa
       } else if (tab === 'comments') {
         const { data } = await supabase
           .from('dt_comments')
-          .select('*, author:profiles(*)')
+          .select('*, author:dt_profiles(*)')
           .eq('author_id', profileId)
           .eq('is_deleted', false)
           .order('created_at', { ascending: false })
@@ -54,7 +54,7 @@ export function ActivityTabs({ profileId, profileUsername, isOwner }: ActivityTa
       } else if (tab === 'bookmarks' && isOwner) {
         const { data } = await supabase
           .from('dt_bookmarks')
-          .select('*, post:posts(*, author:profiles(*))')
+          .select('*, post:dt_posts(*, author:dt_profiles(*))')
           .eq('user_id', profileId)
           .order('created_at', { ascending: false })
           .limit(20)

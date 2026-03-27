@@ -40,7 +40,7 @@ async function getPosts(
 
   let query = supabase
     .from('dt_posts')
-    .select('*, author:profiles(*)', { count: 'exact' })
+    .select('*, author:dt_profiles(*)', { count: 'exact' })
     .eq('category', category)
     .eq('is_deleted', false)
 

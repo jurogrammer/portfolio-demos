@@ -31,7 +31,7 @@ export default async function PostDetailPage({
   // Fetch post with author
   const { data: post, error } = await supabase
     .from('dt_posts')
-    .select('*, author:profiles(*)')
+    .select('*, author:dt_profiles(*)')
     .eq('id', id)
     .eq('is_deleted', false)
     .single()

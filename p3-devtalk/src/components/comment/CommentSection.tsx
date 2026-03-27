@@ -20,7 +20,7 @@ export function CommentSection({ postId, postAuthorId, initialCommentCount = 0 }
     const supabase = createClient()
     const { data, error } = await supabase
       .from('dt_comments')
-      .select('*, author:profiles(*)')
+      .select('*, author:dt_profiles(*)')
       .eq('post_id', postId)
       .order('created_at', { ascending: true })
 
