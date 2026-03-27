@@ -12,7 +12,7 @@ export const SOCIAL_LINKS = {
 };
 export const HIGHLIGHTS = [
   { label: '개발 경력', value: '5년+' },
-  { label: '서비스 사용자', value: '500만+' },
+  { label: '서비스 개발 경험', value: '500만+' },
   { label: '배치 처리 단축', value: '1h→5m' },
   { label: '콜드 스타트 단축', value: '2s→600ms' },
 ];
