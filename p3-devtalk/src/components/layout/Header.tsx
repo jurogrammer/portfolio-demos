@@ -182,7 +182,7 @@ export function Header() {
               <DropdownMenu>
                 <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="rounded-full" />}>
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.avatar_url ?? undefined} alt={user.username} />
+                      <AvatarImage src={user.avatar_url?.replace(/^http:\/\//, 'https://') ?? undefined} alt={user.username} />
                       <AvatarFallback>{user.username[0]?.toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </DropdownMenuTrigger>
