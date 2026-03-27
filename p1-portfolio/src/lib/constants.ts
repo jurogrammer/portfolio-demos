@@ -37,6 +37,6 @@ export const TECH_STACK = {
   infra: [
     { name: 'AWS (Lambda, SQS, RDS)', years: 5, desc: '서버리스 아키텍처, 인프라 운영' },
     { name: 'Kubernetes / Docker', years: 5, desc: '컨테이너화, 오케스트레이션' },
-    { name: 'AI 도구 (Cursor, Claude Code, n8n)', years: 2, desc: 'AI 워크플로우, 자동 코드 리뷰 파이프라인' },
+    { name: 'AI 도구 (Cursor, Claude Code, n8n)', years: 1, desc: 'AI 워크플로우, 자동 코드 리뷰 파이프라인' },
   ],
 };
