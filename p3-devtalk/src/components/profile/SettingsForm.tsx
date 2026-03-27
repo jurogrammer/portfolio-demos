@@ -12,7 +12,19 @@ import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { toast } from 'sonner'
+import { deleteAccount } from '@/app/(protected)/settings/actions'
 import type { Profile } from '@/types/database'
 
 interface SettingsFormProps {
@@ -31,6 +43,7 @@ export function SettingsForm({ profile }: SettingsFormProps) {
   const [notifyEmail, setNotifyEmail] = useState(profile.notify_email)
   const [isUploading, setIsUploading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -107,6 +120,20 @@ export function SettingsForm({ profile }: SettingsFormProps) {
       toast.error('저장에 실패했습니다.')
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true)
+    try {
+      const result = await deleteAccount()
+      if (result?.error) {
+        toast.error(result.error)
+      }
+    } catch {
+      toast.error('계정 삭제에 실패했습니다.')
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -211,6 +238,46 @@ export function SettingsForm({ profile }: SettingsFormProps) {
           {isSaving ? '저장 중...' : '저장하기'}
         </Button>
       </div>
+
+      {/* Danger zone */}
+      <Card className="border-destructive">
+        <CardHeader>
+          <CardTitle className="text-base text-destructive">위험 구역</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium">회원 탈퇴</p>
+              <p className="text-xs text-muted-foreground">계정을 삭제하면 모든 데이터가 영구적으로 삭제됩니다.</p>
+            </div>
+            <AlertDialog>
+              <AlertDialogTrigger
+                disabled={isDeleting}
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 h-8 px-3 disabled:pointer-events-none disabled:opacity-50"
+              >
+                {isDeleting ? '탈퇴 중...' : '회원 탈퇴'}
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>정말 탈퇴하시겠습니까?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    모든 데이터가 삭제됩니다. 작성한 글, 댓글, 북마크 등 모든 정보가 영구적으로 삭제되며 복구할 수 없습니다.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>취소</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteAccount}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    탈퇴하기
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
