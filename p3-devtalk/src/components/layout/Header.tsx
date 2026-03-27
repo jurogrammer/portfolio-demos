@@ -108,48 +108,30 @@ export function Header() {
       }
     }
 
-    const fetchAndSetProfile = async (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }, source: string) => {
-      console.log('[DevTalk Auth] fetchAndSetProfile called from', source, 'isMounted:', isMounted, 'userId:', authUser.id)
-      if (!isMounted) { console.log('[DevTalk Auth] fetchAndSetProfile: isMounted=false, returning'); return }
+    const fetchAndSetProfile = async (authUser: { id: string; email?: string | null; created_at?: string; user_metadata?: Record<string, unknown> }) => {
       try {
-        const { data: profile, error: profileError } = await supabase
+        const { data: profile } = await supabase
           .from('dt_profiles')
           .select('*')
           .eq('id', authUser.id)
           .single()
-        console.log('[DevTalk Auth] dt_profiles result:', { hasProfile: !!profile, profileError: profileError?.message, isMounted })
-        if (!isMounted) { console.log('[DevTalk Auth] after await: isMounted=false, returning'); return }
+        if (!isMounted) return
         setUser(profile ? (profile as Profile) : profileFromUser(authUser))
-        console.log('[DevTalk Auth] setUser called')
-      } catch (e) {
-        console.log('[DevTalk Auth] fetchAndSetProfile caught error:', e)
+      } catch {
         if (isMounted) setUser(profileFromUser(authUser))
       }
     }
 
-    // ① Primary: read session directly from cookie storage (no lock contention, no event timing).
-    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
-      console.log('[DevTalk Auth] getSession result:', { hasSession: !!session, userId: session?.user?.id, error: error?.message, isMounted })
-      if (!isMounted) return
+    // Single source of truth: onAuthStateChange fires INITIAL_SESSION on subscribe
+    // (after any needed token refresh), then SIGNED_IN / SIGNED_OUT / TOKEN_REFRESHED.
+    // No parallel getSession() call — avoids competing for the GoTrue lock.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
-        await fetchAndSetProfile(session.user, 'getSession')
+        await fetchAndSetProfile(session.user)
       } else {
         setUser(null)
         setLoading(false)
       }
-    })
-
-    // ② Reactive: subsequent sign-in / sign-out / token refresh events.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('[DevTalk Auth] onAuthStateChange:', event, { hasUser: !!session?.user, userId: session?.user?.id, isMounted })
-      if (event === 'INITIAL_SESSION') return
-      if (!isMounted) { console.log('[DevTalk Auth] onAuthStateChange: isMounted=false, skipping'); return }
-      if (session?.user) {
-        await fetchAndSetProfile(session.user, event)
-      } else {
-        setUser(null)
-      }
-      setLoading(false)
     })
 
     return () => {
