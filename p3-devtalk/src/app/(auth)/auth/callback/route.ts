@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
         const sanitized = rawName
           .replace(/\s+/g, '_')
           .replace(/[^a-zA-Z0-9_가-힣]/g, '')
-          .slice(0, 16)
+          .slice(0, 12)
 
         // Generate unique username
         const base = sanitized || 'user'

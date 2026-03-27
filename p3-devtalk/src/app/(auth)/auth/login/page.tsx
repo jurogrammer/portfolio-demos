@@ -22,9 +22,13 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') ?? '/'
 
+  const errorParam = searchParams.get('error')
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [error, setError] = useState(
+    errorParam === 'oauth' ? '카카오 로그인에 실패했습니다. 다시 시도해주세요.' : ''
+  )
   const [loading, setLoading] = useState(false)
 
   const handleEmailLogin = async (e: FormEvent) => {

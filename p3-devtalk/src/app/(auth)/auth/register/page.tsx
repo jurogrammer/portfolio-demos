@@ -89,7 +89,7 @@ export default function RegisterPage() {
         <CardTitle>회원가입</CardTitle>
         <CardDescription>DevTalk 커뮤니티에 참여하세요</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         {error && (
           <p className="text-sm text-destructive bg-destructive/10 px-3 py-2 rounded-md mb-4">{error}</p>
         )}
