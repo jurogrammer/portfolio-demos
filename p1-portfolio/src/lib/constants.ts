@@ -19,7 +19,7 @@ export const HIGHLIGHTS = [
 export const CAREER_TIMELINE = [
   { year: '2020', title: '개발자 커리어 시작', description: 'CS 기초(OS, 네트워크, 알고리즘) 독학 및 부트캠프 수료 후 첫 개발직 합류. Spring MVC / Java 백엔드 프로젝트 구축' },
   { year: '2020–2021', title: 'Dealicious (신상마켓) — 풀스택 엔지니어', description: 'AWS Lambda + SQS 서버리스 PDF 생성 파이프라인 설계, 처리 시간 1시간 → 5~10분 단축. 결제 API 및 어드민 UI 개발' },
-  { year: '2021–2022', title: '핀테크 기업 — 풀스택 엔지니어', description: '뱅킹 환경에서 API 백엔드 및 어드민 대시보드 지원' },
+  { year: '2021–2022', title: '카카오뱅크 — 풀스택 엔지니어', description: '뱅킹 환경에서 API 백엔드 및 어드민 대시보드 지원' },
   { year: '2022–현재', title: '대형 IT 플랫폼 기업 — 풀스택 엔지니어', description: '500만+ 모바일 사용자 BFF 서버 구축, Spring MVC → WebFlux 마이그레이션 후 Performance Profiler로 WebFlux 초기 설정을 튜닝, 마이그레이션 베이스라인 대비 TPS ~90% 향상, 시간당 500만+ 메시지 알림 시스템 설계. React/Next.js 어드민 개발 생산성 66% 향상' },
 ];
 export const TECH_STACK = {
