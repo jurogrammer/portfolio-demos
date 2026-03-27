@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "name": "대한민국 청와대 (Republic of Korea Blue House)",
+    "source_url": "https://www.president.go.kr/",
+    "captured_date": "2026-03-27",
+    "tags": ["government", "official", "korea", "presidential", "dark-theme", "editorial"]
+  },
+  "layout": {
+    "pattern": "hero-first",
+    "sections": [
+      { "name": "notice-banner", "height_ratio": "auto", "content_alignment": "center" },
+      { "name": "hero-carousel", "height_ratio": "775px", "content_alignment": "left" },
+      { "name": "schedule", "height_ratio": "auto", "content_alignment": "left" },
+      { "name": "briefing", "height_ratio": "auto", "content_alignment": "left" },
+      { "name": "moments-gallery", "height_ratio": "auto", "content_alignment": "left" },
+      { "name": "footer", "height_ratio": "121px", "content_alignment": "center" }
+    ],
+    "max_width": "1200px",
+    "whitespace_density": "compact",
+    "section_flow": "vertical-stack",
+    "sticky_elements": ["navbar"],
+    "breakpoint_strategy": "desktop-first"
+  },
+  "color": {
+    "primary": "#00194A",
+    "secondary": "#00205C",
+    "accent": "#0080FB",
+    "background": {
+      "main": "#00194A",
+      "alt": "#F5F6FB"
+    },
+    "text": {
+      "heading": "#FFFFFF",
+      "body": "#FFFFFF",
+      "muted": "#9098AA"
+    },
+    "gradients": [],
+    "mood": "authoritative-dark"
+  },
+  "typography": {
+    "heading_font": {
+      "family": "Pretendard",
+      "source": "self-hosted",
+      "url": null
+    },
+    "body_font": {
+      "family": "Pretendard",
+      "source": "self-hosted"
+    },
+    "accent_font": {
+      "family": "Nanum Myeongjo",
+      "source": "self-hosted",
+      "url": null
+    },
+    "scale": {
+      "h1": "20px",
+      "h2": "68px / 700",
+      "h3": "24px / 800",
+      "body": "18px / 1.33",
+      "nav": "22px / 400",
+      "caption": "16px / 500",
+      "small": "12-14px / 400"
+    },
+    "weight_usage": {
+      "extrabold": "800",
+      "bold": "700",
+      "semibold": "600",
+      "medium": "500",
+      "regular": "400"
+    },
+    "special": "serif-accent-for-section-titles"
+  },
+  "interaction": {
+    "scroll_effects": [
+      { "type": "class-based-animate", "trigger": "viewport-enter", "duration": "unknown" }
+    ],
+    "hover_patterns": {
+      "buttons": "transition 0.2s",
+      "cards": "transition 0.2s",
+      "nav_links": "transition 0.2s"
+    },
+    "page_transitions": "none",
+    "loading_style": "swiper-preloader-spin",
+    "micro_interactions": [
+      "header-scroll-hide (top 0.3s)",
+      "pagination-dot-transition (0.3s)",
+      "font-size-toggle"
+    ],
+    "animation_library": "swiper + jquery + css-transitions",
+    "carousel_library": "swiper.js"
+  },
+  "brand_voice": {
+    "tone": "authoritative",
+    "perspective": "we",
+    "headline_pattern": {
+      "structure": "bold-statement",
+      "length": "medium-to-long",
+      "examples": [
+        "대한민국 하늘을 넘어 세계의 하늘까지",
+        "위기에 강한, 국민이 믿는 자본시장",
+        "우리는 위기를 기회로 만들 충분한 역량이 있습니다",
+        "사고 수습에 총력을 다하겠습니다"
+      ]
+    },
+    "cta_style": {
+      "primary": "자세히보기",
+      "secondary": "더보기",
+      "tone": "neutral-inviting",
+      "visual": "text-link"
+    },
+    "copy_density": "copy-heavy",
+    "social_proof_style": "none",
+    "unique_vocabulary": ["국민", "대통령", "위기", "기회", "안보", "자주국방", "함께", "국민주권"]
+  }
+}
