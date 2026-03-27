@@ -125,7 +125,8 @@ export function Header() {
 
     // ① Primary: read session directly from cookie storage (no lock contention, no event timing).
     //    getSession() bypasses the GoTrue lock and directly deserialises the cookie-stored JWT.
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
+      console.log('[DevTalk Auth] getSession result:', { hasSession: !!session, userId: session?.user?.id, error: error?.message })
       if (!isMounted) return
       if (session?.user) {
         await fetchAndSetProfile(session.user)
@@ -138,6 +139,7 @@ export function Header() {
     // ② Reactive: listen for subsequent sign-in / sign-out / token refresh events.
     //    Skip INITIAL_SESSION — already handled synchronously above via getSession().
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('[DevTalk Auth] onAuthStateChange:', event, { hasSession: !!session, userId: session?.user?.id })
       if (event === 'INITIAL_SESSION') return
       if (!isMounted) return
       if (session?.user) {
