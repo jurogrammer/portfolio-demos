@@ -1,11 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import readingTime from 'reading-time';
-import type { Project, ProjectMeta, BlogPost, BlogMeta } from '@/types/content';
+import type { Project, ProjectMeta } from '@/types/content';
 
 const projectsDir = path.join(process.cwd(), 'src/content/projects');
-const blogDir = path.join(process.cwd(), 'src/content/blog');
 
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
@@ -37,33 +35,6 @@ export function getProjectSlugs(): string[] {
 
 export function getAdjacentProjects(slug: string): { prev: ProjectMeta | null; next: ProjectMeta | null } {
   const all = getProjects();
-  const idx = all.findIndex(p => p.slug === slug);
-  return { prev: idx > 0 ? all[idx - 1] : null, next: idx < all.length - 1 ? all[idx + 1] : null };
-}
-
-export function getBlogPosts(): BlogMeta[] {
-  if (!fs.existsSync(blogDir)) return [];
-  return fs.readdirSync(blogDir).filter(f => f.endsWith('.mdx')).map(file => {
-    const slug = file.replace(/\.mdx$/, '');
-    const raw = fs.readFileSync(path.join(blogDir, file), 'utf-8');
-    const { data, content } = matter(raw);
-    return { slug, ...data, readingTime: readingTime(content).text } as BlogMeta;
-  }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-}
-
-export function getBlogPostBySlug(slug: string): BlogPost {
-  const raw = fs.readFileSync(path.join(blogDir, `${slug}.mdx`), 'utf-8');
-  const { data, content } = matter(raw);
-  return { slug, ...data, readingTime: readingTime(content).text, content } as BlogPost;
-}
-
-export function getBlogSlugs(): string[] {
-  if (!fs.existsSync(blogDir)) return [];
-  return fs.readdirSync(blogDir).filter(f => f.endsWith('.mdx')).map(f => f.replace(/\.mdx$/, ''));
-}
-
-export function getAdjacentBlogPosts(slug: string): { prev: BlogMeta | null; next: BlogMeta | null } {
-  const all = getBlogPosts();
   const idx = all.findIndex(p => p.slug === slug);
   return { prev: idx > 0 ? all[idx - 1] : null, next: idx < all.length - 1 ? all[idx + 1] : null };
 }

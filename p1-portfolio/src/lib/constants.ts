@@ -4,13 +4,11 @@ export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Projects', href: '/projects' },
-  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ];
 export const SOCIAL_LINKS = {
   github: 'https://github.com/jurogrammer',
   linkedin: 'https://www.linkedin.com/in/injae-ju-942a451a4/',
-  blog: 'https://jurogrammer.github.io/blog/',
 };
 export const HIGHLIGHTS = [
   { label: '개발 경력', value: '5년+' },

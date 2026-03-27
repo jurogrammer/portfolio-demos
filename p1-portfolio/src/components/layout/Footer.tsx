@@ -15,10 +15,6 @@ export default function Footer() {
             <ExternalLink className="h-5 w-5" />
             <span className="sr-only">LinkedIn</span>
           </a>
-          <a href={SOCIAL_LINKS.blog} target="_blank" rel="noopener noreferrer" aria-label="Blog" className="text-muted-foreground hover:text-primary transition-colors">
-            <ExternalLink className="h-5 w-5" />
-            <span className="sr-only">Blog</span>
-          </a>
         </div>
       </div>
     </footer>
