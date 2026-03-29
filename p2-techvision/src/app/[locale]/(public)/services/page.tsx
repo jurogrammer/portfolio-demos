@@ -1,15 +1,10 @@
 import Link from 'next/link'
-import { Code2, Smartphone, BarChart3, Cloud, CheckCircle2 } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Code2, Smartphone, BarChart3, Cloud } from 'lucide-react'
 
 const services = [
   {
     id: 'web',
     icon: Code2,
-    color: 'text-blue-600',
-    bg: 'bg-blue-50',
-    border: 'border-blue-600',
     title: { ko: '웹 개발', en: 'Web Development' },
     description: {
       ko: 'React, Next.js 기반의 고성능 웹 애플리케이션을 개발합니다. SPA부터 SSR/SSG까지, 비즈니스 요구에 맞는 최적의 아키텍처를 제안합니다.',
@@ -24,9 +19,6 @@ const services = [
   {
     id: 'mobile',
     icon: Smartphone,
-    color: 'text-green-600',
-    bg: 'bg-green-50',
-    border: 'border-green-600',
     title: { ko: '모바일 앱 개발', en: 'Mobile App Development' },
     description: {
       ko: 'React Native를 활용한 iOS/Android 크로스플랫폼 모바일 앱을 개발합니다. 하나의 코드베이스로 두 플랫폼을 동시에 지원합니다.',
@@ -41,9 +33,6 @@ const services = [
   {
     id: 'consulting',
     icon: BarChart3,
-    color: 'text-purple-600',
-    bg: 'bg-purple-50',
-    border: 'border-purple-600',
     title: { ko: '디지털 컨설팅', en: 'Digital Consulting' },
     description: {
       ko: 'IT 전략 수립부터 디지털 전환 로드맵 제시까지, 기업의 디지털 혁신을 전방위적으로 지원합니다. 데이터 기반의 인사이트로 의사결정을 돕습니다.',
@@ -58,9 +47,6 @@ const services = [
   {
     id: 'cloud',
     icon: Cloud,
-    color: 'text-orange-600',
-    bg: 'bg-orange-50',
-    border: 'border-orange-600',
     title: { ko: '클라우드 솔루션', en: 'Cloud Solutions' },
     description: {
       ko: 'AWS, GCP 기반의 클라우드 인프라를 설계하고 구축합니다. 마이크로서비스 아키텍처, 컨테이너화, CI/CD 파이프라인을 통해 확장 가능한 시스템을 만듭니다.',
@@ -90,10 +76,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   return (
     <div>
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-indigo-600 to-blue-700 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{isEn ? 'Our Services' : '서비스'}</h1>
-          <p className="text-white/90 text-lg max-w-xl mx-auto">
+      <section className="py-24 bg-[#00194a] text-white">
+        <div className="px-8 lg:px-16">
+          <h1 className="font-serif text-[48px] lg:text-[68px] font-medium mb-4">{isEn ? 'Our Services' : '서비스'}</h1>
+          <p className="text-white/70 text-[18px] max-w-xl">
             {isEn
               ? 'End-to-end IT solutions tailored for your business'
               : '비즈니스에 최적화된 종합 IT 솔루션을 제공합니다'}
@@ -102,72 +88,70 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       </section>
 
       {/* Service Sections */}
-      <div className="divide-y">
-        {services.map((svc, idx) => (
-          <section key={svc.id} className={`py-20 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-            <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                {/* Left: description + tech */}
-                <div className={idx % 2 === 0 ? '' : 'lg:order-2'}>
-                  <div className={`w-14 h-14 rounded-2xl ${svc.bg} flex items-center justify-center mb-6`}>
-                    <svc.icon className={`h-7 w-7 ${svc.color}`} />
-                  </div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                    {isEn ? svc.title.en : svc.title.ko}
-                  </h2>
-                  <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                    {isEn ? svc.description.en : svc.description.ko}
-                  </p>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-3">{isEn ? 'Tech Stack' : '기술 스택'}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {svc.techStack.map(tech => (
-                        <Badge key={tech} variant="secondary">{tech}</Badge>
-                      ))}
-                    </div>
+      {services.map((svc, idx) => (
+        <section key={svc.id} className={`py-24 ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f5f6fb]'}`}>
+          <div className="px-8 lg:px-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+              {/* Left: description + tech */}
+              <div className={idx % 2 === 0 ? '' : 'lg:order-2'}>
+                <div className="w-12 h-12 rounded-full bg-[#00194a] flex items-center justify-center mb-6">
+                  <svc.icon className="h-5 w-5 text-white" />
+                </div>
+                <h2 className="text-[30px] font-bold text-[#111111] mb-4">
+                  {isEn ? svc.title.en : svc.title.ko}
+                </h2>
+                <p className="text-[#666666] text-[18px] leading-relaxed mb-8">
+                  {isEn ? svc.description.en : svc.description.ko}
+                </p>
+                <div>
+                  <p className="text-[14px] font-semibold text-[#111111] mb-3">{isEn ? 'Tech Stack' : '기술 스택'}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {svc.techStack.map(tech => (
+                      <span key={tech} className="px-3 py-1 text-[13px] border border-[#d4d4d4] text-[#666666]">
+                        {tech}
+                      </span>
+                    ))}
                   </div>
                 </div>
+              </div>
 
-                {/* Right: process */}
-                <div className={idx % 2 === 0 ? '' : 'lg:order-1'}>
-                  <Card className={`border-t-4 ${svc.border}`}>
-                    <CardContent className="p-6">
-                      <h3 className="font-bold text-gray-900 mb-5">
-                        {isEn ? 'Our Process' : '진행 프로세스'}
-                      </h3>
-                      <ol className="space-y-3">
-                        {(isEn ? svc.process.en : svc.process.ko).map((step, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <span className={`flex-shrink-0 w-6 h-6 rounded-full ${svc.bg} ${svc.color} flex items-center justify-center text-xs font-bold`}>
-                              {i + 1}
-                            </span>
-                            <span className="text-gray-700 text-sm pt-0.5">{step}</span>
-                          </li>
-                        ))}
-                      </ol>
-                    </CardContent>
-                  </Card>
+              {/* Right: process */}
+              <div className={idx % 2 === 0 ? '' : 'lg:order-1'}>
+                <div className="border-t-2 border-[#00194a] pt-8">
+                  <h3 className="font-bold text-[#111111] text-[20px] mb-6">
+                    {isEn ? 'Our Process' : '진행 프로세스'}
+                  </h3>
+                  <ol className="space-y-4">
+                    {(isEn ? svc.process.en : svc.process.ko).map((step, i) => (
+                      <li key={i} className="flex items-start gap-4">
+                        <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#00194a] text-white flex items-center justify-center text-[12px] font-bold">
+                          {i + 1}
+                        </span>
+                        <span className="text-[#666666] text-[16px] pt-0.5">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
               </div>
             </div>
-          </section>
-        ))}
-      </div>
+          </div>
+        </section>
+      ))}
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4">
+      <section className="py-24 bg-[#00205c] text-white text-center">
+        <div className="px-8 lg:px-16">
+          <h2 className="font-serif text-[40px] lg:text-[55px] font-medium mb-4">
             {isEn ? 'Ready to get started?' : '시작할 준비가 되셨나요?'}
           </h2>
-          <p className="text-white/90 mb-8">
-            {isEn ? 'Contact us for a free consultation' : '무료 상담 신청하기'}
+          <p className="text-white/70 text-[18px] mb-10">
+            {isEn ? 'Contact us for a free consultation' : '무료 상담을 통해 함께 시작해보세요'}
           </p>
           <Link
             href={`/${locale}/contact`}
-            className="inline-block bg-white text-blue-700 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
+            className="inline-flex items-center gap-2 bg-white text-[#00205c] font-semibold px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity"
           >
-            {isEn ? 'Contact Us' : '문의하기'}
+            {isEn ? 'Contact Us' : '문의하기'} &rarr;
           </Link>
         </div>
       </section>

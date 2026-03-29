@@ -8,9 +8,15 @@ const defaultLocale = 'ko'
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Handle admin auth protection
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+  // Handle admin routes
+  if (pathname.startsWith('/admin')) {
+    if (pathname.startsWith('/admin/login')) {
+      const response = NextResponse.next()
+      response.headers.set('x-pathname', pathname)
+      return response
+    }
     const response = NextResponse.next()
+    response.headers.set('x-pathname', pathname)
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -37,8 +43,8 @@ export async function proxy(request: NextRequest) {
   )
   if (pathnameHasLocale) return NextResponse.next()
 
-  // Skip non-page paths
-  if (pathname.startsWith('/api') || pathname.startsWith('/_next') || pathname.includes('.')) {
+  // Skip non-page paths and admin routes
+  if (pathname.startsWith('/api') || pathname.startsWith('/_next') || pathname.startsWith('/admin') || pathname.includes('.')) {
     return NextResponse.next()
   }
 

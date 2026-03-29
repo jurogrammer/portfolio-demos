@@ -1,0 +1,12 @@
+{
+  "semantic": {
+    "font": {
+      "family": {
+        "display": {
+          "$type": "fontFamily",
+          "$value": "{font.family.heading}"
+        }
+      }
+    }
+  }
+}

@@ -37,15 +37,15 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 
 export default function StatsCounter({ locale }: { locale: string }) {
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-[#00194a]">
+      <div className="px-8 lg:px-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map(stat => (
             <div key={stat.label.ko}>
-              <div className="text-4xl font-bold text-blue-600 mb-2">
+              <div className="text-[42px] font-bold text-white mb-2">
                 <Counter target={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-gray-600 text-sm">{locale === 'en' ? stat.label.en : stat.label.ko}</div>
+              <div className="text-white/80 text-[15px]">{locale === 'en' ? stat.label.en : stat.label.ko}</div>
             </div>
           ))}
         </div>

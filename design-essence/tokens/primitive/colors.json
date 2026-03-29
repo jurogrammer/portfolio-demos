@@ -1,0 +1,17 @@
+{
+  "color": {
+    "primary": { "$type": "color", "$value": "#00194a" },
+    "secondary": { "$type": "color", "$value": "#00205c" },
+    "accent": { "$type": "color", "$value": "#0080fb" },
+    "bg-main": { "$type": "color", "$value": "#ffffff" },
+    "bg-alt": { "$type": "color", "$value": "#f5f6fb" },
+    "bg-dark": { "$type": "color", "$value": "#111111" },
+    "text-heading": { "$type": "color", "$value": "#111111" },
+    "text-body": { "$type": "color", "$value": "#111111" },
+    "text-secondary": { "$type": "color", "$value": "#666666" },
+    "text-muted": { "$type": "color", "$value": "#9098aa" },
+    "text-inverse": { "$type": "color", "$value": "#ffffff" },
+    "border-default": { "$type": "color", "$value": "#d4d4d4" },
+    "border-light": { "$type": "color", "$value": "#dddddd" }
+  }
+}

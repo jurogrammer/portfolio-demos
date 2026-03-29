@@ -1,0 +1,170 @@
+{
+  "meta": {
+    "name": "대한민국 청와대 (Blue House)",
+    "source_url": "https://www.president.go.kr/",
+    "captured_date": "2026-03-29",
+    "tags": ["government", "korean", "presidential", "official", "institutional", "news-portal"]
+  },
+  "color": {
+    "primary": {
+      "value": "#00194a",
+      "description": "Deep presidential navy - used in header logo area and primary brand identity"
+    },
+    "secondary": {
+      "value": "#00205c",
+      "description": "Dark navy blue - used in CTA buttons and dark section backgrounds"
+    },
+    "accent": {
+      "value": "#0080fb",
+      "description": "Bright blue - used for interactive links and highlights"
+    },
+    "background": {
+      "light": "#ffffff",
+      "dark": "#111111",
+      "muted": "#f5f6fb",
+      "schedule_gradient": "linear-gradient(135deg, #4a6cf7, #9b59b6, #e74c93)"
+    },
+    "text": {
+      "primary": "#111111",
+      "secondary": "#666666",
+      "tertiary": "#777777",
+      "muted": "#9098aa",
+      "inverse": "#ffffff",
+      "dark_secondary": "#222222"
+    },
+    "border": {
+      "default": "#d4d4d4",
+      "light": "#dddddd",
+      "subtle": "#c9cacc"
+    },
+    "gradients": [
+      {
+        "name": "schedule-banner",
+        "value": "linear-gradient(135deg, #4a6cf7 0%, #9b59b6 50%, #e74c93 100%)",
+        "usage": "Calendar/schedule section background - vivid purple-blue-pink gradient"
+      }
+    ],
+    "mood": "Authoritative, trustworthy, patriotic. Deep navy conveys governmental gravity. Minimal color palette emphasizes content over decoration. Purple-pink gradient in schedule section provides modern, forward-looking contrast."
+  },
+  "typography": {
+    "heading_font": {
+      "family": "Pretendard",
+      "fallback": "sans-serif",
+      "source": "Korean variable font (self-hosted)",
+      "usage": "Primary typeface for all headings and body text"
+    },
+    "body_font": {
+      "family": "Pretendard",
+      "fallback": "sans-serif",
+      "usage": "Same family for body, achieving visual unity"
+    },
+    "accent_font": {
+      "family": "Nanum_Myeongjo",
+      "fallback": "sans-serif",
+      "usage": "Serif/명조 for emotional hero headlines - section titles like '대통령의 순간들'. Provides literary, authoritative feel."
+    },
+    "scale": {
+      "hero_headline": "68px (4.25rem) - bold 700",
+      "section_title_serif": "64px (4rem) / 55px - Nanum_Myeongjo 500",
+      "h2_slide": "38px (2.38rem) - bold 700",
+      "h3_section": "30px (1.88rem) - semibold 600",
+      "h3_card": "26px (1.63rem) - bold 700",
+      "subtitle": "24px (1.5rem) - bold 700",
+      "body_large": "20px (1.25rem) - regular 400",
+      "body": "18px (1.13rem) - regular 400",
+      "body_small": "16px (1rem) - regular 400 / medium 500",
+      "caption": "14px (0.88rem) - regular 400",
+      "label": "12px (0.75rem) - regular 400",
+      "micro": "10px (0.63rem)"
+    },
+    "weight_usage": {
+      "300": "Light - hero description text for softer feel",
+      "400": "Regular - body text, captions, dates (dominant weight)",
+      "500": "Medium - Nanum_Myeongjo headings, some emphasis",
+      "600": "Semibold - section titles, CTA buttons, important links",
+      "700": "Bold - hero headline, card titles, navigation emphasis",
+      "800": "ExtraBold - CTA link labels (e.g., '취임선서')"
+    },
+    "special": {
+      "hero_headline": "68px/bold Pretendard, very large for impact. Multi-line Korean text with natural word-breaking.",
+      "section_title": "Nanum_Myeongjo serif at 55-64px creates contrast against Pretendard sans-serif body",
+      "schedule_text": "30px/semibold white text over gradient background"
+    }
+  },
+  "layout": {
+    "pattern": "Full-width sections, no visible max-width container. Content bleeds edge-to-edge with internal padding.",
+    "sections": [
+      {
+        "name": "notice-bar",
+        "description": "Thin notification banner at top with blue background (#00194a). Temporary site notice with megaphone icon."
+      },
+      {
+        "name": "header",
+        "description": "White background, logo left (청와대 emblem + Korean text), horizontal nav center-right (대통령/청와대/미디어/뉴스룸/정보공개), font-size toggle far right. Clean, minimal."
+      },
+      {
+        "name": "hero-slider",
+        "description": "Full-width split layout. Left: large headline text (68px) + description + '자세히보기' CTA button. Right: editorial photo/card news image. Swiper carousel with 10 slides. Slide counter (01—10) with prev/pause/next controls."
+      },
+      {
+        "name": "schedule",
+        "description": "Purple-blue-pink gradient background. Shows today's presidential schedule with date, time, event, location. Swiper carousel. Subtle '+ 더보기' link."
+      },
+      {
+        "name": "cta-banners",
+        "description": "Two side-by-side CTA blocks. Left: blue (#0080fb) bg - '대통령 취임선서'. Right: dark navy (#00205c) bg - '국민주권예산'. Each with quote text above, title, arrow icon right."
+      },
+      {
+        "name": "briefing",
+        "description": "White bg, '청와대 브리핑' heading in Nanum_Myeongjo serif. Horizontal card carousel (Swiper). Each card: title (truncated 2 lines), description (truncated 2 lines), date. Arrow navigation buttons (circle, navy bg)."
+      },
+      {
+        "name": "moments",
+        "description": "'대통령의 순간들' in Nanum_Myeongjo. Subtitle + two category links (사진/영상). Bento-grid layout: 2-column photo cards with overlay text + date. Below: 2 video thumbnails with play button overlay + titles."
+      },
+      {
+        "name": "footer",
+        "description": "Minimal. Light gray bg (#f5f6fb). Address text centered. Copyright. Scroll-to-top circle button right."
+      }
+    ],
+    "max_width": "No explicit max-width container visible; content sections use internal padding (40-60px horizontal)",
+    "whitespace_density": "Generous. Large vertical spacing between sections (60-130px). Hero section uses significant whitespace around headline.",
+    "section_flow": "Vertical stack, full-width. Alternating: white → gradient → dark navy → white → dark. Creates visual rhythm through background color changes.",
+    "sticky_elements": ["Header becomes sticky on scroll"]
+  },
+  "interaction": {
+    "scroll_effects": [
+      "Sticky header on scroll",
+      "Swiper carousels for hero, schedule, and briefing sections"
+    ],
+    "hover_patterns": [
+      "Links: opacity 0.75 on hover",
+      "Buttons: opacity change on hover/active (0.75/0.9)",
+      "Cards: likely scale or shadow transition (briefing cards)",
+      "Navigation links: underline or color change"
+    ],
+    "page_transitions": "Standard navigation (no SPA transitions observed)",
+    "loading_style": "Server-rendered, Swiper hydration after ~8s",
+    "micro_interactions": [
+      "Slide counter progress bar (01——10)",
+      "Play/pause controls for auto-sliding carousels",
+      "Scroll-to-top button with circular arrow icon",
+      "Font-size adjustment toggle (가가)"
+    ]
+  },
+  "brand_voice": {
+    "tone": "Formal, authoritative, yet approachable. Presidential dignity with public service warmth. Emotionally resonant headlines.",
+    "perspective": "First-person plural ('우리는') and institutional ('정부는'). Direct address to citizens ('국민 여러분').",
+    "headline_pattern": "Declarative statements or emotional appeals. Often multi-line Korean headlines breaking at natural word boundaries. Mix of policy announcements and personal messages.",
+    "cta_style": "Understated. '자세히보기' (View details) with arrow. Rounded pill buttons (#00205c bg, white text, border-radius 28px). Secondary CTAs use text+arrow pattern.",
+    "copy_density": "Medium. Hero shows full headline + 2-line description. Briefing cards show truncated previews. Photo sections use minimal text overlay.",
+    "social_proof_style": "Schedule section serves as activity proof ('국민과 함께하는 오늘'). Photo/video sections document presidential activities as social proof of governance.",
+    "unique_vocabulary": [
+      "국민주권 (people's sovereignty)",
+      "자세히보기 (view details)",
+      "국민과 함께하는 (together with the people)",
+      "대통령의 순간들 (president's moments)",
+      "청와대 브리핑 (Blue House briefing)"
+    ]
+  }
+}

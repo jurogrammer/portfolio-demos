@@ -1,0 +1,45 @@
+{
+  "name": "대한민국 청와대 (Blue House)",
+  "source_url": "https://www.president.go.kr/",
+  "captured_date": "2026-03-29",
+  "design_brief": {
+    "overview": "Official Korean presidential website with authoritative yet accessible design. Full-width editorial layout combining deep navy institutional branding with modern gradient accents. Content-first approach emphasizing news, schedules, and presidential media.",
+    "visual_identity": {
+      "color_strategy": "Monochromatic navy palette (#00194a / #00205c) as institutional anchor, with white and near-black (#111111) for content areas. A single vivid purple-blue-pink gradient banner breaks the sobriety for the schedule section, signaling modernity. Accent blue (#0080fb) reserved for interactive elements.",
+      "typography_strategy": "Dual-font system: Pretendard (variable sans-serif) handles 95% of text from 10px captions to 68px hero headlines with weight variation (300-800). Nanum Myeongjo (serif/명조) used exclusively for emotionally resonant section titles at large sizes (55-64px), creating a literary, dignified contrast.",
+      "spacing_philosophy": "Generous whitespace. 8px base grid. Large section gaps (60-130px vertical). Content breathes within full-width containers. No visible max-width wrapper — layout uses edge-to-edge backgrounds with internal content padding."
+    },
+    "layout_blueprint": {
+      "structure": "Single-column vertical stack of full-width sections. No sidebar. Background color alternation (white → gradient → navy → white → dark) creates visual rhythm without explicit dividers.",
+      "hero": "Split layout: left text (68px headline + description + pill CTA) / right editorial image. 10-slide Swiper carousel with numeric counter and playback controls.",
+      "content_sections": [
+        "Schedule banner: vivid gradient background, today's events, auto-carousel",
+        "Twin CTA blocks: side-by-side colored rectangles with quote + title + arrow",
+        "Briefing carousel: horizontal card slider, serif section title, nav arrows",
+        "Bento photo/video grid: 2-column asymmetric layout, overlay text on images, play buttons on videos"
+      ],
+      "navigation": "Minimal horizontal nav (5 items) on white bar. Logo left, nav center, accessibility toggle right. Sticky on scroll.",
+      "footer": "Ultra-minimal: address + copyright centered on light gray background. Scroll-to-top button."
+    },
+    "interaction_patterns": {
+      "carousels": "Swiper.js throughout — hero (10 slides), schedule (3 slides), briefing (6 cards). All have prev/pause/next controls and numeric indicators.",
+      "buttons": "Primary: rounded pill (border-radius 28px), navy bg (#00205c), white text. Secondary: text + right arrow (→). Opacity-based hover feedback (0.75).",
+      "cards": "Briefing cards: title (2-line clamp) + description (2-line clamp) + date. Clean, no borders, separated by column gap.",
+      "accessibility": "Font-size adjustment toggle (가가), skip-to-content links, semantic HTML structure (banner, nav, contentinfo roles)"
+    },
+    "brand_voice_guide": {
+      "tone": "Presidential authority softened by public service warmth. Formal Korean (합니다/습니다 endings) but emotionally direct.",
+      "headlines": "Large, declarative, multi-line Korean statements. Mix of policy and personal emotional appeals.",
+      "cta_language": "Understated: '자세히보기' (view details) rather than aggressive calls-to-action. Arrow icons provide directional cues.",
+      "content_rhythm": "Latest news → today's schedule → policy CTAs → briefings → photo/video moments. Temporal freshness emphasized through dates on every item."
+    }
+  },
+  "reproduction_notes": {
+    "key_fonts": ["Pretendard (variable, self-hosted)", "Nanum Myeongjo"],
+    "key_colors": ["#00194a", "#00205c", "#0080fb", "#111111", "#ffffff", "#666666", "#f5f6fb"],
+    "gradient": "linear-gradient(135deg, #4a6cf7 0%, #9b59b6 50%, #e74c93 100%)",
+    "border_radius": "28px for pill buttons, 50% for circular controls",
+    "swiper_config": "Multiple instances with numeric counters and play/pause controls",
+    "image_treatment": "Full-bleed photos with text overlay. Video thumbnails with centered play button circle."
+  }
+}

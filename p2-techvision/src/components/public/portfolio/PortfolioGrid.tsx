@@ -5,9 +5,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import type { PortfolioItem } from '@/types/database'
 
 const categoryGradients: Record<string, string> = {
-  web: 'from-blue-400 to-blue-600',
-  mobile: 'from-green-400 to-green-600',
-  consulting: 'from-purple-400 to-purple-600',
+  web: 'from-[#00194a] to-[#00205c]',
+  mobile: 'from-[#00205c] to-[#0080fb]',
+  consulting: 'from-[#111111] to-[#00194a]',
 }
 
 const categoryLabels: Record<string, { ko: string; en: string }> = {
@@ -33,15 +33,15 @@ export default function PortfolioGrid({ items, locale }: { items: PortfolioItem[
   const filtered = filter === 'all' ? items : items.filter(i => i.category === filter)
 
   return (
-    <section className="py-12">
-      <div className="container mx-auto px-4">
+    <section className="py-16">
+      <div className="px-8 lg:px-16">
         {/* Filter */}
-        <div className="flex gap-2 justify-center mb-8 flex-wrap">
+        <div className="flex gap-2 mb-10 flex-wrap">
           {filters.map(f => (
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${filter === f.value ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              className={`px-5 py-2 rounded-full text-[14px] font-medium transition-opacity ${filter === f.value ? 'bg-[#00194a] text-white' : 'border border-[#d4d4d4] text-[#666666] hover:opacity-75'}`}
             >
               {f.label}
             </button>
@@ -58,20 +58,20 @@ export default function PortfolioGrid({ items, locale }: { items: PortfolioItem[
                 onClick={() => setSelected(item)}
                 className="cursor-pointer rounded-xl overflow-hidden border hover:shadow-lg transition-shadow relative"
               >
-                <div className={`h-48 bg-gradient-to-br ${categoryGradients[item.category || 'web'] || 'from-gray-400 to-gray-600'} flex items-center justify-center`}>
+                <div className={`h-48 bg-gradient-to-br ${categoryGradients[item.category || 'web'] || 'from-[#111111] to-[#00194a]'} flex items-center justify-center`}>
                   {item.is_featured && (
-                    <span className="absolute top-3 left-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded">FEATURED</span>
+                    <span className="absolute top-3 left-3 bg-[#0080fb] text-white text-xs font-bold px-2 py-1">FEATURED</span>
                   )}
-                  <span className="text-white text-4xl font-bold opacity-30">{item.title[0]}</span>
+                  <span className="text-white text-4xl font-bold opacity-20">{item.title[0]}</span>
                 </div>
-                <div className="p-4">
+                <div className="p-5">
                   {item.category && (
-                    <Badge variant="secondary" className="text-xs mb-2">
+                    <span className="text-[12px] text-[#0080fb] font-semibold mb-2 block">
                       {isEn ? categoryLabels[item.category]?.en : categoryLabels[item.category]?.ko}
-                    </Badge>
+                    </span>
                   )}
-                  <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                  {item.client_name && <p className="text-sm text-gray-500 mt-1">{item.client_name}</p>}
+                  <h3 className="font-bold text-[#111111] text-[18px]">{item.title}</h3>
+                  {item.client_name && <p className="text-[14px] text-[#666666] mt-1">{item.client_name}</p>}
                 </div>
               </div>
             ))}

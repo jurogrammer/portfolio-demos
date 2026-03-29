@@ -1,0 +1,30 @@
+{
+  "font": {
+    "family": {
+      "heading": { "$type": "fontFamily", "$value": "Pretendard" },
+      "body": { "$type": "fontFamily", "$value": "Pretendard" },
+      "accent": { "$type": "fontFamily", "$value": "Nanum_Myeongjo" }
+    },
+    "size": {
+      "hero": { "$type": "dimension", "$value": "68px" },
+      "display": { "$type": "dimension", "$value": "55px" },
+      "h2": { "$type": "dimension", "$value": "38px" },
+      "h3": { "$type": "dimension", "$value": "30px" },
+      "h4": { "$type": "dimension", "$value": "26px" },
+      "subtitle": { "$type": "dimension", "$value": "24px" },
+      "body-lg": { "$type": "dimension", "$value": "20px" },
+      "body": { "$type": "dimension", "$value": "18px" },
+      "body-sm": { "$type": "dimension", "$value": "16px" },
+      "caption": { "$type": "dimension", "$value": "14px" },
+      "label": { "$type": "dimension", "$value": "12px" }
+    },
+    "weight": {
+      "light": { "$type": "fontWeight", "$value": 300 },
+      "regular": { "$type": "fontWeight", "$value": 400 },
+      "medium": { "$type": "fontWeight", "$value": 500 },
+      "semibold": { "$type": "fontWeight", "$value": 600 },
+      "bold": { "$type": "fontWeight", "$value": 700 },
+      "extrabold": { "$type": "fontWeight", "$value": 800 }
+    }
+  }
+}

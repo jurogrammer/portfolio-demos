@@ -1,6 +1,4 @@
-import type { Locale } from '@/lib/i18n'
 import { Target, Eye } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
 
 const timelineEvents = [
   { year: 2017, ko: '회사 설립, 웹 개발 사업 시작', en: 'Company founded, web development begins' },
@@ -20,8 +18,6 @@ const teamMembers = [
   { name: '한동현', nameEn: 'Donghyun Han', role: '모바일 개발자', bio: 'React Native 전문가', bioEn: 'React Native specialist' },
 ]
 
-const colors = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500', 'bg-teal-500']
-
 export async function generateStaticParams() {
   return [{ locale: 'ko' }, { locale: 'en' }]
 }
@@ -38,55 +34,52 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   return (
     <div>
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-indigo-700 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{isEn ? 'About Us' : '회사 소개'}</h1>
-          <p className="text-white/90 text-lg">{isEn ? 'Changing the world with innovative technology' : '혁신적인 기술로 세상을 변화시킵니다'}</p>
+      <section className="py-24 bg-[#00194a] text-white">
+        <div className="px-8 lg:px-16">
+          <h1 className="font-serif text-[48px] lg:text-[68px] font-medium mb-4">{isEn ? 'About Us' : '회사 소개'}</h1>
+          <p className="text-white/70 text-[18px] max-w-xl">{isEn ? 'Changing the world with innovative technology' : '혁신적인 기술로 세상을 변화시킵니다'}</p>
         </div>
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="border-l-4 border-l-blue-600">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <Eye className="h-6 w-6 text-blue-600" />
-                  <h2 className="text-xl font-bold">{isEn ? 'Vision' : '비전'}</h2>
+      <section className="py-24 bg-white">
+        <div className="px-8 lg:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div className="border-b md:border-b-0 md:border-r border-[#d4d4d4] pb-10 md:pb-0 md:pr-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#00194a] flex items-center justify-center">
+                  <Eye className="h-5 w-5 text-white" />
                 </div>
-                <p className="text-gray-600 text-lg">{isEn ? 'Making a better world through technological innovation' : '기술 혁신으로 더 나은 세상을 만듭니다'}</p>
-              </CardContent>
-            </Card>
-            <Card className="border-l-4 border-l-purple-600">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <Target className="h-6 w-6 text-purple-600" />
-                  <h2 className="text-xl font-bold">{isEn ? 'Mission' : '미션'}</h2>
+                <h2 className="text-[24px] font-bold text-[#111111]">{isEn ? 'Vision' : '비전'}</h2>
+              </div>
+              <p className="text-[#666666] text-[18px] leading-relaxed">{isEn ? 'Making a better world through technological innovation' : '기술 혁신으로 더 나은 세상을 만듭니다'}</p>
+            </div>
+            <div className="pt-10 md:pt-0 md:pl-12">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#00205c] flex items-center justify-center">
+                  <Target className="h-5 w-5 text-white" />
                 </div>
-                <p className="text-gray-600 text-lg">{isEn ? 'Becoming the best technology partner for our clients\' business success' : '고객의 비즈니스 성공을 위한 최고의 기술 파트너가 됩니다'}</p>
-              </CardContent>
-            </Card>
+                <h2 className="text-[24px] font-bold text-[#111111]">{isEn ? 'Mission' : '미션'}</h2>
+              </div>
+              <p className="text-[#666666] text-[18px] leading-relaxed">{isEn ? 'Becoming the best technology partner for our clients\' business success' : '고객의 비즈니스 성공을 위한 최고의 기술 파트너가 됩니다'}</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">{isEn ? 'Company History' : '회사 연혁'}</h2>
-          <div className="relative max-w-2xl mx-auto">
-            <div className="absolute left-1/2 -translate-x-px w-0.5 h-full bg-blue-200" />
-            {timelineEvents.map((event, idx) => (
-              <div key={event.year} className={`relative flex items-center mb-8 ${idx % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                <div className={`w-1/2 ${idx % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                  <div className="bg-white p-4 rounded-xl shadow-sm border">
-                    <span className="text-blue-600 font-bold text-lg">{event.year}</span>
-                    <p className="text-gray-700 mt-1 text-sm">{isEn ? event.en : event.ko}</p>
-                  </div>
+      <section className="py-24 bg-[#f5f6fb]">
+        <div className="px-8 lg:px-16">
+          <h2 className="font-serif text-[40px] lg:text-[55px] font-medium text-[#111111] mb-14">{isEn ? 'Company History' : '회사 연혁'}</h2>
+          <div className="relative max-w-3xl">
+            <div className="absolute left-[7px] top-0 w-[2px] h-full bg-[#d4d4d4]" />
+            {timelineEvents.map((event) => (
+              <div key={event.year} className="relative flex items-start mb-10 pl-10">
+                <div className="absolute left-0 top-1 w-4 h-4 bg-[#00194a] rounded-full border-4 border-[#f5f6fb]" />
+                <div>
+                  <span className="text-[#0080fb] font-bold text-[20px]">{event.year}</span>
+                  <p className="text-[#666666] mt-1 text-[16px]">{isEn ? event.en : event.ko}</p>
                 </div>
-                <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow" />
-                <div className="w-1/2" />
               </div>
             ))}
           </div>
@@ -94,21 +87,19 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </section>
 
       {/* Team */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">{isEn ? 'Our Team' : '우리 팀'}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamMembers.map((member, idx) => (
-              <Card key={member.name} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 ${colors[idx]} rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4`}>
-                    {(isEn ? member.nameEn : member.name)[0]}
-                  </div>
-                  <h3 className="font-semibold text-gray-900">{isEn ? member.nameEn : member.name}</h3>
-                  <p className="text-blue-600 text-sm mt-1">{member.role}</p>
-                  <p className="text-gray-500 text-xs mt-2">{isEn ? member.bioEn : member.bio}</p>
-                </CardContent>
-              </Card>
+      <section className="py-24 bg-white">
+        <div className="px-8 lg:px-16">
+          <h2 className="font-serif text-[40px] lg:text-[55px] font-medium text-[#111111] mb-14">{isEn ? 'Our Team' : '우리 팀'}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {teamMembers.map((member) => (
+              <div key={member.name} className="border-t border-[#d4d4d4] pt-8">
+                <div className="w-14 h-14 bg-[#00194a] rounded-full flex items-center justify-center text-white text-xl font-bold mb-5">
+                  {(isEn ? member.nameEn : member.name)[0]}
+                </div>
+                <h3 className="font-bold text-[#111111] text-[20px]">{isEn ? member.nameEn : member.name}</h3>
+                <p className="text-[#0080fb] text-[14px] font-medium mt-1">{member.role}</p>
+                <p className="text-[#666666] text-[14px] mt-2">{isEn ? member.bioEn : member.bio}</p>
+              </div>
             ))}
           </div>
         </div>

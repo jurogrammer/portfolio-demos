@@ -50,41 +50,47 @@ export default function Header() {
 
   return (
     <header className={cn(
-      'sticky top-0 z-50 w-full border-b transition-all duration-200',
+      'sticky top-0 z-50 w-full transition-all duration-200',
       scrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-white'
     )}>
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
-          TechVision Solutions
+      <div className="mx-auto flex h-20 items-center justify-between px-10 lg:px-16">
+        <Link href={`/${locale}`} className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-navy rounded-sm flex items-center justify-center">
+            <span className="text-white text-xs font-bold">TV</span>
+          </div>
+          <span className="text-lg font-bold text-navy">TechVision</span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-10">
           {navItems.map(item => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'text-sm font-medium transition-colors hover:text-blue-600',
+                'text-[15px] font-medium transition-opacity hover:opacity-75',
                 pathname === item.href || (item.href !== `/${locale}` && pathname.startsWith(item.href))
-                  ? 'text-blue-600' : 'text-gray-600'
+                  ? 'text-[#111111] font-semibold' : 'text-[#111111]'
               )}
             >
               {item.label}
             </Link>
           ))}
+        </nav>
+
+        <div className="hidden md:flex items-center">
           <Link href={localeSwitchPath}>
-            <Button variant="outline" size="sm" className="gap-1">
+            <Button variant="outline" size="sm" className="gap-1 rounded-full border-[#d4d4d4] text-[#666666] hover:text-[#111111]">
               <Globe className="h-3 w-3" />
               {otherLocale.toUpperCase()}
             </Button>
           </Link>
-        </nav>
+        </div>
 
         {/* Mobile Nav */}
         <div className="flex md:hidden items-center gap-2">
           <Link href={localeSwitchPath}>
-            <Button variant="ghost" size="sm">{otherLocale.toUpperCase()}</Button>
+            <Button variant="ghost" size="sm" className="text-[#666666]">{otherLocale.toUpperCase()}</Button>
           </Link>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger render={<Button variant="ghost" size="icon" />}>
@@ -98,8 +104,8 @@ export default function Header() {
                     href={item.href}
                     onClick={() => setOpen(false)}
                     className={cn(
-                      'text-base font-medium transition-colors hover:text-blue-600 py-2',
-                      pathname === item.href ? 'text-blue-600' : 'text-gray-700'
+                      'text-base font-medium transition-opacity hover:opacity-75 py-2',
+                      pathname === item.href ? 'text-navy font-semibold' : 'text-[#111111]'
                     )}
                   >
                     {item.label}

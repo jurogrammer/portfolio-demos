@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Nanum_Myeongjo } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+const nanumMyeongjo = Nanum_Myeongjo({ variable: '--font-nanum-myeongjo', weight: ['400', '700', '800'], subsets: ['latin'] })
+
+const pretendardUrl = 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css'
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://techvision-demo.vercel.app'
 
@@ -57,7 +58,10 @@ const jsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <head>
+        <link rel="stylesheet" href={pretendardUrl} />
+      </head>
+      <body className={`${nanumMyeongjo.variable} antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

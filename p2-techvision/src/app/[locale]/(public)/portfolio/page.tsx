@@ -24,10 +24,10 @@ export default async function PortfolioPage({ params }: { params: Promise<{ loca
 
   return (
     <div>
-      <section className="py-16 bg-gradient-to-br from-green-600 to-teal-700 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-3">{locale === 'en' ? 'Portfolio' : '포트폴리오'}</h1>
-          <p className="text-white/90">{locale === 'en' ? 'Our successful project cases' : '성공적으로 완료한 프로젝트 사례'}</p>
+      <section className="py-24 bg-[#00194a] text-white">
+        <div className="px-8 lg:px-16">
+          <h1 className="font-serif text-[48px] lg:text-[68px] font-medium mb-4">{locale === 'en' ? 'Portfolio' : '포트폴리오'}</h1>
+          <p className="text-white/70 text-[18px]">{locale === 'en' ? 'Our successful project cases' : '성공적으로 완료한 프로젝트 사례'}</p>
         </div>
       </section>
       <PortfolioGrid items={items} locale={locale} />

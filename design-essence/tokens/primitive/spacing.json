@@ -1,0 +1,8 @@
+{
+  "spacing": {
+    "container-max": {
+      "$type": "dimension",
+      "$value": "No explicit max-width container visible; content sections use internal padding (40-60px horizontal)"
+    }
+  }
+}

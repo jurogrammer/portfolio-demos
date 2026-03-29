@@ -33,14 +33,14 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
 
   return (
     <div>
-      <section className="py-16 bg-gradient-to-br from-violet-600 to-purple-700 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-3">{isEn ? 'Careers' : '채용'}</h1>
-          <p className="text-white/90">{isEn ? 'Grow with TechVision' : 'TechVision과 함께 성장하세요'}</p>
+      <section className="py-24 bg-[#00194a] text-white">
+        <div className="px-8 lg:px-16">
+          <h1 className="font-serif text-[48px] lg:text-[68px] font-medium mb-4">{isEn ? 'Careers' : '채용'}</h1>
+          <p className="text-white/70 text-[18px]">{isEn ? 'Grow with TechVision' : 'TechVision과 함께 성장하세요'}</p>
         </div>
       </section>
-      <section className="py-12">
-        <div className="container mx-auto px-4 max-w-3xl">
+      <section className="py-16">
+        <div className="px-8 lg:px-16 max-w-4xl">
           {jobs.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-500 text-lg">{isEn ? 'No open positions at this time.' : '현재 채용 공고가 없습니다.'}</p>
@@ -71,7 +71,7 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
                         <ul className="space-y-1">
                           {job.requirements.map((req, i) => (
                             <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
-                              <span className="text-blue-600 mt-0.5">•</span>{req}
+                              <span className="text-[#0080fb] mt-0.5">•</span>{req}
                             </li>
                           ))}
                         </ul>

@@ -1,6 +1,5 @@
 import ContactForm from '@/components/public/contact/ContactForm'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
 
 export async function generateStaticParams() {
   return [{ locale: 'ko' }, { locale: 'en' }]
@@ -24,39 +23,37 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
   return (
     <div>
-      <section className="py-16 bg-gradient-to-br from-cyan-600 to-blue-700 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-3">{isEn ? 'Contact Us' : '문의하기'}</h1>
-          <p className="text-white/90">{isEn ? "Let's talk about your project" : '프로젝트에 대해 이야기해보세요'}</p>
+      <section className="py-24 bg-[#00194a] text-white">
+        <div className="px-8 lg:px-16">
+          <h1 className="font-serif text-[48px] lg:text-[68px] font-medium mb-4">{isEn ? 'Contact Us' : '문의하기'}</h1>
+          <p className="text-white/70 text-[18px]">{isEn ? "Let's talk about your project" : '프로젝트에 대해 이야기해보세요'}</p>
         </div>
       </section>
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <section className="py-16">
+        <div className="px-8 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div>
-              <h2 className="text-2xl font-bold mb-6">{isEn ? 'Send a Message' : '문의 보내기'}</h2>
+              <h2 className="text-[24px] font-bold text-[#111111] mb-8">{isEn ? 'Send a Message' : '문의 보내기'}</h2>
               <ContactForm locale={locale} />
             </div>
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold mb-6">{isEn ? 'Contact Info' : '연락처 정보'}</h2>
-                <div className="space-y-4">
+                <h2 className="text-[24px] font-bold text-[#111111] mb-8">{isEn ? 'Contact Info' : '연락처 정보'}</h2>
+                <div className="space-y-6">
                   {contactInfo.map(info => (
-                    <Card key={info.label}>
-                      <CardContent className="flex items-start gap-4 p-4">
-                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <info.icon className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-700">{info.label}</p>
-                          <p className="text-sm text-gray-600">{info.value}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <div key={info.label} className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-[#00194a] rounded-full flex items-center justify-center flex-shrink-0">
+                        <info.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-[14px] font-semibold text-[#111111]">{info.label}</p>
+                        <p className="text-[15px] text-[#666666]">{info.value}</p>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
-              <div className="rounded-xl overflow-hidden h-64 border">
+              <div className="overflow-hidden h-64 border border-[#d4d4d4]">
                 <iframe
                   src="https://maps.google.com/maps?q=서울특별시+강남구+테헤란로&output=embed"
                   width="100%"

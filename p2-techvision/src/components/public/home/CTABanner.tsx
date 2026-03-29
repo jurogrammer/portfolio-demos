@@ -1,22 +1,36 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 
 export default function CTABanner({ locale }: { locale: string }) {
   return (
-    <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          {locale === 'en' ? 'Need a Site Like This?' : '이런 사이트가 필요하신가요?'}
-        </h2>
-        <p className="text-white/90 text-lg mb-8">
-          {locale === 'en'
-            ? 'This is a portfolio demo. If you need a corporate site with admin CMS and multilingual support, get in touch.'
-            : '이 사이트는 포트폴리오 데모입니다. 어드민 CMS·다국어 지원이 포함된 기업 홈페이지가 필요하시면 문의해주세요.'}
-        </p>
-        <Button size="lg" variant="secondary" render={<Link href={`/${locale}/contact`} />}>
-          {locale === 'en' ? 'Contact Developer' : '개발 문의하기'}
-        </Button>
-      </div>
+    <section className="grid grid-cols-1 md:grid-cols-2">
+      <Link
+        href={`/${locale}/services`}
+        className="group flex items-center justify-between bg-[#0080fb] text-white px-10 lg:px-16 py-10 hover:opacity-90 transition-opacity"
+      >
+        <div>
+          <p className="text-white/70 text-[14px] mb-1">
+            {locale === 'en' ? '"Innovation for your business"' : '"비즈니스를 위한 혁신"'}
+          </p>
+          <span className="text-[24px] font-extrabold">
+            {locale === 'en' ? 'Our Services' : '서비스 소개'}
+          </span>
+        </div>
+        <span className="text-2xl group-hover:translate-x-1 transition-transform">&rarr;</span>
+      </Link>
+      <Link
+        href={`/${locale}/contact`}
+        className="group flex items-center justify-between bg-[#00205c] text-white px-10 lg:px-16 py-10 hover:opacity-90 transition-opacity"
+      >
+        <div>
+          <p className="text-white/70 text-[14px] mb-1">
+            {locale === 'en' ? '"Let\'s build together"' : '"함께 만들어갑니다"'}
+          </p>
+          <span className="text-[24px] font-extrabold">
+            {locale === 'en' ? 'Contact Us' : '개발 문의하기'}
+          </span>
+        </div>
+        <span className="text-2xl group-hover:translate-x-1 transition-transform">&rarr;</span>
+      </Link>
     </section>
   )
 }
