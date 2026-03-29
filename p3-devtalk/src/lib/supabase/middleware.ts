@@ -25,9 +25,11 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
+  // getSession() reads the JWT locally (no network roundtrip).
+  // Use this in proxy for fast route guards; verify with getUser() in server components.
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
 
   const { pathname } = request.nextUrl
 
@@ -35,30 +37,18 @@ export async function updateSession(request: NextRequest) {
   const protectedPaths = ['/write', '/settings', '/notifications']
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
 
-  if (isProtected && !user) {
+  if (isProtected && !session) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
     url.searchParams.set('redirect', pathname)
     return NextResponse.redirect(url)
   }
 
-  // Admin routes require admin role
+  // Admin routes require authentication (role check deferred to admin layout)
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
-    if (!user) {
+    if (!session) {
       const url = request.nextUrl.clone()
       url.pathname = '/auth/login'
-      return NextResponse.redirect(url)
-    }
-    // Check admin role via profile
-    const { data: profile } = await supabase
-      .from('dt_profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    if (profile?.role !== 'admin') {
-      const url = request.nextUrl.clone()
-      url.pathname = '/'
       return NextResponse.redirect(url)
     }
   }
