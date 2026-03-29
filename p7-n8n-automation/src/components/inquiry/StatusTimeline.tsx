@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, Circle, RefreshCw } from 'lucide-react'
+import { useLocale } from '@/lib/i18n'
 
 interface Props {
   ticketId: string
@@ -18,6 +19,7 @@ function Skeleton({ className }: { className?: string }) {
 }
 
 export function StatusTimeline({ ticketId }: Props) {
+  const { t } = useLocale()
   const [inquiry, setInquiry] = useState<Inquiry | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -62,7 +64,7 @@ export function StatusTimeline({ ticketId }: Props) {
         <p className="text-destructive">{error}</p>
         <Button variant="outline" onClick={load}>
           <RefreshCw className="mr-2 h-4 w-4" />
-          다시 시도
+          {t.status.retry}
         </Button>
       </div>
     )
@@ -76,12 +78,12 @@ export function StatusTimeline({ ticketId }: Props) {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">문의 상태 조회</h1>
-          <p className="text-sm text-muted-foreground mt-1">티켓 ID: {ticketId}</p>
+          <h1 className="text-2xl font-bold">{t.status.heading}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t.status.ticketId} {ticketId}</p>
         </div>
         <Button variant="outline" size="sm" onClick={load}>
           <RefreshCw className="mr-2 h-4 w-4" />
-          새로고침
+          {t.status.refresh}
         </Button>
       </div>
 
@@ -91,6 +93,7 @@ export function StatusTimeline({ ticketId }: Props) {
           {STATUS_STEPS.map((step, index) => {
             const isCompleted = currentStepIndex > index
             const isCurrent = currentStepIndex === index
+            const stepLabel = t.status.steps[step as keyof typeof t.status.steps] ?? step
 
             return (
               <div key={step} className="flex flex-1 flex-col items-center gap-2">
@@ -126,7 +129,7 @@ export function StatusTimeline({ ticketId }: Props) {
                     isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground'
                   }`}
                 >
-                  {step}
+                  {stepLabel}
                 </span>
               </div>
             )
@@ -138,44 +141,46 @@ export function StatusTimeline({ ticketId }: Props) {
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            문의 상세 정보
-            <Badge className={STATUS_COLORS[inquiry.status]}>{inquiry.status}</Badge>
+            {t.status.detailTitle}
+            <Badge className={STATUS_COLORS[inquiry.status]}>
+              {t.statusLabels[inquiry.status as keyof typeof t.statusLabels] ?? inquiry.status}
+            </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <span className="text-muted-foreground">이름</span>
+              <span className="text-muted-foreground">{t.status.fieldName}</span>
               <p className="font-medium mt-0.5">{inquiry.name}</p>
             </div>
             <div>
-              <span className="text-muted-foreground">분류 (입력)</span>
+              <span className="text-muted-foreground">{t.status.fieldCategoryInput}</span>
               <p className="font-medium mt-0.5">{inquiry.categoryInput}</p>
             </div>
             <div>
-              <span className="text-muted-foreground">AI 분류</span>
+              <span className="text-muted-foreground">{t.status.fieldAiCategory}</span>
               <p className="font-medium mt-0.5">{inquiry.aiCategory}</p>
             </div>
             <div>
-              <span className="text-muted-foreground">긴급도</span>
+              <span className="text-muted-foreground">{t.status.fieldUrgency}</span>
               <p className={`font-medium mt-0.5 ${URGENCY_COLORS[inquiry.aiUrgency]}`}>
-                {inquiry.aiUrgency}
+                {t.urgencyLabels[inquiry.aiUrgency as keyof typeof t.urgencyLabels] ?? inquiry.aiUrgency}
               </p>
             </div>
           </div>
           {inquiry.aiSummary && (
             <div>
-              <span className="text-muted-foreground">AI 요약</span>
+              <span className="text-muted-foreground">{t.status.fieldAiSummary}</span>
               <p className="mt-0.5 rounded bg-muted p-2">{inquiry.aiSummary}</p>
             </div>
           )}
           <div>
-            <span className="text-muted-foreground">문의 내용</span>
+            <span className="text-muted-foreground">{t.status.fieldMessage}</span>
             <p className="mt-0.5 whitespace-pre-wrap">{inquiry.message}</p>
           </div>
           <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground pt-2 border-t">
-            <span>접수: {inquiry.createdAt}</span>
-            {inquiry.completedAt && <span>완료: {inquiry.completedAt}</span>}
+            <span>{t.status.receivedAt} {inquiry.createdAt}</span>
+            {inquiry.completedAt && <span>{t.status.completedAt} {inquiry.completedAt}</span>}
           </div>
         </CardContent>
       </Card>

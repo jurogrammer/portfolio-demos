@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "홈",
+    "inquiry": "문의하기",
+    "dashboard": "현황",
+    "logo": "n8n 자동화",
+    "themeToggle": "테마 전환",
+    "menuOpen": "메뉴 열기"
+  },
+  "footer": {
+    "poweredBy": "Powered by n8n"
+  },
+  "hero": {
+    "title": "n8n 기반 고객 문의\n자동화 시스템",
+    "description": "문의 접수 → AI 분류 → 알림 → 기록을 한 번에 자동화",
+    "inquiryBtn": "문의하기",
+    "dashboardBtn": "현황 보기"
+  },
+  "workflow": {
+    "sectionTitle": "자동화 워크플로우",
+    "items": [
+      {
+        "title": "고객 문의 자동 처리",
+        "description": "웹훅 수신 → AI 분류 → Slack 알림 → Sheets 저장 → 자동 응답 이메일",
+        "steps": ["웹훅 수신", "AI 분류", "Slack 알림", "Sheets 저장", "이메일 응답"]
+      },
+      {
+        "title": "일일 문의 요약 리포트",
+        "description": "매일 오전 9시 자동 집계 → 카테고리별 통계 → 이메일/Slack 리포트",
+        "steps": ["자동 집계", "카테고리 통계", "이메일 발송", "Slack 리포트"]
+      },
+      {
+        "title": "미응답 문의 에스컬레이션",
+        "description": "24시간 미응답 감지 → Slack 긴급 알림 → 자동 에스컬레이션",
+        "steps": ["미응답 감지", "긴급 알림", "에스컬레이션"]
+      }
+    ]
+  },
+  "techStack": {
+    "sectionTitle": "기술 스택"
+  },
+  "inquiry": {
+    "pageTitle": "문의 접수",
+    "formTitle": "문의 접수",
+    "name": "이름",
+    "namePlaceholder": "홍길동",
+    "email": "이메일",
+    "type": "문의 유형",
+    "typePlaceholder": "문의 유형을 선택해주세요",
+    "content": "문의 내용",
+    "contentPlaceholder": "문의 내용을 10자 이상 입력해주세요.",
+    "submit": "문의 접수하기",
+    "submitting": "접수 중..."
+  },
+  "validation": {
+    "nameRequired": "이름을 입력해주세요.",
+    "emailRequired": "이메일을 입력해주세요.",
+    "emailInvalid": "올바른 이메일 형식을 입력해주세요.",
+    "messageRequired": "문의 내용을 입력해주세요.",
+    "messageTooShort": "문의 내용을 10자 이상 입력해주세요."
+  },
+  "status": {
+    "pageTitle": "문의 상태 조회",
+    "heading": "문의 상태 조회",
+    "ticketId": "티켓 ID:",
+    "refresh": "새로고침",
+    "retry": "다시 시도",
+    "detailTitle": "문의 상세 정보",
+    "fieldName": "이름",
+    "fieldCategoryInput": "분류 (입력)",
+    "fieldAiCategory": "AI 분류",
+    "fieldUrgency": "긴급도",
+    "fieldAiSummary": "AI 요약",
+    "fieldMessage": "문의 내용",
+    "receivedAt": "접수:",
+    "completedAt": "완료:",
+    "steps": {
+      "접수됨": "접수됨",
+      "분류완료": "분류완료",
+      "처리중": "처리중",
+      "완료": "완료"
+    }
+  },
+  "dashboard": {
+    "pageTitle": "문의 현황 대시보드",
+    "heading": "문의 현황 대시보드",
+    "recentList": "최근 문의 목록",
+    "todayCount": "오늘 접수",
+    "completedCount": "처리완료",
+    "pendingCount": "미응답",
+    "avgProcessingHours": "평균 처리시간",
+    "unit": "건",
+    "hourUnit": "시간",
+    "colTicketId": "티켓ID",
+    "colName": "이름",
+    "colCategory": "카테고리",
+    "colUrgency": "긴급도",
+    "colStatus": "상태",
+    "colCreatedAt": "접수일시",
+    "empty": "접수된 문의가 없습니다."
+  },
+  "statusLabels": {
+    "접수됨": "접수됨",
+    "분류완료": "분류완료",
+    "처리중": "처리중",
+    "완료": "완료",
+    "에스컬레이션": "에스컬레이션"
+  },
+  "urgencyLabels": {
+    "높음": "높음",
+    "보통": "보통",
+    "낮음": "낮음"
+  },
+  "categories": {
+    "기술문의": "기술문의",
+    "견적요청": "견적요청",
+    "일반문의": "일반문의"
+  },
+  "meta": {
+    "siteTitle": "n8n 고객 문의 자동화 시스템",
+    "siteDescription": "문의 접수 → AI 분류 → 알림 → 기록을 한 번에 자동화"
+  }
+}

@@ -5,13 +5,8 @@ import { Menu, RefreshCw } from 'lucide-react'
 import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import ThemeToggle from './ThemeToggle'
-
-const pageTitles: Record<string, string> = {
-  '/dashboard': '개요',
-  '/dashboard/inventory': '재고관리',
-  '/dashboard/categories': '카테고리',
-  '/dashboard/settings': '설정',
-}
+import LanguageToggle from '@/components/ui/LanguageToggle'
+import { useLocale } from '@/lib/i18n'
 
 export default function DashboardHeader({
   onMenuClick,
@@ -22,8 +17,16 @@ export default function DashboardHeader({
 }) {
   const pathname = usePathname()
   const [isPending, startTransition] = useTransition()
+  const { t } = useLocale()
 
-  const title = pageTitles[pathname] ?? '대시보드'
+  const pageTitles: Record<string, string> = {
+    '/dashboard': t.nav.overview,
+    '/dashboard/inventory': t.nav.inventory,
+    '/dashboard/categories': t.nav.categories,
+    '/dashboard/settings': t.nav.settings,
+  }
+
+  const title = pageTitles[pathname] ?? t.header.dashboard
 
   function handleRefresh() {
     startTransition(async () => {
@@ -39,7 +42,7 @@ export default function DashboardHeader({
         size="icon"
         className="lg:hidden"
         onClick={onMenuClick}
-        aria-label="메뉴 열기"
+        aria-label={t.header.openMenu}
       >
         <Menu className="h-5 w-5" />
       </Button>
@@ -51,11 +54,12 @@ export default function DashboardHeader({
         size="icon"
         onClick={handleRefresh}
         disabled={isPending}
-        aria-label="새로고침"
+        aria-label={t.header.refresh}
       >
         <RefreshCw className={`h-4 w-4 ${isPending ? 'animate-spin' : ''}`} />
       </Button>
 
+      <LanguageToggle />
       <ThemeToggle />
     </header>
   )

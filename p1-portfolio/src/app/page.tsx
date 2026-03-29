@@ -5,14 +5,14 @@ import FeaturedProjects from '@/components/home/FeaturedProjects';
 import CTABanner from '@/components/home/CTABanner';
 
 export const metadata: Metadata = {
-  title: '주인재 | 풀스택 엔지니어',
+  title: 'Dev. | 풀스택 엔지니어',
   description: '5년+ 풀스택 엔지니어. Kotlin, Spring Boot, React, Next.js.',
 };
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: '주인재',
+  name: 'Dev.',
   jobTitle: '풀스택 엔지니어',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
 };

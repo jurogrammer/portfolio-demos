@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Home",
+    "inquiry": "Inquiry",
+    "dashboard": "Dashboard",
+    "logo": "n8n Automation",
+    "themeToggle": "Toggle theme",
+    "menuOpen": "Open menu"
+  },
+  "footer": {
+    "poweredBy": "Powered by n8n"
+  },
+  "hero": {
+    "title": "n8n-Powered Customer\nInquiry Automation",
+    "description": "Automate intake → AI classification → notifications → logging in one flow",
+    "inquiryBtn": "Submit Inquiry",
+    "dashboardBtn": "View Dashboard"
+  },
+  "workflow": {
+    "sectionTitle": "Automation Workflows",
+    "items": [
+      {
+        "title": "Auto-Process Customer Inquiries",
+        "description": "Webhook → AI classification → Slack alert → Sheets log → Auto-reply email",
+        "steps": ["Webhook", "AI classify", "Slack alert", "Sheets log", "Email reply"]
+      },
+      {
+        "title": "Daily Inquiry Summary Report",
+        "description": "Auto-aggregate at 9 AM → Category stats → Email/Slack report",
+        "steps": ["Auto-aggregate", "Category stats", "Send email", "Slack report"]
+      },
+      {
+        "title": "Unanswered Inquiry Escalation",
+        "description": "Detect 24h no-response → Slack urgent alert → Auto-escalation",
+        "steps": ["Detect", "Urgent alert", "Escalate"]
+      }
+    ]
+  },
+  "techStack": {
+    "sectionTitle": "Tech Stack"
+  },
+  "inquiry": {
+    "pageTitle": "Submit Inquiry",
+    "formTitle": "Submit Inquiry",
+    "name": "Name",
+    "namePlaceholder": "John Doe",
+    "email": "Email",
+    "type": "Inquiry Type",
+    "typePlaceholder": "Select inquiry type",
+    "content": "Message",
+    "contentPlaceholder": "Please enter at least 10 characters.",
+    "submit": "Submit Inquiry",
+    "submitting": "Submitting..."
+  },
+  "validation": {
+    "nameRequired": "Please enter your name.",
+    "emailRequired": "Please enter your email.",
+    "emailInvalid": "Please enter a valid email address.",
+    "messageRequired": "Please enter your message.",
+    "messageTooShort": "Please enter at least 10 characters."
+  },
+  "status": {
+    "pageTitle": "Inquiry Status",
+    "heading": "Inquiry Status",
+    "ticketId": "Ticket ID:",
+    "refresh": "Refresh",
+    "retry": "Try Again",
+    "detailTitle": "Inquiry Details",
+    "fieldName": "Name",
+    "fieldCategoryInput": "Category (input)",
+    "fieldAiCategory": "AI Category",
+    "fieldUrgency": "Urgency",
+    "fieldAiSummary": "AI Summary",
+    "fieldMessage": "Message",
+    "receivedAt": "Received:",
+    "completedAt": "Completed:",
+    "steps": {
+      "접수됨": "Received",
+      "분류완료": "Classified",
+      "처리중": "Processing",
+      "완료": "Completed"
+    }
+  },
+  "dashboard": {
+    "pageTitle": "Inquiry Dashboard",
+    "heading": "Inquiry Dashboard",
+    "recentList": "Recent Inquiries",
+    "todayCount": "Today",
+    "completedCount": "Completed",
+    "pendingCount": "Pending",
+    "avgProcessingHours": "Avg. Processing",
+    "unit": "",
+    "hourUnit": "hrs",
+    "colTicketId": "Ticket ID",
+    "colName": "Name",
+    "colCategory": "Category",
+    "colUrgency": "Urgency",
+    "colStatus": "Status",
+    "colCreatedAt": "Received At",
+    "empty": "No inquiries found."
+  },
+  "statusLabels": {
+    "접수됨": "Received",
+    "분류완료": "Classified",
+    "처리중": "Processing",
+    "완료": "Completed",
+    "에스컬레이션": "Escalated"
+  },
+  "urgencyLabels": {
+    "높음": "High",
+    "보통": "Medium",
+    "낮음": "Low"
+  },
+  "categories": {
+    "기술문의": "Technical",
+    "견적요청": "Quote Request",
+    "일반문의": "General"
+  },
+  "meta": {
+    "siteTitle": "n8n Customer Inquiry Automation",
+    "siteDescription": "Automate intake → AI classification → notifications → logging in one flow"
+  }
+}

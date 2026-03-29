@@ -9,7 +9,7 @@ export default async function ProjectOGImage({ params }: { params: Promise<{ slu
   const title = slug.replace(/-/g, ' ');
   return new ImageResponse(
     <div style={{ background: 'linear-gradient(135deg,#1a1a2e,#0f3460)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '60px' }}>
-      <div style={{ color: '#a78bfa', fontSize: 20, marginBottom: 16, fontWeight: 600 }}>주인재 | 포트폴리오</div>
+      <div style={{ color: '#a78bfa', fontSize: 20, marginBottom: 16, fontWeight: 600 }}>Dev. | Portfolio</div>
       <div style={{ color: '#f8fafc', fontSize: 52, fontWeight: 700, lineHeight: 1.2, maxWidth: 900 }}>{title}</div>
     </div>,
     { ...size }

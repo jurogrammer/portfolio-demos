@@ -38,15 +38,10 @@ import {
   editCategory,
   removeCategory,
 } from '@/app/(dashboard)/dashboard/categories/actions'
+import { useLocale } from '@/lib/i18n'
 
 interface CategoryListProps {
   initialCategories: Category[]
-}
-
-interface CategoryFormData {
-  name: string
-  description: string
-  lowStockThreshold: number
 }
 
 function CategoryForm({
@@ -63,11 +58,12 @@ function CategoryForm({
   isPending: boolean
 }) {
   const isEdit = !!initialData
+  const { t } = useLocale()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? '카테고리 수정' : '카테고리 추가'}</DialogTitle>
+          <DialogTitle>{isEdit ? t.form.editCategory : t.form.addCategory}</DialogTitle>
         </DialogHeader>
         <form
           onSubmit={(e) => {
@@ -77,28 +73,28 @@ function CategoryForm({
           className="space-y-4"
         >
           <div className="space-y-1">
-            <Label htmlFor="cat-name">카테고리명 *</Label>
+            <Label htmlFor="cat-name">{t.form.categoryNameLabel}</Label>
             <Input
               id="cat-name"
               name="name"
               required
               defaultValue={initialData?.name}
-              placeholder="카테고리명 입력"
+              placeholder={t.form.categoryNamePlaceholder}
               disabled={isPending || isEdit}
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="cat-desc">설명</Label>
+            <Label htmlFor="cat-desc">{t.form.descriptionLabel}</Label>
             <Input
               id="cat-desc"
               name="description"
               defaultValue={initialData?.description}
-              placeholder="설명 (선택)"
+              placeholder={t.form.descriptionPlaceholder}
               disabled={isPending}
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="cat-threshold">재고부족 기준수량 *</Label>
+            <Label htmlFor="cat-threshold">{t.form.lowStockThresholdLabel}</Label>
             <Input
               id="cat-threshold"
               name="lowStockThreshold"
@@ -117,11 +113,11 @@ function CategoryForm({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              취소
+              {t.form.cancel}
             </Button>
             <Button type="submit" disabled={isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEdit ? '수정' : '추가'}
+              {isEdit ? t.form.edit : t.form.add}
             </Button>
           </DialogFooter>
         </form>
@@ -131,6 +127,7 @@ function CategoryForm({
 }
 
 export default function CategoryList({ initialCategories }: CategoryListProps) {
+  const { t } = useLocale()
   const [formOpen, setFormOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<Category | undefined>()
   const [isPending, startTransition] = useTransition()
@@ -161,7 +158,7 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
       if (editTarget) {
         const result = await editCategory(formData)
         if (result.success) {
-          toast.success('카테고리가 수정되었습니다.')
+          toast.success(t.messages.editCategorySuccess)
           setFormOpen(false)
         } else {
           toast.error(result.error)
@@ -169,7 +166,7 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
       } else {
         const result = await createCategory(formData)
         if (result.success) {
-          toast.success('카테고리가 추가되었습니다.')
+          toast.success(t.messages.addCategorySuccess)
           addOptimistic(result.data)
           setFormOpen(false)
         } else {
@@ -185,7 +182,7 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
       const result = await removeCategory(name)
       setDeletingName(null)
       if (result.success) {
-        toast.success('카테고리가 삭제되었습니다.')
+        toast.success(t.messages.deleteCategorySuccess)
         setDeletedNames((prev) => new Set([...prev, name]))
       } else {
         toast.error(result.error)
@@ -197,14 +194,14 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">카테고리</h1>
+          <h1 className="text-2xl font-bold">{t.categories.title}</h1>
           <p className="text-muted-foreground text-sm mt-1">
-            재고 카테고리를 관리합니다.
+            {t.categories.subtitle}
           </p>
         </div>
         <Button onClick={handleAdd} className="gap-2">
           <Plus className="h-4 w-4" />
-          카테고리 추가
+          {t.form.addCategory}
         </Button>
       </div>
 
@@ -212,9 +209,9 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>카테고리명</TableHead>
-              <TableHead>설명</TableHead>
-              <TableHead>재고부족 기준</TableHead>
+              <TableHead>{t.categories.name}</TableHead>
+              <TableHead>{t.categories.description}</TableHead>
+              <TableHead>{t.categories.lowStockThreshold}</TableHead>
               <TableHead className="w-[80px]" />
             </TableRow>
           </TableHeader>
@@ -222,7 +219,7 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
             {visible.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="text-center text-muted-foreground py-10">
-                  카테고리가 없습니다. 추가해주세요.
+                  {t.categories.noCategories}
                 </TableCell>
               </TableRow>
             ) : (
@@ -243,7 +240,7 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
                           className="h-8 w-8"
                           onClick={() => handleEdit(cat)}
                           disabled={isPending}
-                          aria-label="수정"
+                          aria-label={t.actions.edit}
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
@@ -251,7 +248,7 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
                           <AlertDialogTrigger
                             className="inline-flex items-center justify-center h-8 w-8 rounded-md text-destructive hover:text-destructive hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
                             disabled={isPending}
-                            aria-label="삭제"
+                            aria-label={t.actions.delete}
                           >
                             {isDeleting ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
@@ -261,19 +258,18 @@ export default function CategoryList({ initialCategories }: CategoryListProps) {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>카테고리 삭제</AlertDialogTitle>
+                              <AlertDialogTitle>{t.actions.deleteCategory}</AlertDialogTitle>
                               <AlertDialogDescription>
-                                <strong>{cat.name}</strong> 카테고리를 삭제하시겠습니까?
-                                이 카테고리에 속한 항목이 있으면 삭제가 차단됩니다.
+                                <strong>{cat.name}</strong> {t.actions.deleteCategoryDesc}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>취소</AlertDialogCancel>
+                              <AlertDialogCancel>{t.form.cancel}</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDelete(cat.name)}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                               >
-                                삭제
+                                {t.form.delete}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>

@@ -1,0 +1,74 @@
+{
+  "common": {
+    "home": "홈",
+    "about": "소개",
+    "projects": "프로젝트",
+    "blog": "블로그",
+    "contact": "연락처",
+    "menu": "메뉴",
+    "viewAll": "전체 보기 →",
+    "toggleTheme": "테마 전환"
+  },
+  "hero": {
+    "label": "Fullstack Engineer",
+    "greeting": "안녕하세요,",
+    "role": "풀스택 엔지니어입니다",
+    "subtitle": "Spring · React",
+    "description": "5년+ 풀스택 경력. 대형 IT 플랫폼에서 500만+ 사용자 서비스 개발 경험, 배치 처리 1시간→5분 단축, React/Next.js 어드민 개발.",
+    "ctaProjects": "프로젝트 보기",
+    "ctaContact": "문의하기"
+  },
+  "highlights": {
+    "career": "개발 경력",
+    "users": "서비스 개발 경험",
+    "batch": "배치 처리 단축",
+    "coldStart": "콜드 스타트 단축"
+  },
+  "featuredProjects": {
+    "title": "주요 프로젝트",
+    "subtitle": "실제 비즈니스 문제를 해결한 케이스 스터디"
+  },
+  "cta": {
+    "title": "프로젝트를 함께 만들어봐요",
+    "description": "아이디어가 있으신가요? 기획부터 배포까지 빠르고 믿을 수 있게 진행합니다.",
+    "button": "무료 상담 신청"
+  },
+  "about": {
+    "title": "안녕하세요,",
+    "titleSub": "풀스택 엔지니어입니다",
+    "description": "5년+ 풀스택 엔지니어. Kotlin/Spring Boot 백엔드부터 React/Next.js 프론트엔드까지, 대규모 트래픽 최적화와 AI 개발 워크플로우 구축 경험이 있습니다.",
+    "careerTitle": "커리어 히스토리",
+    "techTitle": "기술 스택",
+    "yearsUnit": "년"
+  },
+  "contact": {
+    "title": "문의하기",
+    "description": "프로젝트 협업이나 기술 상담이 필요하시면 편하게 연락주세요.",
+    "name": "이름",
+    "nameRequired": "이름 *",
+    "namePlaceholder": "홍길동",
+    "email": "이메일",
+    "emailRequired": "이메일 *",
+    "emailPlaceholder": "hong@example.com",
+    "company": "회사 (선택)",
+    "companyPlaceholder": "(주)예시회사",
+    "message": "메시지",
+    "messageRequired": "메시지 *",
+    "messagePlaceholder": "문의사항을 작성해주세요.",
+    "submit": "메시지 보내기",
+    "submitting": "전송 중...",
+    "success": "메시지가 전송되었습니다!",
+    "error": "오류가 발생했습니다."
+  },
+  "footer": {
+    "copyright": "© {year} Dev. All rights reserved."
+  },
+  "meta": {
+    "siteTitle": "Dev. | 풀스택 엔지니어",
+    "siteDescription": "5년+ 풀스택 엔지니어. Kotlin, Spring Boot, React, Next.js.",
+    "aboutTitle": "소개",
+    "aboutDescription": "5년+ 풀스택 엔지니어. 커리어와 기술 스택을 소개합니다.",
+    "projectsTitle": "프로젝트",
+    "projectsDescription": "엔터프라이즈 B2B, 커뮤니티, SaaS 케이스 스터디 모음."
+  }
+}

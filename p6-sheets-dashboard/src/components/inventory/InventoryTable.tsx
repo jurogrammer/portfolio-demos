@@ -17,6 +17,7 @@ import type { InventoryItem, Category, InventoryFilters } from '@/types/inventor
 import InventoryFiltersBar from './InventoryFilters'
 import InventoryActions from './InventoryActions'
 import LowStockAlert from './LowStockAlert'
+import { useLocale } from '@/lib/i18n'
 
 const krw = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' })
 
@@ -43,6 +44,7 @@ export default function InventoryTable({
   onAdd,
   onEdit,
 }: InventoryTableProps) {
+  const { t } = useLocale()
   const [filters, setFilters] = useState<InventoryFilters>({
     search: '',
     category: '',
@@ -131,12 +133,12 @@ export default function InventoryTable({
   }
 
   const columns: { key: SortKey; label: string }[] = [
-    { key: 'sku', label: 'SKU' },
-    { key: 'name', label: '상품명' },
-    { key: 'category', label: '카테고리' },
-    { key: 'quantity', label: '수량' },
-    { key: 'unitPrice', label: '단가' },
-    { key: 'lastUpdated', label: '최종수정일' },
+    { key: 'sku', label: t.inventory.sku },
+    { key: 'name', label: t.inventory.name },
+    { key: 'category', label: t.inventory.category },
+    { key: 'quantity', label: t.inventory.quantity },
+    { key: 'unitPrice', label: t.inventory.unitPrice },
+    { key: 'lastUpdated', label: t.inventory.lastUpdated },
   ]
 
   return (
@@ -151,7 +153,7 @@ export default function InventoryTable({
         />
         <Button onClick={onAdd} className="shrink-0 gap-2">
           <Plus className="h-4 w-4" />
-          항목 추가
+          {t.inventory.addItem}
         </Button>
       </div>
 
@@ -169,7 +171,7 @@ export default function InventoryTable({
                   <SortIcon col={key} sortKey={sortKey} sortDir={sortDir} />
                 </TableHead>
               ))}
-              <TableHead className="text-right">공급업체</TableHead>
+              <TableHead className="text-right">{t.inventory.supplier}</TableHead>
               <TableHead className="w-[80px]" />
             </TableRow>
           </TableHeader>
@@ -177,7 +179,7 @@ export default function InventoryTable({
             {paged.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center text-muted-foreground py-10">
-                  표시할 항목이 없습니다.
+                  {t.inventory.noItems}
                 </TableCell>
               </TableRow>
             ) : (
@@ -193,7 +195,7 @@ export default function InventoryTable({
                       {item.name}
                       {lowStock && (
                         <Badge variant="destructive" className="ml-2 text-xs">
-                          재고부족
+                          {t.inventory.lowStock}
                         </Badge>
                       )}
                     </TableCell>
@@ -223,8 +225,7 @@ export default function InventoryTable({
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
-            {sorted.length}개 중 {(safePage - 1) * PAGE_SIZE + 1}–
-            {Math.min(safePage * PAGE_SIZE, sorted.length)}
+            {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, sorted.length)} / {sorted.length}
           </span>
           <div className="flex items-center gap-1">
             <Button
@@ -233,7 +234,7 @@ export default function InventoryTable({
               disabled={safePage <= 1}
               onClick={() => setPage((p) => p - 1)}
             >
-              이전
+              ‹
             </Button>
             <span className="px-2">
               {safePage} / {totalPages}
@@ -244,7 +245,7 @@ export default function InventoryTable({
               disabled={safePage >= totalPages}
               onClick={() => setPage((p) => p + 1)}
             >
-              다음
+              ›
             </Button>
           </div>
         </div>

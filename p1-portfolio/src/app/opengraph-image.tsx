@@ -1,8 +1,7 @@
 import { ImageResponse } from 'next/og';
-import { SITE_NAME, SITE_DESCRIPTION } from '@/lib/constants';
 
 export const runtime = 'nodejs';
-export const alt = SITE_NAME;
+export const alt = 'Dev. | Fullstack Engineer';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -44,7 +43,7 @@ export default function OgImage() {
               fontWeight: 'bold',
             }}
           >
-            김
+            Dev
           </div>
           <h1
             style={{
@@ -56,7 +55,7 @@ export default function OgImage() {
               lineHeight: 1.1,
             }}
           >
-            {SITE_NAME}
+            Dev.
           </h1>
           <p
             style={{
@@ -66,7 +65,7 @@ export default function OgImage() {
               textAlign: 'center',
             }}
           >
-            {SITE_DESCRIPTION}
+            Fullstack Engineer · Kotlin · Spring Boot · React · Next.js
           </p>
         </div>
       </div>

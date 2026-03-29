@@ -4,6 +4,7 @@ import { useState, useOptimistic, useCallback } from 'react'
 import type { InventoryItem, Category } from '@/types/inventory'
 import InventoryTable from '@/components/inventory/InventoryTable'
 import InventoryForm from '@/components/inventory/InventoryForm'
+import { useLocale } from '@/lib/i18n'
 
 interface InventoryPageClientProps {
   initialItems: InventoryItem[]
@@ -14,6 +15,7 @@ export default function InventoryPageClient({
   initialItems,
   categories,
 }: InventoryPageClientProps) {
+  const { t } = useLocale()
   const [formOpen, setFormOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<InventoryItem | undefined>()
 
@@ -44,9 +46,9 @@ export default function InventoryPageClient({
     <>
       <div className="space-y-4">
         <div>
-          <h1 className="text-2xl font-bold">재고관리</h1>
+          <h1 className="text-2xl font-bold">{t.inventory.title}</h1>
           <p className="text-muted-foreground text-sm mt-1">
-            전체 재고 목록을 조회하고 관리합니다.
+            {t.inventory.subtitle}
           </p>
         </div>
 

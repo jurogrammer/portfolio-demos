@@ -1,14 +1,19 @@
+'use client'
+
 import { GitFork } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useLocale } from "@/lib/i18n";
 
 const techBadges = ["n8n", "Next.js", "OpenAI", "Slack", "Sheets", "Resend"];
 
 export function Footer() {
+  const { t } = useLocale();
+
   return (
     <footer className="border-t py-8">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">Powered by n8n</p>
+          <p className="text-sm text-muted-foreground">{t.footer.poweredBy}</p>
           <a
             href="https://github.com"
             target="_blank"

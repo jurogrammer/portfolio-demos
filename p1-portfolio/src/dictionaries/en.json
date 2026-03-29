@@ -1,0 +1,74 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact",
+    "menu": "Menu",
+    "viewAll": "View All →",
+    "toggleTheme": "Toggle theme"
+  },
+  "hero": {
+    "label": "Fullstack Engineer",
+    "greeting": "Hi, I'm",
+    "role": "a Fullstack Engineer",
+    "subtitle": "Spring · React",
+    "description": "5+ years of fullstack experience. Built services for 5M+ users on a large IT platform, reduced batch processing from 1h→5m, and developed React/Next.js admin tools.",
+    "ctaProjects": "View Projects",
+    "ctaContact": "Get in Touch"
+  },
+  "highlights": {
+    "career": "Years of Experience",
+    "users": "Users Served",
+    "batch": "Batch Processing",
+    "coldStart": "Cold Start Reduced"
+  },
+  "featuredProjects": {
+    "title": "Featured Projects",
+    "subtitle": "Case studies solving real business problems"
+  },
+  "cta": {
+    "title": "Let's build something together",
+    "description": "Have an idea? I can take it from concept to deployment quickly and reliably.",
+    "button": "Free Consultation"
+  },
+  "about": {
+    "title": "Hi, I'm",
+    "titleSub": "a Fullstack Engineer",
+    "description": "5+ years of fullstack experience. From Kotlin/Spring Boot backend to React/Next.js frontend — with expertise in high-traffic optimization and AI-driven development workflows.",
+    "careerTitle": "Career History",
+    "techTitle": "Tech Stack",
+    "yearsUnit": "yr"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Need project collaboration or technical consultation? Feel free to reach out.",
+    "name": "Name",
+    "nameRequired": "Name *",
+    "namePlaceholder": "John Doe",
+    "email": "Email",
+    "emailRequired": "Email *",
+    "emailPlaceholder": "john@example.com",
+    "company": "Company (optional)",
+    "companyPlaceholder": "Example Corp",
+    "message": "Message",
+    "messageRequired": "Message *",
+    "messagePlaceholder": "Write your message here.",
+    "submit": "Send Message",
+    "submitting": "Sending...",
+    "success": "Your message has been sent!",
+    "error": "An error occurred."
+  },
+  "footer": {
+    "copyright": "© {year} Dev. All rights reserved."
+  },
+  "meta": {
+    "siteTitle": "Dev. | Fullstack Engineer",
+    "siteDescription": "5+ years fullstack engineer. Kotlin, Spring Boot, React, Next.js.",
+    "aboutTitle": "About",
+    "aboutDescription": "5+ years fullstack engineer. Career and tech stack overview.",
+    "projectsTitle": "Projects",
+    "projectsDescription": "Enterprise B2B, community, and SaaS case studies."
+  }
+}

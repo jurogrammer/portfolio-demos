@@ -1,10 +1,11 @@
 import { getDashboardStats, getRecentChanges } from './actions'
 import StatsCards from '@/components/dashboard/StatsCards'
 import RecentActivity from '@/components/dashboard/RecentActivity'
+import DashboardOverviewHeading from '@/components/dashboard/DashboardOverviewHeading'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = { title: '개요' }
+export const metadata = { title: '개요 | Overview' }
 
 export default async function DashboardPage() {
   const [stats, recentItems] = await Promise.all([
@@ -14,10 +15,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold">개요</h1>
-        <p className="text-sm text-muted-foreground mt-1">재고 현황 요약</p>
-      </div>
+      <DashboardOverviewHeading />
       <StatsCards stats={stats} />
       <RecentActivity items={recentItems} />
     </div>

@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/select'
 import type { InventoryItem, Category } from '@/types/inventory'
 import { createItem, editItem } from '@/app/(dashboard)/dashboard/inventory/actions'
+import { useLocale } from '@/lib/i18n'
 
 interface InventoryFormProps {
   open: boolean
@@ -41,6 +42,7 @@ export default function InventoryForm({
   const isEdit = !!initialData
   const [isPending, startTransition] = useTransition()
   const formRef = useRef<HTMLFormElement>(null)
+  const { t } = useLocale()
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -50,7 +52,7 @@ export default function InventoryForm({
       if (isEdit) {
         const result = await editItem(formData)
         if (result.success) {
-          toast.success('항목이 수정되었습니다.')
+          toast.success(t.messages.editItemSuccess)
           onOpenChange(false)
         } else {
           toast.error(result.error)
@@ -58,7 +60,7 @@ export default function InventoryForm({
       } else {
         const result = await createItem(formData)
         if (result.success) {
-          toast.success('항목이 추가되었습니다.')
+          toast.success(t.messages.addItemSuccess)
           onCreated?.(result.data)
           onOpenChange(false)
           formRef.current?.reset()
@@ -73,7 +75,7 @@ export default function InventoryForm({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? '항목 수정' : '항목 추가'}</DialogTitle>
+          <DialogTitle>{isEdit ? t.form.editItem : t.form.addItem}</DialogTitle>
         </DialogHeader>
 
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
@@ -84,29 +86,29 @@ export default function InventoryForm({
           <div className="space-y-1">
             <Label>SKU</Label>
             <Input
-              value={isEdit ? initialData.sku : '자동 생성'}
+              value={isEdit ? initialData.sku : t.form.skuAutoGen}
               disabled
               className="bg-muted"
             />
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="inv-name">상품명 *</Label>
+            <Label htmlFor="inv-name">{t.form.productName}</Label>
             <Input
               id="inv-name"
               name="name"
               required
               defaultValue={initialData?.name}
-              placeholder="상품명 입력"
+              placeholder={t.form.productNamePlaceholder}
               disabled={isPending}
             />
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="inv-category">카테고리 *</Label>
+            <Label htmlFor="inv-category">{t.form.categoryLabel}</Label>
             <Select name="category" defaultValue={initialData?.category} required>
               <SelectTrigger id="inv-category" disabled={isPending}>
-                <SelectValue placeholder="카테고리 선택" />
+                <SelectValue placeholder={t.form.categoryPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
@@ -120,7 +122,7 @@ export default function InventoryForm({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <Label htmlFor="inv-quantity">수량 *</Label>
+              <Label htmlFor="inv-quantity">{t.form.quantityLabel}</Label>
               <Input
                 id="inv-quantity"
                 name="quantity"
@@ -133,7 +135,7 @@ export default function InventoryForm({
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="inv-unitPrice">단가 (₩) *</Label>
+              <Label htmlFor="inv-unitPrice">{t.form.unitPriceLabel}</Label>
               <Input
                 id="inv-unitPrice"
                 name="unitPrice"
@@ -148,23 +150,23 @@ export default function InventoryForm({
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="inv-supplier">공급업체</Label>
+            <Label htmlFor="inv-supplier">{t.form.supplierLabel}</Label>
             <Input
               id="inv-supplier"
               name="supplier"
               defaultValue={initialData?.supplier}
-              placeholder="공급업체 (선택)"
+              placeholder={t.form.supplierPlaceholder}
               disabled={isPending}
             />
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="inv-notes">비고</Label>
+            <Label htmlFor="inv-notes">{t.form.notesLabel}</Label>
             <Input
               id="inv-notes"
               name="notes"
               defaultValue={initialData?.notes}
-              placeholder="비고 (선택)"
+              placeholder={t.form.notesPlaceholder}
               disabled={isPending}
             />
           </div>
@@ -176,11 +178,11 @@ export default function InventoryForm({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              취소
+              {t.form.cancel}
             </Button>
             <Button type="submit" disabled={isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEdit ? '수정' : '추가'}
+              {isEdit ? t.form.edit : t.form.add}
             </Button>
           </DialogFooter>
         </form>

@@ -17,6 +17,7 @@ import {
 import { toast } from 'sonner'
 import type { InventoryItem } from '@/types/inventory'
 import { removeItem } from '@/app/(dashboard)/dashboard/inventory/actions'
+import { useLocale } from '@/lib/i18n'
 
 interface InventoryActionsProps {
   item: InventoryItem
@@ -30,12 +31,13 @@ export default function InventoryActions({
   onDeleted,
 }: InventoryActionsProps) {
   const [isPending, startTransition] = useTransition()
+  const { t } = useLocale()
 
   function handleDelete() {
     startTransition(async () => {
       const result = await removeItem(item.sku)
       if (result.success) {
-        toast.success('항목이 삭제되었습니다.')
+        toast.success(t.messages.deleteItemSuccess)
         onDeleted(item.sku)
       } else {
         toast.error(result.error)
@@ -51,7 +53,7 @@ export default function InventoryActions({
         className="h-8 w-8"
         onClick={() => onEdit(item)}
         disabled={isPending}
-        aria-label="수정"
+        aria-label={t.actions.edit}
       >
         <Pencil className="h-4 w-4" />
       </Button>
@@ -60,7 +62,7 @@ export default function InventoryActions({
         <AlertDialogTrigger
           className="inline-flex items-center justify-center h-8 w-8 rounded-md text-destructive hover:text-destructive hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
           disabled={isPending}
-          aria-label="삭제"
+          aria-label={t.actions.delete}
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -70,19 +72,18 @@ export default function InventoryActions({
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>항목 삭제</AlertDialogTitle>
+            <AlertDialogTitle>{t.actions.deleteItem}</AlertDialogTitle>
             <AlertDialogDescription>
-              <strong>{item.name}</strong> ({item.sku})을(를) 삭제하시겠습니까?
-              이 작업은 되돌릴 수 없습니다.
+              <strong>{item.name}</strong> ({item.sku}) {t.actions.deleteItemDesc}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogCancel>{t.form.cancel}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              삭제
+              {t.form.delete}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

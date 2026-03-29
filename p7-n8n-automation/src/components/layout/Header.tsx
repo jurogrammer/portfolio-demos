@@ -10,16 +10,19 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-const navLinks = [
-  { href: "/", label: "홈" },
-  { href: "/inquiry", label: "문의하기" },
-  { href: "/dashboard", label: "현황" },
-];
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
+import { useLocale } from "@/lib/i18n";
 
 export function Header() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const { t } = useLocale();
+
+  const navLinks = [
+    { href: "/", label: t.nav.home },
+    { href: "/inquiry", label: t.nav.inquiry },
+    { href: "/dashboard", label: t.nav.dashboard },
+  ];
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -31,7 +34,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Workflow className="h-5 w-5 text-primary" />
-          <span>n8n 자동화</span>
+          <span>{t.nav.logo}</span>
         </Link>
 
         {/* Desktop nav */}
@@ -52,15 +55,16 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageToggle />
           {/* Dark mode toggle */}
-          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="테마 전환">
+          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t.nav.themeToggle}>
             <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </Button>
 
           {/* Mobile menu */}
           <Sheet>
-            <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" aria-label="메뉴 열기"><Menu className="h-5 w-5" /></Button>} />
+            <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" aria-label={t.nav.menuOpen}><Menu className="h-5 w-5" /></Button>} />
             <SheetContent side="right">
               <nav className="flex flex-col gap-4 pt-8 px-4">
                 {navLinks.map(({ href, label }) => (

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import type { Category, InventoryFilters } from '@/types/inventory'
+import { useLocale } from '@/lib/i18n'
 
 interface InventoryFiltersProps {
   filters: InventoryFilters
@@ -23,11 +24,13 @@ export default function InventoryFiltersBar({
   categories,
   onChange,
 }: InventoryFiltersProps) {
+  const { t } = useLocale()
+
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
       <div className="flex-1 min-w-0">
         <Input
-          placeholder="SKU 또는 상품명 검색..."
+          placeholder={t.filter.searchPlaceholder}
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
           className="w-full"
@@ -41,10 +44,10 @@ export default function InventoryFiltersBar({
         }
       >
         <SelectTrigger className="w-full sm:w-[180px]">
-          <SelectValue placeholder="카테고리" />
+          <SelectValue placeholder={t.filter.allCategories} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="__all__">전체 카테고리</SelectItem>
+          <SelectItem value="__all__">{t.filter.allCategories}</SelectItem>
           {categories.map((cat) => (
             <SelectItem key={cat.name} value={cat.name}>
               {cat.name}
@@ -62,7 +65,7 @@ export default function InventoryFiltersBar({
           }
         />
         <Label htmlFor="low-stock-filter" className="text-sm cursor-pointer whitespace-nowrap">
-          재고부족만
+          {t.filter.lowStockOnly}
         </Label>
       </div>
     </div>

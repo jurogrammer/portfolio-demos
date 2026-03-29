@@ -1,38 +1,43 @@
+'use client'
+
 import { DashboardStats } from '@/types/inquiry'
 import { Card, CardContent } from '@/components/ui/card'
 import { Inbox, CheckCircle2, Clock, Timer } from 'lucide-react'
+import { useLocale } from '@/lib/i18n'
 
 interface Props {
   stats: DashboardStats
 }
 
 export function StatsCards({ stats }: Props) {
+  const { t } = useLocale()
+
   const cards = [
     {
-      label: '오늘 접수',
+      label: t.dashboard.todayCount,
       value: stats.todayCount,
-      unit: '건',
+      unit: t.dashboard.unit,
       icon: Inbox,
       color: 'text-blue-500',
     },
     {
-      label: '처리완료',
+      label: t.dashboard.completedCount,
       value: stats.completedCount,
-      unit: '건',
+      unit: t.dashboard.unit,
       icon: CheckCircle2,
       color: 'text-green-500',
     },
     {
-      label: '미응답',
+      label: t.dashboard.pendingCount,
       value: stats.pendingCount,
-      unit: '건',
+      unit: t.dashboard.unit,
       icon: Clock,
       color: 'text-orange-500',
     },
     {
-      label: '평균 처리시간',
+      label: t.dashboard.avgProcessingHours,
       value: stats.avgProcessingHours,
-      unit: '시간',
+      unit: t.dashboard.hourUnit,
       icon: Timer,
       color: 'text-purple-500',
     },

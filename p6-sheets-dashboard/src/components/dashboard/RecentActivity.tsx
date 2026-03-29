@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -9,25 +11,27 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { InventoryItem } from '@/types/inventory'
+import { useLocale } from '@/lib/i18n'
 
 export default function RecentActivity({ items }: { items: InventoryItem[] }) {
+  const { t } = useLocale()
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">최근 변경 항목</CardTitle>
+        <CardTitle className="text-base">{t.dashboard.recentActivity}</CardTitle>
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-6">항목이 없습니다.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">{t.dashboard.noItems}</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>상품명</TableHead>
-                  <TableHead className="text-right">수량</TableHead>
-                  <TableHead>최종수정일</TableHead>
+                  <TableHead>{t.inventory.sku}</TableHead>
+                  <TableHead>{t.inventory.name}</TableHead>
+                  <TableHead className="text-right">{t.inventory.quantity}</TableHead>
+                  <TableHead>{t.inventory.lastUpdated}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

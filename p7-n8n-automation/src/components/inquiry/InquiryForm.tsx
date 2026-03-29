@@ -18,9 +18,11 @@ import {
 import { CATEGORIES } from '@/lib/constants'
 import { InquiryFormData, InquiryCategory } from '@/types/inquiry'
 import { submitInquiry } from '@/app/inquiry/actions'
+import { useLocale } from '@/lib/i18n'
 
 export function InquiryForm() {
   const router = useRouter()
+  const { t } = useLocale()
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState<InquiryFormData>({
     name: '',
@@ -34,17 +36,17 @@ export function InquiryForm() {
     const newErrors: Partial<Record<keyof InquiryFormData, string>> = {}
 
     if (!formData.name.trim()) {
-      newErrors.name = '이름을 입력해주세요.'
+      newErrors.name = t.validation.nameRequired
     }
     if (!formData.email.trim()) {
-      newErrors.email = '이메일을 입력해주세요.'
+      newErrors.email = t.validation.emailRequired
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = '올바른 이메일 형식을 입력해주세요.'
+      newErrors.email = t.validation.emailInvalid
     }
     if (!formData.message.trim()) {
-      newErrors.message = '문의 내용을 입력해주세요.'
+      newErrors.message = t.validation.messageRequired
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = '문의 내용을 10자 이상 입력해주세요.'
+      newErrors.message = t.validation.messageTooShort
     }
 
     setErrors(newErrors)
@@ -71,24 +73,24 @@ export function InquiryForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>문의 접수</CardTitle>
+        <CardTitle>{t.inquiry.formTitle}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-1.5">
-            <Label htmlFor="name">이름 *</Label>
+            <Label htmlFor="name">{t.inquiry.name} *</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-              placeholder="홍길동"
+              placeholder={t.inquiry.namePlaceholder}
               disabled={isLoading}
             />
             {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="email">이메일 *</Label>
+            <Label htmlFor="email">{t.inquiry.email} *</Label>
             <Input
               id="email"
               type="email"
@@ -101,7 +103,7 @@ export function InquiryForm() {
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="category">문의 유형 *</Label>
+            <Label htmlFor="category">{t.inquiry.type} *</Label>
             <Select
               value={formData.category}
               onValueChange={(value) =>
@@ -110,12 +112,12 @@ export function InquiryForm() {
               disabled={isLoading}
             >
               <SelectTrigger id="category">
-                <SelectValue placeholder="문의 유형을 선택해주세요" />
+                <SelectValue placeholder={t.inquiry.typePlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {CATEGORIES.map((cat) => (
                   <SelectItem key={cat} value={cat}>
-                    {cat}
+                    {t.categories[cat as keyof typeof t.categories] ?? cat}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -123,12 +125,12 @@ export function InquiryForm() {
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="message">문의 내용 *</Label>
+            <Label htmlFor="message">{t.inquiry.content} *</Label>
             <Textarea
               id="message"
               value={formData.message}
               onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
-              placeholder="문의 내용을 10자 이상 입력해주세요."
+              placeholder={t.inquiry.contentPlaceholder}
               rows={5}
               disabled={isLoading}
             />
@@ -158,10 +160,10 @@ export function InquiryForm() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                   />
                 </svg>
-                접수 중...
+                {t.inquiry.submitting}
               </span>
             ) : (
-              '문의 접수하기'
+              t.inquiry.submit
             )}
           </Button>
         </form>

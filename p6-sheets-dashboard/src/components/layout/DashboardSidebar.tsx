@@ -5,16 +5,19 @@ import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Package, Tags, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
-
-const navItems = [
-  { href: '/dashboard', label: '개요', icon: LayoutDashboard, exact: true },
-  { href: '/dashboard/inventory', label: '재고관리', icon: Package },
-  { href: '/dashboard/categories', label: '카테고리', icon: Tags },
-  { href: '/dashboard/settings', label: '설정', icon: Settings },
-]
+import { useLocale } from '@/lib/i18n'
 
 function NavLinks() {
   const pathname = usePathname()
+  const { t } = useLocale()
+
+  const navItems = [
+    { href: '/dashboard', label: t.nav.overview, icon: LayoutDashboard, exact: true },
+    { href: '/dashboard/inventory', label: t.nav.inventory, icon: Package },
+    { href: '/dashboard/categories', label: t.nav.categories, icon: Tags },
+    { href: '/dashboard/settings', label: t.nav.settings, icon: Settings },
+  ]
+
   return (
     <nav className="flex-1 p-4 space-y-1">
       {navItems.map((item) => {
@@ -42,11 +45,12 @@ function NavLinks() {
 }
 
 function SidebarContent() {
+  const { t } = useLocale()
   return (
     <div className="flex flex-col h-full">
       <div className="p-6 border-b border-border">
-        <h1 className="font-bold text-lg">재고관리 대시보드</h1>
-        <p className="text-muted-foreground text-xs mt-1">Google Sheets 연동</p>
+        <h1 className="font-bold text-lg">{t.nav.title}</h1>
+        <p className="text-muted-foreground text-xs mt-1">Google Sheets</p>
       </div>
       <NavLinks />
       <div className="p-4 border-t border-border">
@@ -58,7 +62,7 @@ function SidebarContent() {
           >
             <path d="M19.9 2H8.1A2.1 2.1 0 0 0 6 4.1v2.1H4.1A2.1 2.1 0 0 0 2 8.3v11.6A2.1 2.1 0 0 0 4.1 22h11.8a2.1 2.1 0 0 0 2.1-2.1V17.9h1.9a2.1 2.1 0 0 0 2.1-2.1V4.1A2.1 2.1 0 0 0 19.9 2zM16 19.9a.1.1 0 0 1-.1.1H4.1a.1.1 0 0 1-.1-.1V8.3a.1.1 0 0 1 .1-.1H6v7.6A2.1 2.1 0 0 0 8.1 18H16zm3.9-4.1a.1.1 0 0 1-.1.1H8.1a.1.1 0 0 1-.1-.1V4.1a.1.1 0 0 1 .1-.1h11.8a.1.1 0 0 1 .1.1z" />
           </svg>
-          <span>Powered by Google Sheets</span>
+          <span>{t.nav.poweredBy}</span>
         </div>
       </div>
     </div>

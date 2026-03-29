@@ -1,0 +1,128 @@
+{
+  "nav": {
+    "overview": "Overview",
+    "inventory": "Inventory",
+    "categories": "Categories",
+    "settings": "Settings",
+    "title": "Inventory Dashboard",
+    "poweredBy": "Powered by Google Sheets"
+  },
+  "header": {
+    "openMenu": "Open menu",
+    "refresh": "Refresh",
+    "dashboard": "Dashboard"
+  },
+  "dashboard": {
+    "title": "Overview",
+    "subtitle": "Inventory summary",
+    "totalItems": "Total Items",
+    "totalItemsSub": "Registered items",
+    "lowStockWarning": "Low Stock Alerts",
+    "lowStockSub": "Items below threshold",
+    "totalValue": "Total Value",
+    "totalValueSub": "Quantity × Unit price",
+    "categoryCount": "Categories",
+    "categoryCountSub": "Registered categories",
+    "recentActivity": "Recent Changes",
+    "noItems": "No items found."
+  },
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "Browse and manage all inventory items.",
+    "sku": "SKU",
+    "name": "Product Name",
+    "category": "Category",
+    "quantity": "Quantity",
+    "unitPrice": "Unit Price",
+    "lastUpdated": "Last Updated",
+    "supplier": "Supplier",
+    "addItem": "Add Item",
+    "noItems": "No items to display.",
+    "lowStock": "Low Stock",
+    "pagination": "of"
+  },
+  "filter": {
+    "searchPlaceholder": "Search SKU or product name...",
+    "allCategories": "All Categories",
+    "lowStockOnly": "Low stock only"
+  },
+  "form": {
+    "addItem": "Add Item",
+    "editItem": "Edit Item",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "skuAutoGen": "Auto-generated",
+    "productName": "Product Name *",
+    "productNamePlaceholder": "Enter product name",
+    "categoryLabel": "Category *",
+    "categoryPlaceholder": "Select category",
+    "quantityLabel": "Quantity *",
+    "unitPriceLabel": "Unit Price (₩) *",
+    "supplierLabel": "Supplier",
+    "supplierPlaceholder": "Supplier (optional)",
+    "notesLabel": "Notes",
+    "notesPlaceholder": "Notes (optional)",
+    "categoryNameLabel": "Category Name *",
+    "categoryNamePlaceholder": "Enter category name",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Description (optional)",
+    "lowStockThresholdLabel": "Low Stock Threshold *",
+    "add": "Add",
+    "edit": "Save",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteItem": "Delete Item",
+    "deleteItemDesc": "will be deleted. This action cannot be undone.",
+    "deleteCategory": "Delete Category",
+    "deleteCategoryDesc": "Delete this category? Items using this category will block deletion."
+  },
+  "messages": {
+    "addItemSuccess": "Item added successfully.",
+    "editItemSuccess": "Item updated successfully.",
+    "deleteItemSuccess": "Item deleted successfully.",
+    "addCategorySuccess": "Category added successfully.",
+    "editCategorySuccess": "Category updated successfully.",
+    "deleteCategorySuccess": "Category deleted successfully."
+  },
+  "lowStock": {
+    "alert": "Low stock alert:",
+    "itemsBelowMin": "items are below minimum stock."
+  },
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Manage inventory categories.",
+    "name": "Category Name",
+    "description": "Description",
+    "lowStockThreshold": "Low Stock Threshold",
+    "noCategories": "No categories. Please add one."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Google Sheets connection and dashboard settings",
+    "connection": "Google Sheets Connection",
+    "connectionDesc": "Currently connected spreadsheet info",
+    "connected": "Google Sheets connected",
+    "connectionFailed": "Google Sheets connection failed",
+    "connectionFailedDesc": "Check environment variables: GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY_BASE64, GOOGLE_SPREADSHEET_ID",
+    "spreadsheetTitle": "Spreadsheet Title",
+    "spreadsheetId": "Spreadsheet ID",
+    "lastSync": "Last Synced",
+    "openInSheets": "Open in Google Sheets",
+    "refresh": "Refresh",
+    "retry": "Retry"
+  },
+  "error": {
+    "loadFailed": "Failed to load data",
+    "inventoryLoadFailed": "Failed to load inventory",
+    "categoriesLoadFailed": "Failed to load categories",
+    "sheetsConnectionFailed": "Failed to connect to Google Sheets. Please try again later.",
+    "inventoryFetchFailed": "Failed to load inventory data from Google Sheets. Please try again later.",
+    "categoriesFetchFailed": "Failed to load category data from Google Sheets. Please try again later.",
+    "retry": "Try Again"
+  }
+}
