@@ -2,5 +2,19 @@
   "enabledPlugins": {
     "javascript-typescript@claude-code-workflows": true,
     "full-stack-orchestration@claude-code-workflows": true
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [[ \"$TOOL_INPUT\" == *\"tokens/primitive\"* ]] || [[ \"$TOOL_INPUT\" == *\"tokens/semantic\"* ]]; then cd /Users/user/Projects/portfolio-demos/design-essence && node scripts/build-tokens.js 2>&1; fi'",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
   }
 }

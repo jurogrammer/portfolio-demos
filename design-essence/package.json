@@ -1,0 +1,9 @@
+{
+  "name": "design-essence",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {
+    "chroma-js": "^2.4.2",
+    "style-dictionary": "^5.0.0"
+  }
+}

@@ -1,17 +1,18 @@
 {
   "color": {
-    "primary": { "$type": "color", "$value": "#00194a" },
-    "secondary": { "$type": "color", "$value": "#00205c" },
-    "accent": { "$type": "color", "$value": "#0080fb" },
+    "primary": { "$type": "color", "$value": "#1976D2" },
+    "secondary": { "$type": "color", "$value": "#1565C0" },
+    "accent": { "$type": "color", "$value": "#E65100" },
+    "accent-light": { "$type": "color", "$value": "#FFF3E0" },
     "bg-main": { "$type": "color", "$value": "#ffffff" },
-    "bg-alt": { "$type": "color", "$value": "#f5f6fb" },
-    "bg-dark": { "$type": "color", "$value": "#111111" },
-    "text-heading": { "$type": "color", "$value": "#111111" },
-    "text-body": { "$type": "color", "$value": "#111111" },
-    "text-secondary": { "$type": "color", "$value": "#666666" },
-    "text-muted": { "$type": "color", "$value": "#9098aa" },
+    "bg-alt": { "$type": "color", "$value": "#F5F5F5" },
+    "bg-dark": { "$type": "color", "$value": "#1A1A1A" },
+    "text-heading": { "$type": "color", "$value": "#212121" },
+    "text-body": { "$type": "color", "$value": "#333333" },
+    "text-secondary": { "$type": "color", "$value": "#757575" },
+    "text-muted": { "$type": "color", "$value": "#AAAAAA" },
     "text-inverse": { "$type": "color", "$value": "#ffffff" },
-    "border-default": { "$type": "color", "$value": "#d4d4d4" },
-    "border-light": { "$type": "color", "$value": "#dddddd" }
+    "border-default": { "$type": "color", "$value": "#E0E0E0" },
+    "border-light": { "$type": "color", "$value": "#EEEEEE" }
   }
 }
