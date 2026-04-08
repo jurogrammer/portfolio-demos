@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/send-questions",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/expire-questions",
+      "schedule": "50 14 * * *"
+    }
+  ]
+}

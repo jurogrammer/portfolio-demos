@@ -1,0 +1,248 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum CohortStatus {
+  ACTIVE
+  CLOSED
+  ARCHIVED
+}
+
+enum MessageType {
+  QUESTION
+  RESPONSE
+  REPLY
+  SYSTEM
+}
+
+enum ConditionType {
+  KEYWORD
+  PATTERN
+  SENTIMENT
+}
+
+// ─── NextAuth Models ──────────────────────────────────────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("rb_accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("rb_sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("rb_verification_tokens")
+}
+
+// ─── Core Models ─────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  nickname  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  accounts    Account[]
+  sessions    Session[]
+  responses   Response[]
+  messages    Message[]
+  cohortUsers CohortUser[]
+
+  @@map("rb_users")
+}
+
+model Cohort {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  status      CohortStatus @default(ACTIVE)
+  capacity    Int          @default(30)
+  startDate   DateTime?    @map("start_date")
+  endDate     DateTime?    @map("end_date")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  cohortUsers CohortUser[]
+
+  @@map("rb_cohorts")
+}
+
+model CohortUser {
+  id        String   @id @default(cuid())
+  cohortId  String   @map("cohort_id")
+  userId    String   @map("user_id")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([cohortId, userId])
+  @@index([cohortId])
+  @@map("rb_cohort_users")
+}
+
+model Question {
+  id          String    @id @default(cuid())
+  content     String
+  category    String
+  scheduledAt DateTime  @map("scheduled_at")
+  isSent      Boolean   @default(false) @map("is_sent")
+  sentAt      DateTime? @map("sent_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  messages  Message[]
+  responses Response[]
+
+  @@index([scheduledAt, isSent])
+  @@map("rb_questions")
+}
+
+model Response {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  questionId String   @map("question_id")
+  content    String
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  reply    Reply?
+  message  Message?
+
+  @@unique([userId, questionId])
+  @@index([userId, questionId])
+  @@map("rb_responses")
+}
+
+model Reply {
+  id             String    @id @default(cuid())
+  responseId     String    @unique @map("response_id")
+  templateId     String?   @map("template_id")
+  content        String
+  isReviewed     Boolean   @default(false) @map("is_reviewed")
+  reviewedAt     DateTime? @map("reviewed_at")
+  reviewedBy     String?   @map("reviewed_by")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  response  Response      @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  template  ReplyTemplate? @relation(fields: [templateId], references: [id])
+  message   Message?
+
+  @@map("rb_replies")
+}
+
+model Message {
+  id         String      @id @default(cuid())
+  userId     String      @map("user_id")
+  questionId String?     @map("question_id")
+  responseId String?     @unique @map("response_id")
+  replyId    String?     @unique @map("reply_id")
+  type       MessageType
+  content    String
+  isRead     Boolean     @default(false) @map("is_read")
+  createdAt  DateTime    @default(now()) @map("created_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question? @relation(fields: [questionId], references: [id])
+  response Response? @relation(fields: [responseId], references: [id])
+  reply    Reply?    @relation(fields: [replyId], references: [id])
+
+  @@index([userId, type])
+  @@index([questionId])
+  @@map("rb_messages")
+}
+
+model ReplyTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  content     String
+  variables   String[] @default([])
+  isActive    Boolean  @default(true) @map("is_active")
+  usageCount  Int      @default(0) @map("usage_count")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  replies Reply[]
+
+  @@map("rb_reply_templates")
+}
+
+model Rule {
+  id            String        @id @default(cuid())
+  name          String
+  description   String?
+  conditionType ConditionType @map("condition_type")
+  conditionValue String       @map("condition_value")
+  templateId    String?       @map("template_id")
+  priority      Int           @default(0)
+  isActive      Boolean       @default(true) @map("is_active")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  datasets Dataset[]
+
+  @@map("rb_rules")
+}
+
+model Dataset {
+  id         String   @id @default(cuid())
+  responseId String   @map("response_id")
+  ruleId     String?  @map("rule_id")
+  templateId String?  @map("template_id")
+  input      String
+  output     String
+  metadata   Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  rule Rule? @relation(fields: [ruleId], references: [id])
+
+  @@map("rb_datasets")
+}
