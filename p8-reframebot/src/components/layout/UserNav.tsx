@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { Inbox, History, User, LogOut } from "lucide-react";
+import { Inbox, History, User, LogOut, Settings } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -17,9 +17,11 @@ import {
 interface UserNavProps {
   email: string;
   nickname?: string | null;
+  role?: string;
 }
 
-export default function UserNav({ email, nickname }: UserNavProps) {
+export default function UserNav({ email, nickname, role }: UserNavProps) {
+  const isAdmin = role === "ADMIN";
   const router = useRouter();
   const initials = nickname
     ? nickname.slice(0, 2).toUpperCase()
@@ -43,18 +45,27 @@ export default function UserNav({ email, nickname }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push("/inbox")}>
-            <Inbox className="mr-2 size-4" />
-            메시지함
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/history")}>
-            <History className="mr-2 size-4" />
-            히스토리
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/profile")}>
-            <User className="mr-2 size-4" />
-            프로필
-          </DropdownMenuItem>
+          {isAdmin ? (
+            <DropdownMenuItem onClick={() => router.push("/admin")}>
+              <Settings className="mr-2 size-4" />
+              관리자 대시보드
+            </DropdownMenuItem>
+          ) : (
+            <>
+              <DropdownMenuItem onClick={() => router.push("/inbox")}>
+                <Inbox className="mr-2 size-4" />
+                메시지함
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/history")}>
+                <History className="mr-2 size-4" />
+                히스토리
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/profile")}>
+                <User className="mr-2 size-4" />
+                프로필
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem

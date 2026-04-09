@@ -31,7 +31,7 @@ export default async function Header() {
 
         <div className="flex items-center gap-3">
           {user ? (
-            <UserNav email={user.email ?? ""} nickname={user.nickname} />
+            <UserNav email={user.email ?? ""} nickname={user.nickname} role={user.role} />
           ) : (
             <Link href="/login" className={buttonVariants({ size: "sm" })}>
               로그인
