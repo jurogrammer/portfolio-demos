@@ -22,20 +22,10 @@ export default async function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
-          {user && (
-            <>
-              <Link href="/inbox" className="hover:text-foreground transition-colors">
-                메시지함
-              </Link>
-              <Link href="/history" className="hover:text-foreground transition-colors">
-                히스토리
-              </Link>
-              {user.role === "ADMIN" && (
-                <Link href="/admin" className="hover:text-foreground transition-colors">
-                  관리자
-                </Link>
-              )}
-            </>
+          {user?.role === "ADMIN" && (
+            <Link href="/admin" className="hover:text-foreground transition-colors">
+              관리자
+            </Link>
           )}
         </nav>
 
