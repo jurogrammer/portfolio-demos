@@ -35,14 +35,16 @@ export default function UserNav({ email, nickname, role }: UserNavProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col gap-0.5">
-            {nickname && (
-              <p className="text-sm font-medium text-foreground">{nickname}</p>
-            )}
-            <p className="text-xs text-muted-foreground truncate">{email}</p>
-          </div>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col gap-0.5">
+              {nickname && (
+                <p className="text-sm font-medium text-foreground">{nickname}</p>
+              )}
+              <p className="text-xs text-muted-foreground truncate">{email}</p>
+            </div>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {isAdmin ? (
