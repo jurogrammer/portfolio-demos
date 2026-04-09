@@ -22,6 +22,7 @@ export default async function UserLayout({
   const session = await auth();
   if (!session?.user) redirect("/login");
   const user = session.user as unknown as SessionUser;
+  if (user.role === "ADMIN") redirect("/admin");
 
   return (
     <div className="min-h-screen flex flex-col">
