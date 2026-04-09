@@ -5,8 +5,8 @@ const cards = [
     icon: Cpu,
     title: "규칙 엔진",
     description:
-      "KEYWORD, PATTERN, SENTIMENT 세 가지 조건 유형을 지원하는 커스텀 매칭 엔진. 우선순위 기반 규칙 체인으로 가장 적합한 템플릿을 자동 선택합니다.",
-    tags: ["TypeScript", "Regex", "Korean NLP"],
+      "KEYWORD, PATTERN 두 가지 조건 유형을 지원하는 커스텀 매칭 엔진. 우선순위 기반 규칙 체인으로 가장 적합한 템플릿을 자동 선택합니다.",
+    tags: ["TypeScript", "Regex"],
   },
   {
     icon: Database,

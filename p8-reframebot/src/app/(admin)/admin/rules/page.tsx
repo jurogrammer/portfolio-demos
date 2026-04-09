@@ -36,7 +36,6 @@ type TemplateOption = { id: string; name: string };
 const CONDITION_BADGE_COLORS: Record<string, string> = {
   KEYWORD: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
   PATTERN: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-  SENTIMENT: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
 };
 
 export default function RulesPage() {

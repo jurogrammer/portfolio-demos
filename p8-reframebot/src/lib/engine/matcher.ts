@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { analyzeSentiment } from "./sentiment";
 import type { MatchResult } from "@/types";
 
 /**
@@ -51,19 +50,6 @@ export async function matchResponse(
         break;
       }
 
-      case "SENTIMENT": {
-        const result = analyzeSentiment(responseText);
-        if (result.label === rule.conditionValue) {
-          return {
-            ruleId: rule.id,
-            ruleName: rule.name,
-            templateId: rule.templateId,
-            conditionType: rule.conditionType,
-            matchedValue: result.label,
-          };
-        }
-        break;
-      }
     }
   }
 

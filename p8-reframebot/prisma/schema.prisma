@@ -31,7 +31,6 @@ enum MessageType {
 enum ConditionType {
   KEYWORD
   PATTERN
-  SENTIMENT
 }
 
 // ─── NextAuth Models ──────────────────────────────────────────────────────────

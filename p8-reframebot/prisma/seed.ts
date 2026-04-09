@@ -166,16 +166,6 @@ async function main() {
       priority: 8,
       isActive: true,
     },
-    {
-      id: "rule-negative-emotion",
-      name: "부정 감정 표출",
-      description: "전반적 부정 감정 분석",
-      conditionType: "SENTIMENT" as const,
-      conditionValue: "NEGATIVE",
-      templateId: "tpl-accept",
-      priority: 5,
-      isActive: true,
-    },
   ];
 
   for (const r of rules) {

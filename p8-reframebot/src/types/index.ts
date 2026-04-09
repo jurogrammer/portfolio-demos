@@ -25,12 +25,6 @@ export interface TemplateContext {
   날짜: string;
 }
 
-export interface SentimentResult {
-  score: number; // -1 (negative) to 1 (positive)
-  label: "NEGATIVE" | "NEUTRAL" | "POSITIVE";
-  matchedWords: string[];
-}
-
 // ─── Message / Inbox ─────────────────────────────────────────────────────────
 
 export interface MessageDetail {

@@ -21,7 +21,7 @@ import { QUESTION_CATEGORIES, CONDITION_TYPE_MAP } from "@/lib/constants";
 
 const schema = z.object({
   name: z.string().min(1, "규칙 이름을 입력하세요"),
-  conditionType: z.enum(["KEYWORD", "PATTERN", "SENTIMENT"]),
+  conditionType: z.enum(["KEYWORD", "PATTERN"]),
   conditionValue: z.string().min(1, "조건 값을 입력하세요"),
   templateId: z.string().optional(),
   priority: z.coerce.number().int().min(0),
@@ -33,7 +33,7 @@ type FormData = z.infer<typeof schema>;
 interface Rule {
   id: string;
   name: string;
-  conditionType: "KEYWORD" | "PATTERN" | "SENTIMENT";
+  conditionType: "KEYWORD" | "PATTERN";
   conditionValue: string;
   templateId: string | null;
   priority: number;
@@ -162,22 +162,6 @@ export function RuleForm({ rule, templates, onSuccess }: Props) {
                 {patternMatch ? "✓ 매칭됨" : "✗ 매칭 안됨"}
               </p>
             )}
-          </div>
-        )}
-        {conditionType === "SENTIMENT" && (
-          <div className="flex gap-4">
-            {(["NEGATIVE", "NEUTRAL", "POSITIVE"] as const).map((val) => (
-              <label key={val} className="flex items-center gap-1.5 cursor-pointer text-sm">
-                <input
-                  type="radio"
-                  value={val}
-                  checked={watch("conditionValue") === val}
-                  onChange={() => setValue("conditionValue", val)}
-                  className="accent-primary"
-                />
-                {val === "NEGATIVE" ? "부정" : val === "NEUTRAL" ? "중립" : "긍정"}
-              </label>
-            ))}
           </div>
         )}
         {errors.conditionValue && (
