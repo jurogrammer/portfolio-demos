@@ -133,6 +133,16 @@ pnpm lint         # ESLint
 |---|---|---|
 | p10-scholarsync | https://p10-scholarsync.vercel.app | `p10-scholarsync` |
 
+### 배포 절차
+
+1. **커밋 & 푸시**: `git push` → Vercel 자동 빌드/배포 트리거
+2. **자동 배포 확인**: `vercel ls 2>&1 | grep p10` 으로 새 배포가 Queued/Building 상태인지 확인
+3. **자동 배포가 안 될 경우** (모노레포 특성상 p10 변경만으로 트리거 안 될 수 있음):
+   ```bash
+   cd p10-scholarsync && vercel --prod
+   ```
+4. **배포 후 반드시 프로덕션 URL에서 실제 동작 테스트** (브라우저 또는 API 호출로 확인)
+
 ## Known Limitations (MVP)
 
 - Kakao OAuth 미구현 (이메일 가입만)

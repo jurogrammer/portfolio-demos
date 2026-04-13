@@ -20,7 +20,8 @@ portfolio-demos/
 ├── p1-portfolio/           ← ✅ built — personal portfolio site
 ├── p2-techvision/          ← ✅ built — corporate homepage with admin CMS
 ├── p6-sheets-dashboard/    ← ✅ built — Google Sheets inventory dashboard
-└── p7-n8n-automation/      ← ✅ built — n8n customer inquiry automation
+├── p7-n8n-automation/      ← ✅ built — n8n customer inquiry automation
+└── p10-scholarsync/        ← ✅ built — scholarship search & AI essay generator
 ```
 
 ---
@@ -325,9 +326,12 @@ pnpm lint         # ESLint
 | p2-techvision | `p2-techvision` | `jurogrammer/portfolio-demos` |
 | p6-sheets-dashboard | `p6-sheets-dashboard` | `jurogrammer/portfolio-demos` |
 | p7-n8n-automation | `p7-n8n-automation` | `jurogrammer/portfolio-demos` |
+| p10-scholarsync | `p10-scholarsync` | `jurogrammer/portfolio-demos` |
 
 - root `vercel.json` 없음 — 각 프로젝트 내부 설정으로 관리
-- `git push` 시 두 프로젝트 모두 자동 빌드/배포
+- `git push` 시 변경된 프로젝트 자동 빌드/배포 (모노레포 특성상 트리거 안 될 수 있음)
+- **자동 배포 안 될 경우**: 해당 프로젝트 디렉토리에서 `vercel --prod` 수동 배포
+- 배포 확인: `vercel ls 2>&1 | grep <project-name>`
 
 ## File Naming Conventions
 
