@@ -15,7 +15,7 @@
 | Styling | Tailwind CSS v4 + tw-animate-css |
 | UI | shadcn/ui v4 (base-ui) + Lucide React |
 | Database | Supabase (shared instance, `ss_` prefix) |
-| AI | AI SDK v6 + OpenAI GPT-4o (streaming) |
+| AI | AI SDK v6 + OpenAI GPT-4o (자소서 스트리밍) + GPT-4o-mini (프로필 자동입력) |
 | Email | Resend API (Post-MVP) |
 | Deployment | Vercel (`p10-scholarsync`) |
 
@@ -49,7 +49,8 @@ src/
 │   │   └── privacy/page.tsx              ← 개인정보처리방침
 │   └── api/
 │       ├── auth/signup/route.ts          ← Server-side signup (admin API, auto-confirm)
-│       └── essay/generate/route.ts       ← AI essay generation (SSE streaming)
+│       ├── essay/generate/route.ts       ← AI essay generation (SSE streaming)
+│       └── profile/autofill/route.ts     ← AI 프로필 자동입력 (텍스트+이미지 → 구조화 추출)
 ├── components/
 │   ├── layout/                           ← Header (sticky, mobile Sheet nav), Footer
 │   ├── scholarships/
@@ -59,7 +60,8 @@ src/
 │   │   ├── EssayGenerator.tsx            ← Streaming AI generation with disclaimer
 │   │   └── EssayEditor.tsx               ← Per-section textarea, char count, auto-save
 │   ├── profile/
-│   │   └── ProfileForm.tsx               ← Full profile form (학적 + 자소서 맞춤 정보)
+│   │   ├── ProfileForm.tsx               ← Full profile form (학적 + 자소서 맞춤 정보)
+│   │   └── AutofillDialog.tsx            ← AI 자동입력 UI (텍스트/이미지 입력 → API 호출 → 폼 채움)
 │   └── ui/                               ← shadcn/ui components (base-ui based)
 ├── lib/
 │   ├── utils.ts                          ← cn() utility
@@ -121,6 +123,7 @@ pnpm lint         # ESLint
 - **프로필 경험 필드**: 수상/봉사/인턴/프로젝트/리더십/동기/기타 7개 카테고리로 세분화
 - **shadcn/ui v4**: base-ui 기반. `asChild` 대신 `render` prop 사용 (예: `SheetTrigger render={<Button />}`)
 - **DB 직접 접근**: PostgreSQL 직접 연결 가능 (`pg` 패키지, pooler URL)
+- **AI 프로필 자동입력**: 이력서/자기소개서 텍스트 또는 이미지(최대 5장, 4MB)를 붙여넣으면 GPT-4o-mini가 `generateObject` + `jsonSchema`로 구조화 추출하여 프로필 폼에 자동 채움. 클립보드 붙여넣기, 드래그앤드롭, 파일 업로드 지원. OpenAI JSON Schema에는 반드시 `additionalProperties: false` 필요
 
 ## Deployment
 
