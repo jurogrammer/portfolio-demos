@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { updateProfile, type ProfileUpdateData } from "@/app/(main)/my/profile/actions";
 import { REGIONS, DEGREE_TYPES, INCOME_QUINTILES, UNIVERSITIES, DEPARTMENTS } from "@/lib/constants";
 import type { Profile } from "@/types/database";
+import AutofillDialog from "./AutofillDialog";
+import type { AutofillResult } from "@/app/api/profile/autofill/route";
+import { toast } from "sonner";
 
 const inputClass =
   "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50";
@@ -88,6 +91,27 @@ export default function ProfileForm({ profile }: Props) {
       ? (Math.round((gpaValues.reduce((a, b) => a + b, 0) / gpaValues.length) * 100) / 100).toFixed(2)
       : null;
 
+  const handleAutofill = (data: AutofillResult) => {
+    setForm((prev) => ({
+      ...prev,
+      university: data.university || prev.university,
+      department: data.department || prev.department,
+      grade: data.grade ? data.grade.toString() : prev.grade,
+      degree_type: data.degree_type || prev.degree_type,
+      region: data.region || prev.region,
+      interests: data.interests || prev.interests,
+      bio_keywords: data.bio_keywords || prev.bio_keywords,
+      awards: data.awards || prev.awards,
+      volunteering: data.volunteering || prev.volunteering,
+      work_experience: data.work_experience || prev.work_experience,
+      projects: data.projects || prev.projects,
+      leadership: data.leadership || prev.leadership,
+      motivation: data.motivation || prev.motivation,
+      experiences: data.experiences || prev.experiences,
+    }));
+    toast.success("AI 자동입력 완료! 내용을 확인하고 수정한 뒤 저장해주세요.");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -104,6 +128,9 @@ export default function ProfileForm({ profile }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* AI 자동입력 */}
+      <AutofillDialog onResult={handleAutofill} />
+
       {/* 학적 정보 */}
       <div className="rounded-xl border bg-card shadow-sm p-6">
         <h2 className="text-base font-semibold mb-4">학적 정보</h2>
