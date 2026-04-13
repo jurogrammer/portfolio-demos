@@ -27,9 +27,7 @@ export async function getProfile(): Promise<Profile | null> {
 
 export interface ProfileUpdateData {
   university: string;
-  _universityCustom?: string;
   department: string;
-  _departmentCustom?: string;
   grade: string;
   gpa_by_grade: Record<string, string>;
   gpa_scale: string;
@@ -77,8 +75,8 @@ export async function updateProfile(
 
   const payload = {
     user_id: user.id,
-    university: (data.university === '__other' ? data._universityCustom : data.university) || null,
-    department: (data.department === '__other' ? data._departmentCustom : data.department) || null,
+    university: data.university || null,
+    department: data.department || null,
     grade: data.grade ? parseInt(data.grade, 10) : null,
     gpa: averageGpa,
     gpa_by_grade: Object.keys(gpaByGrade).length > 0 ? gpaByGrade : {},

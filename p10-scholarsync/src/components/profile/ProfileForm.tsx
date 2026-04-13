@@ -52,17 +52,9 @@ export default function ProfileForm({ profile }: Props) {
     return {};
   };
 
-  // Check if saved values are in predefined lists
-  const savedUni = profile?.university ?? "";
-  const isCustomUni = savedUni !== "" && !(UNIVERSITIES as readonly string[]).includes(savedUni);
-  const savedDept = profile?.department ?? "";
-  const isCustomDept = savedDept !== "" && !(DEPARTMENTS as readonly string[]).includes(savedDept);
-
   const [form, setForm] = useState<ProfileUpdateData>({
-    university: isCustomUni ? "__other" : savedUni,
-    _universityCustom: isCustomUni ? savedUni : "",
-    department: isCustomDept ? "__other" : savedDept,
-    _departmentCustom: isCustomDept ? savedDept : "",
+    university: profile?.university ?? "",
+    department: profile?.department ?? "",
     grade: profile?.grade?.toString() ?? "",
     gpa_by_grade: initGpaByGrade(),
     gpa_scale: profile?.gpa_scale?.toString() ?? "4.5",
@@ -116,42 +108,36 @@ export default function ProfileForm({ profile }: Props) {
       <div className="rounded-xl border bg-card shadow-sm p-6">
         <h2 className="text-base font-semibold mb-4">학적 정보</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="대학교">
-            <select value={form.university} onChange={set("university")} className={selectClass}>
-              <option value="">선택</option>
+          <Field label="대학교" hint="목록에서 선택하거나 직접 입력">
+            <input
+              type="text"
+              list="university-list"
+              value={form.university}
+              onChange={set("university")}
+              placeholder="예: 경희대학교"
+              className={inputClass}
+            />
+            <datalist id="university-list">
               {UNIVERSITIES.map((u) => (
-                <option key={u} value={u}>{u}</option>
+                <option key={u} value={u} />
               ))}
-              <option value="__other">기타 (직접 입력)</option>
-            </select>
-            {form.university === "__other" && (
-              <input
-                type="text"
-                value={form._universityCustom ?? ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, _universityCustom: e.target.value }))}
-                placeholder="대학교명 입력"
-                className={`${inputClass} mt-2`}
-              />
-            )}
+            </datalist>
           </Field>
 
-          <Field label="학과/전공">
-            <select value={form.department} onChange={set("department")} className={selectClass}>
-              <option value="">선택</option>
+          <Field label="학과/전공" hint="목록에서 선택하거나 직접 입력">
+            <input
+              type="text"
+              list="department-list"
+              value={form.department}
+              onChange={set("department")}
+              placeholder="예: 산업경영공학과"
+              className={inputClass}
+            />
+            <datalist id="department-list">
               {DEPARTMENTS.map((d) => (
-                <option key={d} value={d}>{d}</option>
+                <option key={d} value={d} />
               ))}
-              <option value="__other">기타 (직접 입력)</option>
-            </select>
-            {form.department === "__other" && (
-              <input
-                type="text"
-                value={form._departmentCustom ?? ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, _departmentCustom: e.target.value }))}
-                placeholder="학과/전공명 입력"
-                className={`${inputClass} mt-2`}
-              />
-            )}
+            </datalist>
           </Field>
 
           <Field label="학년">
