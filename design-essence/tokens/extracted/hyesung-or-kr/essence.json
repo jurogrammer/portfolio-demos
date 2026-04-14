@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "name": "혜성교회 (Hyesung Presbyterian Church)",
+    "source_url": "https://www.hyesung.or.kr/",
+    "captured_date": "2026-04-02",
+    "tags": ["church", "korean", "presbyterian", "wix", "institutional", "community"]
+  },
+  "color": {
+    "primary": "#111111",
+    "secondary": "#333333",
+    "accent": "#82BFB8",
+    "background": {
+      "light": "#FFFFFF",
+      "dark": "#111111",
+      "muted": "#F0F0F0",
+      "gradient": "linear-gradient(180deg, rgba(255,220,200,0.15) 0%, rgba(200,235,230,0.2) 100%)"
+    },
+    "text": {
+      "primary": "#000000",
+      "secondary": "#333333",
+      "tertiary": "#666666",
+      "muted": "#999999",
+      "inverse": "#FFFFFF"
+    },
+    "gradients": [
+      "linear-gradient(135deg, #2a1f5e, #1a3a6a) /* quick-link card: 주일예배 */",
+      "linear-gradient(135deg, #1a5c5a, #2a7a6a) /* quick-link card: 수요성경 */",
+      "linear-gradient(180deg, rgba(255,220,200,0.15), rgba(200,235,230,0.2)) /* media grid bg */"
+    ],
+    "mood": "Warm, institutional, dignified with soft pastoral mint accent. Clean and uncluttered."
+  },
+  "typography": {
+    "heading_font": {
+      "family": "Avenir",
+      "fallback": "'avenir-lt-w01_85-heavy1475544', 'Avenir Next', 'Noto Sans KR', sans-serif",
+      "source": "Wix hosted Avenir variants"
+    },
+    "body_font": {
+      "family": "Avenir",
+      "fallback": "'avenir-lt-w01_35-light1475496', 'Noto Sans KR', Arial, sans-serif",
+      "source": "Wix hosted Avenir Light"
+    },
+    "accent_font": {
+      "family": "Noto Sans KR",
+      "usage": "Korean body text fallback"
+    },
+    "scale": {
+      "hero_headline": "50px (3.125rem) - bold 700",
+      "section_title": "30px (1.875rem) - bold 700",
+      "card_title": "21px (1.3125rem) - bold 700",
+      "body_large": "17px (1.0625rem) - normal 400",
+      "body": "14px (0.875rem) - normal 400",
+      "small": "13px (0.8125rem) - normal 400",
+      "button": "16px (1rem) - normal 400"
+    },
+    "weight_usage": {
+      "300": "Light - Avenir Light for body/descriptions",
+      "400": "Regular - default body text, button labels",
+      "700": "Bold - headings, section titles, card titles"
+    },
+    "special": "Korean text uses mixed Avenir + Noto Sans KR. Staff names use spaced characters (letter-spacing)."
+  },
+  "layout": {
+    "pattern": "Full-width stacked sections, no visible max-width container",
+    "sections": [
+      { "name": "header", "description": "Fixed/pinned header with church logo left, UMH logo right. Minimal height, transparent over hero." },
+      { "name": "hero-slider", "description": "Full-viewport image carousel with dark semi-transparent overlay. Left/right nav arrows. 3 CTA buttons centered at bottom with white border." },
+      { "name": "quick-links", "description": "4 equal worship service cards in a row. Each card has gradient background, service type label (English small caps), Korean title, and schedule time." },
+      { "name": "banner", "description": "Full-width mint/teal banner with single centered CTA button (기부금 영수증 발급)." },
+      { "name": "media-grid", "description": "3x3 grid of YouTube video thumbnails with titles below. Soft pink-to-mint gradient background." },
+      { "name": "worship-info", "description": "Two-column: left has 예배 안내 schedule table, right has church building photo + map. White background." },
+      { "name": "departments", "description": "6 ministry department logos in a row + 3 affiliate organization logos below. White background." },
+      { "name": "notices", "description": "4-column layout with text content: 훈련과 성숙, 전인적 교육, 교회 소식, event poster." },
+      { "name": "staff", "description": "Section title '섬기는 사람들'. Circular portrait photos in grid (4 columns). Each has name, title, role description. White/off-white background." },
+      { "name": "anniversary-cta", "description": "Light gray background. Large centered headline '65주년 기념 책 & 화보집' with mint-colored '다운받기' button." },
+      { "name": "footer", "description": "Minimal footer with church logo, two addresses (본관, 언더우드기념관), phone/fax numbers." }
+    ],
+    "max_width": "No explicit container; content aligns within ~1200px center area",
+    "whitespace_density": "Generous. Clean sections with ample vertical spacing (40-80px between content blocks)",
+    "section_flow": "Vertical stack, full-width. Alternating white/colored backgrounds create visual rhythm.",
+    "sticky_elements": ["Social media sidebar (fixed right: YouTube, KakaoTalk, Instagram)"]
+  },
+  "interaction": {
+    "scroll_effects": ["Hero image carousel (auto-advancing slides)"],
+    "hover_patterns": [
+      "CTA buttons: likely border/opacity change on hover",
+      "Staff cards: '자세히 보기' button appears on hover",
+      "Quick link cards: subtle hover scale"
+    ],
+    "page_transitions": "Standard single-page Wix navigation",
+    "loading_style": "Server-rendered Wix, lazy-loaded images and YouTube embeds",
+    "micro_interactions": [
+      "Hero carousel arrows (< >) for manual slide control",
+      "Social media floating sidebar (right edge)",
+      "YouTube thumbnail play buttons"
+    ]
+  },
+  "brand_voice": {
+    "tone": "Warm, dignified, institutional. Church community warmth balanced with Presbyterian formality.",
+    "perspective": "Third-person institutional ('혜성교회에서는...'). Community-centered language.",
+    "headline_pattern": "Clean Korean headings. Section titles are short and direct (섬기는 사람들, 예배 안내). No decorative punctuation.",
+    "cta_style": "Understated. White-bordered buttons on hero. Mint/teal accent for standalone CTAs. '자세히 보기' (View details) pattern for secondary actions.",
+    "copy_density": "Low-to-medium. Visual-heavy with images and video thumbnails. Text content concentrated in notices section.",
+    "social_proof_style": "Video thumbnails of sermons and worship. Staff section with formal portraits builds trust.",
+    "unique_vocabulary": [
+      "주일예배 (Sunday Worship)",
+      "금요비전기도회 (Friday Vision Prayer)",
+      "수요성경공부예배 (Wednesday Bible Study)",
+      "새벽기도회 (Dawn Prayer)",
+      "섬기는 사람들 (People Who Serve)",
+      "다음세대 (Next Generation)",
+      "온라인 새가족 등록 (Online New Family Registration)"
+    ]
+  }
+}

@@ -1,26 +1,66 @@
 {
   "font": {
     "family": {
-      "heading": { "$type": "fontFamily", "$value": "Noto Sans KR" },
-      "body": { "$type": "fontFamily", "$value": "Noto Sans KR" }
+      "heading": {
+        "$type": "fontFamily",
+        "$value": "Avenir, 'Noto Sans KR', sans-serif"
+      },
+      "body": {
+        "$type": "fontFamily",
+        "$value": "Avenir, 'Noto Sans KR', Arial, sans-serif"
+      },
+      "accent": {
+        "$type": "fontFamily",
+        "$value": "'Noto Sans KR', sans-serif"
+      }
     },
     "size": {
-      "hero": { "$type": "dimension", "$value": "72px" },
-      "display": { "$type": "dimension", "$value": "48px" },
-      "h2": { "$type": "dimension", "$value": "32px" },
-      "h3": { "$type": "dimension", "$value": "28px" },
-      "h4": { "$type": "dimension", "$value": "24px" },
-      "subtitle": { "$type": "dimension", "$value": "20px" },
-      "body-lg": { "$type": "dimension", "$value": "18px" },
-      "body": { "$type": "dimension", "$value": "16px" },
-      "body-sm": { "$type": "dimension", "$value": "14px" },
-      "caption": { "$type": "dimension", "$value": "12px" }
+      "hero": {
+        "$type": "dimension",
+        "$value": "50px"
+      },
+      "h1": {
+        "$type": "dimension",
+        "$value": "50px"
+      },
+      "h2": {
+        "$type": "dimension",
+        "$value": "30px"
+      },
+      "h3": {
+        "$type": "dimension",
+        "$value": "21px"
+      },
+      "body-large": {
+        "$type": "dimension",
+        "$value": "17px"
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": "14px"
+      },
+      "small": {
+        "$type": "dimension",
+        "$value": "13px"
+      },
+      "button": {
+        "$type": "dimension",
+        "$value": "16px"
+      }
     },
     "weight": {
-      "regular": { "$type": "fontWeight", "$value": 400 },
-      "medium": { "$type": "fontWeight", "$value": 500 },
-      "semibold": { "$type": "fontWeight", "$value": 600 },
-      "bold": { "$type": "fontWeight", "$value": 700 }
+      "light": {
+        "$type": "fontWeight",
+        "$value": 300
+      },
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      }
     }
   }
 }

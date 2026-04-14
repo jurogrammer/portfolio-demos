@@ -1,0 +1,35 @@
+{
+  "design_brief": {
+    "overview": "혜성교회 (Hyesung Presbyterian Church) - A Korean Presbyterian church website with warm, dignified institutional design. Full-width stacked sections with clean typography and soft mint accent color.",
+    "visual_identity": {
+      "color_strategy": "Predominantly white/light backgrounds with black text. Mint/teal accent (#82BFB8) used sparingly for CTAs and highlights. Soft pastel gradient (pink-to-mint) for media section background. Dark overlays on hero images.",
+      "typography_strategy": "Avenir font family (Heavy for headings, Light for body). Korean text blends naturally. Clean hierarchical scale from 50px hero headlines down to 13px small text. Staff names use character spacing for elegance.",
+      "spacing_philosophy": "Generous whitespace between sections (40-80px). Content centered within ~1200px area but sections span full viewport width. Minimal padding within cards."
+    },
+    "layout_blueprint": "Vertical stack of full-width sections: hero slider → quick-link cards → banner CTA → media grid → worship info → departments → notices → staff profiles → anniversary CTA → footer. Each section has distinct background treatment creating visual rhythm.",
+    "interaction_patterns": "Hero image carousel with left/right arrows. Fixed social media sidebar. YouTube embeds in media grid. Staff hover reveals detail button. Minimal JavaScript interactions overall.",
+    "brand_voice_guide": "Warm institutional tone. Korean-first with English accent labels. Direct section titles (섬기는 사람들, 예배 안내). Understated CTAs with border-only buttons on hero, mint-filled buttons for standalone actions."
+  },
+  "reproduction_notes": {
+    "key_fonts": ["Avenir (avenir-lt-w01_85-heavy1475544 for bold, avenir-lt-w01_35-light1475496 for light)", "Noto Sans KR (Korean fallback)"],
+    "key_colors": {
+      "primary_text": "#000000",
+      "accent": "#82BFB8",
+      "accent_translucent": "rgba(130, 191, 184, 0.64)",
+      "background": "#FFFFFF",
+      "background_muted": "#F0F0F0",
+      "footer_bg": "#333333"
+    },
+    "border_radius": "0px throughout (square/sharp edges)",
+    "box_shadow": "none (flat design)",
+    "hero_overlay": "Semi-transparent dark overlay on carousel images with blur effect",
+    "button_style": "Hero: white-bordered transparent buttons. Banner: mint-filled rounded-corner button. Anniversary: mint-filled button.",
+    "image_treatment": "Hero images with blur/dark overlay. Staff photos in circular crop. Quick-link cards with gradient overlays.",
+    "grid_patterns": {
+      "media": "3 columns, 3 rows",
+      "departments": "6 columns (department logos), 3 columns (affiliate logos)",
+      "staff": "4 columns for portrait grid",
+      "notices": "4 columns for text content"
+    }
+  }
+}

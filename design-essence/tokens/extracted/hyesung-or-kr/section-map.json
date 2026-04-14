@@ -1,0 +1,170 @@
+{
+  "domain": "hyesung-or-kr",
+  "source_url": "https://www.hyesung.or.kr/",
+  "captured_date": "2026-04-02",
+  "total_sections": 10,
+  "viewport": { "width": 1512, "height": 772 },
+  "sections": [
+    {
+      "id": "S01",
+      "name": "hero-slider",
+      "selector": "#comp-lfw959cw",
+      "bounds": { "top": 5, "left": 0, "width": 1512, "height": 764 },
+      "content_slots": [
+        { "role": "logo", "type": "image", "count": 1, "sample": "혜성교회 logo (top-left)" },
+        { "role": "logo_secondary", "type": "image", "count": 1, "sample": "UMH Underwood Memorial Hall logo (top-right)" },
+        { "role": "hero_images", "type": "image", "count": 3, "sample": "Church building exterior, interior lobby, worship hall" },
+        { "role": "cta_buttons", "type": "text_list", "count": 3, "sample": "온라인 주일예배 드리기, 온라인 헌금 안내, 온라인 새가족 등록" },
+        { "role": "social_links", "type": "text_list", "count": 3, "sample": "YouTube, KakaoTalk, Instagram" }
+      ],
+      "files": {
+        "screenshot": "sections/S01-hero/screenshot.png",
+        "html": "sections/S01-hero/snapshot.html",
+        "css": "sections/S01-hero/computed.css"
+      }
+    },
+    {
+      "id": "S02",
+      "name": "quick-links",
+      "selector": "#comp-ljl2uv63",
+      "bounds": { "top": 769, "left": 0, "width": 1512, "height": 241 },
+      "content_slots": [
+        { "role": "service_cards", "type": "text_list", "count": 4, "sample": "주일예배 / 금요비전기도회 / 수요성경공부예배 / 새벽기도회" },
+        { "role": "service_times", "type": "text_list", "count": 4, "sample": "주일 오전 7:30/9:30/11:30 / 금요일 오후 8:00 / 수요일 오후 7:30 / 매일(월-토) 오전 5:30" },
+        { "role": "service_labels_en", "type": "text_list", "count": 4, "sample": "SUNDAY WORSHIP / PRAYER GATHERING / BIBLE STUDY SERVICE / BIBLE STUDY SERVICE" }
+      ],
+      "files": {
+        "screenshot": "sections/S02-quick-links/screenshot.png",
+        "html": "sections/S02-quick-links/snapshot.html",
+        "css": "sections/S02-quick-links/computed.css"
+      }
+    },
+    {
+      "id": "S03",
+      "name": "banner",
+      "selector": "#comp-mjwmj6jk",
+      "bounds": { "top": 1010, "left": 0, "width": 1512, "height": 174 },
+      "content_slots": [
+        { "role": "cta_button", "type": "text", "count": 1, "sample": "2025 기부금 영수증 발급" }
+      ],
+      "files": {
+        "screenshot": "sections/S03-banner/screenshot.png",
+        "html": "sections/S03-banner/snapshot.html",
+        "css": "sections/S03-banner/computed.css"
+      }
+    },
+    {
+      "id": "S04",
+      "name": "media-grid",
+      "selector": "#comp-lfw959cx",
+      "bounds": { "top": 1184, "left": 0, "width": 1512, "height": 817 },
+      "content_slots": [
+        { "role": "video_thumbnails", "type": "image", "count": 9, "sample": "YouTube video thumbnail images" },
+        { "role": "video_titles", "type": "text_list", "count": 9, "sample": "주일 설교, 주일 찬양팀, 할렐루야 찬양대, 사역 스케치, 온라인 주일 예배, 언더우드기념관 준공기념영상, 한아름유치원 홍보 영상, 이야기학교 홍보 영상, 정명호 담임목사 20주년 기념 영상" }
+      ],
+      "files": {
+        "screenshot": "sections/S04-media-grid/screenshot.png",
+        "html": "sections/S04-media-grid/snapshot.html",
+        "css": "sections/S04-media-grid/computed.css"
+      }
+    },
+    {
+      "id": "S05",
+      "name": "worship-info",
+      "selector": "#comp-lfw959cx1",
+      "bounds": { "top": 2001, "left": 0, "width": 1512, "height": 233 },
+      "content_slots": [
+        { "role": "heading", "type": "text", "count": 1, "sample": "예배 안내" },
+        { "role": "schedule_table", "type": "text_list", "count": 7, "sample": "주일 1부 | 오전 07:30 / 주일 2부 | 오전 09:30 / 주일 3부 | 오전 11:30 / 수요성경공부예배 | 오후 07:30 / 금요비전기도회 | 오후 08:00 / 새벽기도회(월-토) | 오전 05:30" },
+        { "role": "department_schedule", "type": "text_list", "count": 6, "sample": "영아부 | 오전 11:30 | 3층 돈옴실 / 유치부 | 오전 11:30 | 3층 새움실 / ..." },
+        { "role": "building_image", "type": "image", "count": 1, "sample": "언더우드기념관 building photo" },
+        { "role": "map_image", "type": "image", "count": 1, "sample": "Location map illustration" },
+        { "role": "location_note", "type": "text", "count": 1, "sample": "모든 예배는 언더우드기념관에서 드려집니다." }
+      ],
+      "files": {
+        "screenshot": "sections/S05-separator/screenshot.png",
+        "html": "sections/S05-separator/snapshot.html",
+        "css": "sections/S05-separator/computed.css"
+      }
+    },
+    {
+      "id": "S06",
+      "name": "departments",
+      "selector": "#comp-lfw959cx3",
+      "bounds": { "top": 2234, "left": 0, "width": 1512, "height": 264 },
+      "content_slots": [
+        { "role": "department_logos", "type": "image", "count": 6, "sample": "영아부 WONDER, 유치부 WONDER, 유년부 DISCOVERY, 초등부 DISCOVERY, 청소년부 PASSION, 청년교구 THE DISCIPLE" },
+        { "role": "department_names", "type": "text_list", "count": 6, "sample": "영아부 (0-4세), 유치부 (5-7세), 유년부 (1-3학년), 초등부 (4-6학년), 청소년부 (중1-고3), 청년교구" },
+        { "role": "affiliate_logos", "type": "image", "count": 3, "sample": "한아름유치원, 혜성러빙스쿨, 이야기학교" }
+      ],
+      "files": {
+        "screenshot": "sections/S06-departments/screenshot.png",
+        "html": "sections/S06-departments/snapshot.html",
+        "css": "sections/S06-departments/computed.css"
+      }
+    },
+    {
+      "id": "S07",
+      "name": "notices",
+      "selector": "#comp-lfw959cx4",
+      "bounds": { "top": 2498, "left": 0, "width": 1512, "height": 751 },
+      "content_slots": [
+        { "role": "notice_columns", "type": "text_list", "count": 4, "sample": "훈련과 성숙 (성경반 소감문), 전인적 교육 (부모초청예배), 교회 소식, 고난주간 특별집회 포스터" }
+      ],
+      "files": {
+        "screenshot": "sections/S07-image-section/screenshot.png",
+        "html": "sections/S07-image-section/snapshot.html",
+        "css": "sections/S07-image-section/computed.css"
+      }
+    },
+    {
+      "id": "S08",
+      "name": "staff",
+      "selector": "#comp-lfw959cx5",
+      "bounds": { "top": 3249, "left": 0, "width": 1512, "height": 3167 },
+      "content_slots": [
+        { "role": "heading", "type": "text", "count": 1, "sample": "섬기는 사람들" },
+        { "role": "staff_photos", "type": "image", "count": 13, "sample": "Circular portrait photos of pastors and staff" },
+        { "role": "staff_names", "type": "text_list", "count": 13, "sample": "박 광 옥 목사 (원로), 정 명 호 목사 (담임), 원 영 섭 목사, 김 종 철 목사, 김 영 선 목사, 유 재 경 목사, 박 정 욱 선교사, 방 국 영 목사, 함 영 주 목사, 주 종 훈 목사, 박 민 목사, 김세훈 목사, 류 희 수 간사" },
+        { "role": "staff_roles", "type": "text_list", "count": 13, "sample": "원로 / 담임 / 전임·1교구(시니어) / 전임·2교구(장년) / 부목사 / 전도사 / 선교사 / 협동 / ..." },
+        { "role": "cta_button", "type": "text", "count": 1, "sample": "자세히 보기" }
+      ],
+      "files": {
+        "screenshot": "sections/S08-staff/screenshot.png",
+        "html": "sections/S08-staff/snapshot.html",
+        "css": "sections/S08-staff/computed.css"
+      }
+    },
+    {
+      "id": "S09",
+      "name": "anniversary-cta",
+      "selector": "#comp-mcwxd4hc",
+      "bounds": { "top": 6416, "left": 0, "width": 1512, "height": 234 },
+      "content_slots": [
+        { "role": "heading", "type": "text", "count": 1, "sample": "65주년 기념 책 & 화보집" },
+        { "role": "cta_button", "type": "text", "count": 1, "sample": "다운받기" }
+      ],
+      "files": {
+        "screenshot": "sections/S09-worship-info/screenshot.png",
+        "html": "sections/S09-worship-info/snapshot.html",
+        "css": "sections/S09-worship-info/computed.css"
+      }
+    },
+    {
+      "id": "S10",
+      "name": "footer",
+      "selector": "#comp-lfw959cx7",
+      "bounds": { "top": 6650, "left": 0, "width": 1512, "height": 145 },
+      "content_slots": [
+        { "role": "logo", "type": "image", "count": 1, "sample": "혜성교회 footer logo" },
+        { "role": "addresses", "type": "text_list", "count": 2, "sample": "본관 (주중학교)_ 서울 종로구 혜화로6길 80 / 언더우드기념관 (교회)_ 서울 종로구 혜화로 74" },
+        { "role": "contact", "type": "text", "count": 1, "sample": "Tel : 02·763·0191 02·762·0903  Fax : 02·765·1024" }
+      ],
+      "files": {
+        "screenshot": "sections/S10-footer/screenshot.png",
+        "html": "sections/S10-footer/snapshot.html",
+        "css": "sections/S10-footer/computed.css"
+      }
+    }
+  ]
+}

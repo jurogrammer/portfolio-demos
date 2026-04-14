@@ -1,0 +1,114 @@
+{
+  "domain": "hyesung-or-kr",
+  "source_content": "content.md",
+  "mapped_date": "2026-04-02T10:00:00Z",
+  "mappings": [
+    {
+      "section_id": "S01",
+      "section_name": "hero-slider",
+      "mapping_type": "direct",
+      "slots": {
+        "logo": { "value": "/hyesung/logos/milal-logo.png", "type": "image", "placeholder": false },
+        "logo_secondary": { "value": null, "type": "image", "placeholder": false, "omitted": true },
+        "hero_images": { "value": ["/hyesung/hero/main-hero.jpg"], "type": "image", "placeholder": false },
+        "cta_buttons": { "value": ["온라인 예배", "새가족 등록", "온라인 헌금"], "type": "text_list", "placeholder": false },
+        "social_links": { "value": ["YouTube", "KakaoTalk", "Instagram"], "type": "text_list", "placeholder": false }
+      }
+    },
+    {
+      "section_id": "S02",
+      "section_name": "quick-links",
+      "mapping_type": "direct",
+      "slots": {
+        "service_cards": { "value": ["주일 설교", "온라인 예배", "새가족 등록", "온라인 헌금"], "type": "text_list", "placeholder": false },
+        "service_labels_en": { "value": ["SUNDAY SERMON", "ONLINE WORSHIP", "NEW FAMILY", "ONLINE OFFERING"], "type": "text_list", "placeholder": false },
+        "service_times": { "value": ["주일 오전 8:00 / 9:45 / 11:45", "온라인 동시 진행", "온라인 등록", "온라인 헌금"], "type": "text_list", "placeholder": false }
+      }
+    },
+    {
+      "section_id": "S03",
+      "section_name": "banner",
+      "mapping_type": "direct",
+      "slots": {
+        "cta_button": { "value": "밀알 MBA 수강신청", "type": "text", "placeholder": false }
+      }
+    },
+    {
+      "section_id": "S04",
+      "section_name": "media-grid",
+      "mapping_type": "direct",
+      "slots": {
+        "video_titles": { "value": ["주일예배", "말씀묵상", "청년부예배", "금요찬양예배", "가스펠프로젝트", "국내선교", "해외선교", "양육/훈련", "소그룹"], "type": "text_list", "placeholder": false },
+        "video_thumbnails": { "value": ["/hyesung/graphics/sermon.jpg", "/hyesung/graphics/praise-team.jpg", "/hyesung/graphics/youth-worship.jpg", "/hyesung/graphics/friday-praise.jpg", "/hyesung/graphics/gospel-project.jpg", "/hyesung/graphics/domestic-mission.jpg", "/hyesung/graphics/overseas-mission.jpg", "/hyesung/graphics/training.jpg", "/hyesung/graphics/small-group.jpg"], "type": "image", "placeholder": false }
+      }
+    },
+    {
+      "section_id": "S05",
+      "section_name": "worship-info",
+      "mapping_type": "direct",
+      "slots": {
+        "heading": { "value": "예배시간 안내", "type": "text", "placeholder": false },
+        "schedule_table": { "value": ["1부 | 오전 08:00", "2부 | 오전 09:45", "3부 | 오전 11:45", "4부 (청년) | 오후 02:00"], "type": "text_list", "placeholder": false },
+        "department_schedule": { "value": ["영유아부 | 주일 9:45 / 11:45", "유치부 | 주일 9:45 / 11:45", "아동부 | 주일 9:45 / 11:45", "청소년부 (KM) | 주일 9:45 / 11:45", "청소년부 (EM) | 주일 11:45 / 공부 12:45pm"], "type": "text_list", "placeholder": false },
+        "building_image": { "value": "/hyesung/graphics/church-building.jpg", "type": "image", "placeholder": true },
+        "map_image": { "value": "/hyesung/graphics/map.png", "type": "image", "placeholder": true },
+        "location_note": { "value": "Toronto, ON Canada", "type": "text", "placeholder": false }
+      }
+    },
+    {
+      "section_id": "S06",
+      "section_name": "departments",
+      "mapping_type": "direct",
+      "slots": {
+        "department_names": { "value": ["영아부 (0-4세)", "유치부 (5-7세)", "유년부 (1-3학년)", "초등부 (4-6학년)", "청소년부 (중1-고3)", "청년부"], "type": "text_list", "placeholder": false },
+        "department_logos": { "value": ["/hyesung/departments/infants.jpg", "/hyesung/departments/kindergarten.jpg", "/hyesung/departments/children.jpg", "/hyesung/departments/youth.jpg", "/hyesung/departments/young-adults.jpg", "/hyesung/departments/hanarum.jpg"], "type": "image", "placeholder": false },
+        "affiliate_logos": { "value": null, "type": "image", "placeholder": false, "omitted": true }
+      }
+    },
+    {
+      "section_id": "S07",
+      "section_name": "notices",
+      "mapping_type": "omit",
+      "slots": {}
+    },
+    {
+      "section_id": "S08",
+      "section_name": "staff",
+      "mapping_type": "direct",
+      "slots": {
+        "heading": { "value": "섬기는 사람들", "type": "text", "placeholder": false },
+        "staff_names": { "value": ["박형일 담임목사", "이기쁨 목사", "김준영 목사", "신효성 목사", "차승현 목사", "이웅 목사", "오성요 목사", "배상진 목사", "최수라 전도사", "조나단김 전도사", "최정수 전도사", "김비치 전도사"], "type": "text_list", "placeholder": false },
+        "staff_roles": { "value": ["담임목사", "목사", "목사", "목사", "목사", "목사", "목사", "목사", "전도사", "전도사", "전도사", "전도사"], "type": "text_list", "placeholder": false },
+        "staff_photos": { "value": ["/hyesung/staff/pastor-park.jpg", "/hyesung/staff/pastor-lee.jpg", "/hyesung/staff/pastor-kim.jpg", "/hyesung/staff/pastor-shin.jpg", "/hyesung/staff/pastor-cha.jpg", "/hyesung/staff/pastor-lee2.jpg"], "type": "image", "placeholder": false },
+        "cta_button": { "value": "자세히 보기", "type": "text", "placeholder": true }
+      }
+    },
+    {
+      "section_id": "S09",
+      "section_name": "anniversary-cta",
+      "mapping_type": "direct",
+      "slots": {
+        "heading": { "value": "공동체와 함께 신앙생활 하세요", "type": "text", "placeholder": false },
+        "cta_button": { "value": "새가족 등록", "type": "text", "placeholder": false }
+      }
+    },
+    {
+      "section_id": "S10",
+      "section_name": "footer",
+      "mapping_type": "direct",
+      "slots": {
+        "logo": { "value": "/hyesung/logos/milal-logo.png", "type": "image", "placeholder": false },
+        "addresses": { "value": ["밀알교회", "Toronto, ON Canada"], "type": "text_list", "placeholder": false },
+        "contact": { "value": "+1-XXX-XXX-XXXX / info@milalchurch.com", "type": "text", "placeholder": false }
+      }
+    }
+  ],
+  "unmapped_sections": [],
+  "extra_content": [],
+  "stats": {
+    "total_sections": 10,
+    "mapped": 9,
+    "omitted": 1,
+    "placeholder": 2
+  }
+}

@@ -1,5 +1,8 @@
 {
   "spacing": {
-    "container-max": { "$type": "dimension", "$value": "1200px" }
+    "container-max": {
+      "$type": "dimension",
+      "$value": "1200px"
+    }
   }
 }

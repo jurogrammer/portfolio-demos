@@ -1,0 +1,78 @@
+{
+  "section_id": "S02",
+  "section_name": "quick-links",
+  "inner_elements": [
+    {
+      "type": "layout_container",
+      "description": "4 cards in a horizontal row, centered within white background section",
+      "childCount": 4,
+      "bounds": { "width": 980, "height": 241 },
+      "styles": {
+        "display": "flex",
+        "justifyContent": "center",
+        "gap": "20px",
+        "maxWidth": "1100px",
+        "margin": "0 auto",
+        "padding": "25px 0",
+        "background": "#FFFFFF"
+      }
+    },
+    {
+      "type": "repeating_item",
+      "description": "Independent card with background image, rounded corners, NO box-shadow",
+      "count": 4,
+      "bounds": { "width": 197, "height": 193 },
+      "styles": {
+        "borderRadius": "10px",
+        "overflow": "hidden",
+        "boxShadow": "none",
+        "position": "relative",
+        "backgroundImage": "url(wix-hosted-card-image.png)",
+        "backgroundSize": "cover"
+      },
+      "note": "Each card is a standalone image with text overlaid. NOT a div with gradient. The background is a rich textured image (galaxy/nebula-like) with diagonal light streaks."
+    },
+    {
+      "type": "heading",
+      "description": "English label at top of card (e.g. SUNDAY WORSHIP)",
+      "text": "SUNDAY WORSHIP",
+      "styles": {
+        "fontSize": "10px",
+        "fontWeight": "400",
+        "fontFamily": "serif (명조 계열 - original uses serif English labels)",
+        "color": "rgb(255, 255, 255)",
+        "letterSpacing": "0.15em",
+        "textTransform": "uppercase",
+        "textAlign": "center",
+        "opacity": "0.8"
+      }
+    },
+    {
+      "type": "heading",
+      "description": "Korean main title (e.g. 주일예배)",
+      "text": "주일예배",
+      "styles": {
+        "fontSize": "30px",
+        "fontWeight": "700",
+        "fontFamily": "Avenir Heavy, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "letterSpacing": "normal",
+        "textAlign": "center",
+        "lineHeight": "1.2"
+      }
+    },
+    {
+      "type": "heading",
+      "description": "Schedule time text (e.g. 주일 오전 7:30 / 9:30 / 11:30)",
+      "text": "주일 오전 7:30 / 9:30 / 11:30",
+      "styles": {
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "fontFamily": "Avenir Light, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "textAlign": "center",
+        "opacity": "0.9"
+      }
+    }
+  ]
+}
