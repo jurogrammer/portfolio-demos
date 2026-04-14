@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Search, FileText, Bell, ArrowRight, CheckCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div className="flex flex-col">
       {/* Hero */}
@@ -21,16 +25,22 @@ export default function HomePage() {
             한국장학재단, 사설 재단, 지자체 장학금을 한 곳에서 검색하고,
             AI가 기관별 맞춤 자기소개서 초안을 즉시 생성해드립니다.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/scholarships">
-                장학금 검색하기
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/auth/signup">무료로 시작하기</Link>
-            </Button>
+          <div className="flex justify-center">
+            {user ? (
+              <Button size="lg" asChild>
+                <Link href="/scholarships">
+                  장학금 검색하기
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            ) : (
+              <Button size="lg" asChild>
+                <Link href="/auth/signup">
+                  무료로 시작하기
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </section>
@@ -79,10 +89,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: "300+", label: "등록 장학금" },
-              { value: "100+", label: "제공 기관" },
+              { value: "실시간", label: "장학금 업데이트" },
+              { value: "AI", label: "맞춤 매칭" },
               { value: "AI", label: "자소서 생성" },
-              { value: "무료", label: "MVP 기간" },
+              { value: "무료", label: "서비스 이용" },
             ].map(({ value, label }) => (
               <div key={label}>
                 <div className="text-3xl md:text-4xl font-bold text-primary">{value}</div>
@@ -101,12 +111,21 @@ export default function HomePage() {
         <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
           등록금 걱정 대신 공부에 집중할 수 있도록, ScholarSync가 도와드립니다.
         </p>
-        <Button size="lg" asChild>
-          <Link href="/auth/signup">
-            무료 회원가입
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+        {user ? (
+          <Button size="lg" asChild>
+            <Link href="/scholarships">
+              장학금 검색하기
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        ) : (
+          <Button size="lg" asChild>
+            <Link href="/auth/signup">
+              무료 회원가입
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        )}
       </section>
     </div>
   );

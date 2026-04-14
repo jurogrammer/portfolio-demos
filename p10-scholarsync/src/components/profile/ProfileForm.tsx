@@ -2,23 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { updateProfile, type ProfileUpdateData } from "@/app/(main)/my/profile/actions";
+import { updateProfile } from "@/app/(main)/my/profile/actions";
 import { REGIONS, DEGREE_TYPES, INCOME_QUINTILES, UNIVERSITIES, DEPARTMENTS } from "@/lib/constants";
-import type { Profile } from "@/types/database";
+import type { Profile, ProfileUpdateData, AutofillResult } from "@/types/database";
 import AutofillDialog from "./AutofillDialog";
-import type { AutofillResult } from "@/app/api/profile/autofill/route";
 import { toast } from "sonner";
+import { inputClass, selectClass, textareaClass } from "@/lib/styles";
 
-const inputClass =
-  "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50";
-
-const selectClass =
-  "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50";
-
-const textareaClass =
-  "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50 resize-y";
-
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({ label, hint, children }: { label: React.ReactNode; hint?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
       <label className="text-sm font-medium">{label}</label>
@@ -37,10 +28,15 @@ const GPA_SCALES = [
   { value: "4.3", label: "4.3 만점" },
 ];
 
+function RequiredMark() {
+  return <span className="text-destructive ml-1">*</span>;
+}
+
 export default function ProfileForm({ profile }: Props) {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
 
   // Initialize per-grade GPA from profile
   const initGpaByGrade = (): Record<string, string> => {
@@ -59,6 +55,7 @@ export default function ProfileForm({ profile }: Props) {
     university: profile?.university ?? "",
     department: profile?.department ?? "",
     grade: profile?.grade?.toString() ?? "",
+    semester: profile?.semester?.toString() ?? "",
     gpa_by_grade: initGpaByGrade(),
     gpa_scale: profile?.gpa_scale?.toString() ?? "4.5",
     income_quintile: profile?.income_quintile?.toString() ?? "",
@@ -76,11 +73,21 @@ export default function ProfileForm({ profile }: Props) {
   });
 
   const set = (key: keyof ProfileUpdateData) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setForm((prev) => ({ ...prev, [key]: e.target.value }));
+      setIsDirty(true);
+    };
 
   const gpaMax = parseFloat(form.gpa_scale) || 4.5;
   const currentGrade = parseInt(form.grade, 10) || 0;
+  const currentSemester = parseInt(form.semester, 10) || 0;
+
+  // 이수 완료된 학년 수 계산
+  // - 1학기 재학중: 직전 학년까지만 완료 (예: 2학년 1학기 → 1학년까지 완료)
+  // - 2학기 재학중: 현재 학년 1학기까지 이수했으므로 해당 학년도 입력 가능
+  const completedGrades = currentGrade > 0
+    ? (currentSemester === 1 ? currentGrade - 1 : currentGrade)
+    : 0;
 
   // Compute average from per-grade values
   const gpaValues = Object.values(form.gpa_by_grade)
@@ -109,8 +116,33 @@ export default function ProfileForm({ profile }: Props) {
       motivation: data.motivation || prev.motivation,
       experiences: data.experiences || prev.experiences,
     }));
+    setIsDirty(true);
     toast.success("AI 자동입력 완료! 내용을 확인하고 수정한 뒤 저장해주세요.");
   };
+
+  // Completeness calculation
+  const completeness = (() => {
+    let score = 0;
+    // Required fields (each ~10%)
+    if (form.university) score += 10;
+    if (form.department) score += 10;
+    if (form.grade) score += 10;
+    if (form.semester) score += 5;
+    if (form.degree_type) score += 5;
+    if (completedGrades === 0 || Object.values(form.gpa_by_grade).some((v) => v !== "")) score += 10;
+    if (form.region) score += 10;
+    if (form.income_quintile) score += 10;
+    // Optional fields (each ~3.3%)
+    const optionalFields: (keyof ProfileUpdateData)[] = [
+      "interests", "bio_keywords", "awards", "volunteering",
+      "work_experience", "projects", "leadership", "motivation", "experiences",
+    ];
+    for (const f of optionalFields) {
+      const v = form[f];
+      if (typeof v === "string" && v.trim() !== "") score += 3.3;
+    }
+    return Math.min(100, Math.round(score));
+  })();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,20 +154,36 @@ export default function ProfileForm({ profile }: Props) {
         setError(result.error);
       } else {
         setSuccess(true);
+        setIsDirty(false);
       }
     });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* 프로필 완성도 */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium">프로필 완성도</span>
+          <span className="text-sm font-medium">{completeness}%</span>
+        </div>
+        <div className="h-2 rounded-full bg-muted overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ${completeness >= 80 ? "bg-green-500" : completeness >= 50 ? "bg-yellow-500" : "bg-red-500"}`}
+            style={{ width: `${completeness}%` }}
+          />
+        </div>
+      </div>
+
       {/* AI 자동입력 */}
       <AutofillDialog onResult={handleAutofill} />
 
       {/* 학적 정보 */}
       <div className="rounded-xl border bg-card shadow-sm p-6">
-        <h2 className="text-base font-semibold mb-4">학적 정보</h2>
+        <h2 className="text-base font-semibold">학적 정보</h2>
+        <p className="text-xs text-muted-foreground mt-1 mb-4">* 표시된 항목을 채우면 기본 매칭이 가능합니다</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="대학교" hint="목록에서 선택하거나 직접 입력">
+          <Field label={<>대학교<RequiredMark /></>} hint="목록에서 선택하거나 직접 입력">
             <input
               type="text"
               list="university-list"
@@ -145,13 +193,13 @@ export default function ProfileForm({ profile }: Props) {
               className={inputClass}
             />
             <datalist id="university-list">
-              {UNIVERSITIES.map((u) => (
+              {[...UNIVERSITIES].sort((a, b) => a.localeCompare(b, 'ko')).map((u) => (
                 <option key={u} value={u} />
               ))}
             </datalist>
           </Field>
 
-          <Field label="학과/전공" hint="목록에서 선택하거나 직접 입력">
+          <Field label={<>학과/전공<RequiredMark /></>} hint="목록에서 선택하거나 직접 입력">
             <input
               type="text"
               list="department-list"
@@ -161,13 +209,13 @@ export default function ProfileForm({ profile }: Props) {
               className={inputClass}
             />
             <datalist id="department-list">
-              {DEPARTMENTS.map((d) => (
+              {[...DEPARTMENTS].sort((a, b) => a.localeCompare(b, 'ko')).map((d) => (
                 <option key={d} value={d} />
               ))}
             </datalist>
           </Field>
 
-          <Field label="학년">
+          <Field label={<>학년<RequiredMark /></>}>
             <select value={form.grade} onChange={set("grade")} className={selectClass}>
               <option value="">선택</option>
               {[1, 2, 3, 4, 5, 6].map((g) => (
@@ -178,7 +226,15 @@ export default function ProfileForm({ profile }: Props) {
             </select>
           </Field>
 
-          <Field label="과정">
+          <Field label={<>현재 학기<RequiredMark /></>}>
+            <select value={form.semester} onChange={set("semester")} className={selectClass}>
+              <option value="">선택</option>
+              <option value="1">1학기</option>
+              <option value="2">2학기</option>
+            </select>
+          </Field>
+
+          <Field label={<>과정(학위)<RequiredMark /></>}>
             <select value={form.degree_type} onChange={set("degree_type")} className={selectClass}>
               {DEGREE_TYPES.map(({ value, label }) => (
                 <option key={value} value={value}>
@@ -199,41 +255,55 @@ export default function ProfileForm({ profile }: Props) {
           </Field>
 
           {/* 학년별 학점 입력 */}
-          {currentGrade > 0 && (
+          {currentGrade > 0 && currentSemester > 0 && (
             <div className="sm:col-span-2 space-y-3">
-              <label className="text-sm font-medium">학년별 학점</label>
-              <p className="text-xs text-muted-foreground">{gpaMax} 만점 기준, 이수한 학년만 입력하세요</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                {Array.from({ length: currentGrade }, (_, i) => i + 1).map((g) => (
-                  <div key={g} className="space-y-1">
-                    <label className="text-xs text-muted-foreground">{g}학년</label>
-                    <input
-                      type="number"
-                      min={0}
-                      max={gpaMax}
-                      step={0.01}
-                      value={form.gpa_by_grade[String(g)] ?? ""}
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          gpa_by_grade: { ...prev.gpa_by_grade, [String(g)]: e.target.value },
-                        }))
-                      }
-                      placeholder={`예: 3.75`}
-                      className={inputClass}
-                    />
+              <label className="text-sm font-medium">학년별 학점{completedGrades > 0 && <RequiredMark />}</label>
+              {completedGrades > 0 ? (
+                <>
+                  <p className="text-xs text-muted-foreground">
+                    {gpaMax} 만점 기준{currentSemester === 2 ? `, ${currentGrade}학년은 1학기 성적만 입력` : ""}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {Array.from({ length: completedGrades }, (_, i) => i + 1).map((g) => (
+                      <div key={g} className="space-y-1">
+                        <label className="text-xs text-muted-foreground">
+                          {g}학년{g === currentGrade && currentSemester === 2 ? " (1학기)" : ""}
+                        </label>
+                        <input
+                          type="number"
+                          min={0}
+                          max={gpaMax}
+                          step={0.01}
+                          value={form.gpa_by_grade[String(g)] ?? ""}
+                          onChange={(e) => {
+                            setForm((prev) => ({
+                              ...prev,
+                              gpa_by_grade: { ...prev.gpa_by_grade, [String(g)]: e.target.value },
+                            }));
+                            setIsDirty(true);
+                          }}
+                          placeholder={`예: 3.75`}
+                          className={inputClass}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              {averageGpa !== null && (
-                <p className="text-sm text-muted-foreground">
-                  평균 학점: <span className="font-semibold text-foreground">{averageGpa}</span> / {gpaMax}
+                  {averageGpa !== null && (
+                    <p className="text-sm text-muted-foreground">
+                      평균 학점: <span className="font-semibold text-foreground">{averageGpa}</span> / {gpaMax}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-xs text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 rounded-md px-3 py-2">
+                  신입생(1학년 1학기)은 직전학기 성적이 없으므로 학점 입력이 필요 없습니다.
+                  한국장학재단 기준 신입생은 성적 요건이 면제되며, 성적 기준이 없는 장학금에 자동 매칭됩니다.
                 </p>
               )}
             </div>
           )}
 
-          <Field label="거주 지역">
+          <Field label={<>거주 지역<RequiredMark /></>}>
             <select value={form.region} onChange={set("region")} className={selectClass}>
               <option value="">선택</option>
               {REGIONS.map((r) => (
@@ -244,7 +314,7 @@ export default function ProfileForm({ profile }: Props) {
             </select>
           </Field>
 
-          <Field label="소득분위 (1 ~ 10분위)">
+          <Field label={<>소득분위 (1 ~ 10분위)<RequiredMark /></>}>
             <select value={form.income_quintile} onChange={set("income_quintile")} className={selectClass}>
               <option value="">선택</option>
               {INCOME_QUINTILES.map(({ value, label }) => (
@@ -367,9 +437,13 @@ export default function ProfileForm({ profile }: Props) {
         </p>
       )}
 
-      <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
-        {isPending ? "저장 중..." : "프로필 저장"}
-      </Button>
+      {/* Sticky bottom save bar */}
+      <div className="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur border-t py-3 px-4 -mx-4 mt-6 flex items-center justify-between gap-4">
+        {isDirty && <p className="text-sm text-muted-foreground">저장되지 않은 변경사항이 있습니다</p>}
+        <Button type="submit" disabled={isPending} className="ml-auto">
+          {isPending ? "저장 중..." : "프로필 저장"}
+        </Button>
+      </div>
     </form>
   );
 }

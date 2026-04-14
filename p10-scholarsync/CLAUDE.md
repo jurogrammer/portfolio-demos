@@ -50,7 +50,8 @@ src/
 │   └── api/
 │       ├── auth/signup/route.ts          ← Server-side signup (admin API, auto-confirm)
 │       ├── essay/generate/route.ts       ← AI essay generation (SSE streaming)
-│       └── profile/autofill/route.ts     ← AI 프로필 자동입력 (텍스트+이미지 → 구조화 추출)
+│       ├── profile/autofill/route.ts     ← AI 프로필 자동입력 (텍스트+이미지 → 구조화 추출)
+│       └── crawl/scholarships/route.ts   ← 장학금 크롤링 API (POST/GET, 인증 필요)
 ├── components/
 │   ├── layout/                           ← Header (sticky, mobile Sheet nav), Footer
 │   ├── scholarships/
@@ -66,6 +67,8 @@ src/
 ├── lib/
 │   ├── utils.ts                          ← cn() utility
 │   ├── constants.ts                      ← REGIONS, DEGREE_TYPES, ORG_TYPE_LABELS, AI_DISCLAIMER
+│   ├── crawl/
+│   │   └── kosaf.ts                      ← 장학금 크롤러 (공공데이터포털 API + KOSAF 스크래핑)
 │   └── supabase/
 │       ├── client.ts                     ← Browser client (createBrowserClient)
 │       ├── server.ts                     ← Server client (cookies-based SSR)
@@ -83,7 +86,7 @@ src/
 - **테이블 프리픽스**: `ss_`
 - **테이블 목록**:
   - `ss_profiles` — 사용자 프로필 (학적 정보 + 자소서 맞춤 정보 7개 카테고리)
-  - `ss_scholarships` — 장학금 데이터 (20건 시드)
+  - `ss_scholarships` — 장학금 데이터 (시드 20건 + 크롤링 추가분, 크롤링 필드: `external_id`, `selection_method`, `selection_count`, `required_documents`, `application_method`, `eligibility_details`, `benefits_details`, `contact_info`, `crawl_source`, `crawled_at`)
   - `ss_essays` — 저장된 자소서 (user_id + scholarship_id UNIQUE)
   - `ss_essay_generations` — 생성 횟수 추적 (월 3회 제한)
 - **RLS**: 모든 테이블에 Row Level Security 적용
@@ -99,6 +102,8 @@ SUPABASE_SERVICE_ROLE_KEY=
 OPENAI_API_KEY=
 RESEND_API_KEY=
 NEXT_PUBLIC_SITE_URL=
+DATA_GO_KR_API_KEY=              # 공공데이터포털 인증키 (장학금 크롤링)
+CRON_SECRET=                     # Vercel Cron 인증 시크릿
 ```
 
 `.env.local`은 gitignore 대상.
@@ -124,6 +129,18 @@ pnpm lint         # ESLint
 - **shadcn/ui v4**: base-ui 기반. `asChild` 대신 `render` prop 사용 (예: `SheetTrigger render={<Button />}`)
 - **DB 직접 접근**: PostgreSQL 직접 연결 가능 (`pg` 패키지, pooler URL)
 - **AI 프로필 자동입력**: 이력서/자기소개서 텍스트 또는 이미지(최대 5장, 4MB)를 붙여넣으면 GPT-4o-mini가 `generateObject` + `jsonSchema`로 구조화 추출하여 프로필 폼에 자동 채움. 클립보드 붙여넣기, 드래그앤드롭, 파일 업로드 지원. OpenAI JSON Schema에는 반드시 `additionalProperties: false` 필요
+- **하이브리드 장학금 매칭** (`src/lib/ai/match.ts`): "내 조건에 맞는 장학금만 보기" 토글 시:
+  1. **룰 기반** (결정적) — 학위(`target_degree`), 학점(`min_gpa`), 소득분위(`max_income_quintile`), 지역(`target_regions`), 전공(`target_majors`) 필터링. 전공은 substring 포함 관계 체크 (`dept.includes(m) || m.includes(dept)`) — "공학" 카테고리에 "산업경영공학과" 매칭 가능.
+  2. **AI 기반** (GPT-4o-mini) — `extra_requirements`, `eligibility_details` 자유형 텍스트를 프로필 대비 적격 여부 판단. AI 실패 시 룰 기반 결과만 사용 (graceful fallback).
+- **상세 페이지 적격 경고**: `/scholarships/[id]`에서 로그인 사용자의 프로필이 장학금 요건(전공 등)과 불일치 시 노란색 경고 배너 표시. 룰 기반 우선 체크 후 AI 보조.
+- **장학금 크롤링**: 듀얼 모드 크롤러 (`src/lib/crawl/kosaf.ts`)
+  - **API 모드** (`DATA_GO_KR_API_KEY` 설정 시): 공공데이터포털 학자금지원정보 API에서 실시간 크롤링 + 파싱 + upsert
+  - **Scrape 모드** (기본 fallback): KOSAF 사이트 스크래핑 + 기존 시드 장학금 추가 정보 보강 + 신규 장학금 추가
+  - `external_id` (sha256 해시) 기준 upsert로 중복 방지
+  - 마감일 지난 크롤링 장학금 자동 비활성화
+  - Vercel Cron: 매주 월요일 03:00 자동 실행 (`vercel.json`)
+  - 수동 실행: `curl -X POST https://p10-scholarsync.vercel.app/api/crawl/scholarships -H "Authorization: Bearer $CRON_SECRET"`
+  - AI 추천용 추가 필드: 선발방법, 선발인원, 제출서류, 신청방법, 자격요건, 혜택상세, 문의처
 
 ## Deployment
 

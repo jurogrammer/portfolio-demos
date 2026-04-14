@@ -1,7 +1,11 @@
 import { GraduationCap } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Footer() {
+export default async function Footer() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <footer className="border-t bg-muted/30 mt-auto">
       <div className="container mx-auto px-4 py-8">
@@ -19,7 +23,11 @@ export default function Footer() {
             <h4 className="font-semibold mb-2 text-sm">서비스</h4>
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li><Link href="/scholarships" className="hover:text-foreground">장학금 검색</Link></li>
-              <li><Link href="/auth/signup" className="hover:text-foreground">회원가입</Link></li>
+              {user ? (
+                <li><Link href="/my/profile" className="hover:text-foreground">프로필 설정</Link></li>
+              ) : (
+                <li><Link href="/auth/signup" className="hover:text-foreground">회원가입</Link></li>
+              )}
             </ul>
           </div>
           <div>

@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { signupSchema } from "@/lib/schemas";
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
-
-  if (!email || !password) {
-    return NextResponse.json({ error: "이메일과 비밀번호를 입력해주세요." }, { status: 400 });
+  const body = await req.json();
+  const parsed = signupSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않습니다." }, { status: 400 });
   }
-  if (password.length < 8) {
-    return NextResponse.json({ error: "비밀번호는 8자 이상이어야 합니다." }, { status: 400 });
-  }
+  const { email, password } = parsed.data;
 
   const supabase = createAdminClient();
 

@@ -34,15 +34,24 @@ function DeadlineBadge({ deadline }: { deadline: string }) {
   )
 }
 
-export default function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
+export default function ScholarshipCard({
+  scholarship,
+  matchReasons,
+}: {
+  scholarship: Scholarship
+  matchReasons?: string[]
+}) {
   const degreeLabels = scholarship.target_degree.map((d) => {
     if (d === 'all') return '전체'
     return DEGREE_TYPES.find((t) => t.value === d)?.label ?? d
   })
 
+  const daysLeft = differenceInDays(parseISO(scholarship.deadline), new Date())
+  const isUrgent = daysLeft >= 0 && daysLeft < 7
+
   return (
     <Link href={`/scholarships/${scholarship.id}`} className="block group">
-      <Card className="h-full transition-shadow group-hover:shadow-md">
+      <Card className={`h-full transition-all duration-200 group-hover:shadow-md hover:-translate-y-0.5 ${isUrgent ? 'border-l-4 border-destructive' : ''}`}>
         <CardHeader className="pb-2">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
@@ -60,7 +69,7 @@ export default function ScholarshipCard({ scholarship }: { scholarship: Scholars
           </div>
         </CardHeader>
         <CardContent className="pt-0 space-y-3">
-          <div className="text-sm font-medium text-primary">{formatAmount(scholarship)}</div>
+          <div className="text-base font-bold text-primary">{formatAmount(scholarship)}</div>
 
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Calendar className="h-3 w-3 shrink-0" />
@@ -76,6 +85,14 @@ export default function ScholarshipCard({ scholarship }: { scholarship: Scholars
               </Badge>
             ))}
           </div>
+
+          {matchReasons && matchReasons.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2 pt-2 border-t">
+              {matchReasons.map(reason => (
+                <span key={reason} className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">{reason}</span>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </Link>

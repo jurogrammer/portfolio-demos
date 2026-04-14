@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/crawl/scholarships",
+      "schedule": "0 3 * * 1"
+    }
+  ]
+}

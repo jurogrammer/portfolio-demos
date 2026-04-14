@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { generateObject, jsonSchema } from 'ai'
 import { openai } from '@ai-sdk/openai'
 import { createClient } from '@/lib/supabase/server'
+import type { AutofillResult } from '@/types/database'
 
 const profileSchema = jsonSchema<AutofillResult>({
   type: 'object',
@@ -24,23 +25,6 @@ const profileSchema = jsonSchema<AutofillResult>({
   required: ['university', 'department', 'grade', 'degree_type', 'region', 'interests', 'bio_keywords', 'awards', 'volunteering', 'work_experience', 'projects', 'leadership', 'motivation', 'experiences'],
   additionalProperties: false,
 })
-
-export interface AutofillResult {
-  university: string
-  department: string
-  grade: number
-  degree_type: 'undergraduate' | 'master' | 'doctorate'
-  region: string
-  interests: string
-  bio_keywords: string
-  awards: string
-  volunteering: string
-  work_experience: string
-  projects: string
-  leadership: string
-  motivation: string
-  experiences: string
-}
 
 type ImagePart = { type: 'image'; image: URL }
 type TextPart = { type: 'text'; text: string }

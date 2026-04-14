@@ -7,9 +7,10 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ExternalLink, CalendarDays, Building2, MapPin, GraduationCap, Banknote, FileText, AlertCircle } from 'lucide-react'
+import { ExternalLink, CalendarDays, Building2, MapPin, GraduationCap, Banknote, FileText, AlertCircle, ClipboardList, Users, Phone } from 'lucide-react'
 import { ORG_TYPE_LABELS, DEGREE_TYPES } from '@/lib/constants'
-import type { Scholarship } from '@/types/database'
+import type { Profile, Scholarship } from '@/types/database'
+import { aiEvaluateEligibility, needsAiEvaluation } from '@/lib/ai/match'
 
 function formatAmount(scholarship: Scholarship): string {
   switch (scholarship.amount_type) {
@@ -51,6 +52,37 @@ export default async function ScholarshipDetailPage(props: {
 
   const s = scholarship as Scholarship
 
+  // Check eligibility for logged-in users
+  let eligibilityWarning: string | null = null
+  if (user) {
+    const { data: profileData } = await supabase
+      .from('ss_profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .single()
+    const profile = profileData as Profile | null
+    if (profile?.department) {
+      // Rule-based: target_majors check (deterministic)
+      if (s.target_majors && s.target_majors.length > 0) {
+        const dept = profile.department
+        const majorMatch = s.target_majors.some(
+          (m) => dept.includes(m) || m.includes(dept)
+        )
+        if (!majorMatch) {
+          eligibilityWarning = `내 전공(${dept})이 대상 전공(${s.target_majors.join(', ')})에 포함되지 않습니다`
+        }
+      }
+      // AI-based: free-text requirements (only if rule-based passed)
+      if (!eligibilityWarning && needsAiEvaluation(s)) {
+        const aiResults = await aiEvaluateEligibility(profile, [s])
+        const result = aiResults.get(s.id)
+        if (result && !result.eligible) {
+          eligibilityWarning = result.reason
+        }
+      }
+    }
+  }
+
   const degreeLabels = s.target_degree.map((d) => {
     if (d === 'all') return '전체'
     return DEGREE_TYPES.find((t) => t.value === d)?.label ?? d
@@ -79,21 +111,10 @@ export default async function ScholarshipDetailPage(props: {
             </p>
           </div>
           <div className="flex flex-col gap-2 sm:items-end">
-            {user ? (
-              <Button asChild>
-                <Link href={`/essays/new?scholarship_id=${s.id}`}>
-                  ✍️ 자소서 생성하기
-                </Link>
-              </Button>
-            ) : (
-              <Button variant="outline" asChild>
-                <Link href="/auth/login">로그인 후 자소서 생성</Link>
-              </Button>
-            )}
-            <Button variant="ghost" size="sm" asChild>
-              <a href={s.source_url} target="_blank" rel="noopener noreferrer" className="gap-1">
+            <Button variant="outline" asChild className="gap-2">
+              <a href={s.source_url} target="_blank" rel="noopener noreferrer">
+                공식 사이트에서 지원하기
                 <ExternalLink className="h-4 w-4" />
-                공식 사이트 바로가기
               </a>
             </Button>
           </div>
@@ -102,8 +123,18 @@ export default async function ScholarshipDetailPage(props: {
 
       <Separator className="mb-6" />
 
+      {eligibilityWarning && (
+        <div className="mb-6 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm dark:border-amber-900 dark:bg-amber-950">
+          <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-amber-800 dark:text-amber-200">내 프로필과 맞지 않는 장학금입니다</p>
+            <p className="text-amber-700 dark:text-amber-300 mt-0.5">{eligibilityWarning}</p>
+          </div>
+        </div>
+      )}
+
       {/* Key info grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-2 gap-4 mb-6">
         <InfoItem icon={<Banknote className="h-4 w-4" />} label="지원 금액">
           <span className="font-semibold text-primary">{formatAmount(s)}</span>
         </InfoItem>
@@ -175,6 +206,79 @@ export default async function ScholarshipDetailPage(props: {
         </Card>
       )}
 
+      {/* 신청 정보 (크롤링 데이터) */}
+      {(s.selection_method || s.required_documents || s.application_method || s.selection_count) && (
+        <Card className="mb-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <ClipboardList className="h-4 w-4" />
+              신청 정보
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm">
+            {s.selection_method && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">선발 방법</span>
+                <span className="whitespace-pre-wrap">{s.selection_method}</span>
+              </div>
+            )}
+            {s.selection_count && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">선발 인원</span>
+                <span>{s.selection_count}</span>
+              </div>
+            )}
+            {s.application_method && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">신청 방법</span>
+                <span className="whitespace-pre-wrap">{s.application_method}</span>
+              </div>
+            )}
+            {s.required_documents && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">제출 서류</span>
+                <span className="whitespace-pre-wrap">{s.required_documents}</span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 자격 요건 상세 & 혜택 (크롤링 데이터) */}
+      {(s.eligibility_details || s.benefits_details) && (
+        <Card className="mb-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              상세 정보
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm">
+            {s.eligibility_details && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">자격 요건</span>
+                <span className="whitespace-pre-wrap">{s.eligibility_details}</span>
+              </div>
+            )}
+            {s.benefits_details && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">혜택 상세</span>
+                <span className="whitespace-pre-wrap">{s.benefits_details}</span>
+              </div>
+            )}
+            {s.contact_info && (
+              <div className="flex gap-2">
+                <span className="text-muted-foreground w-24 shrink-0">문의처</span>
+                <span className="flex items-center gap-1">
+                  <Phone className="h-3 w-3" />
+                  {s.contact_info}
+                </span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Essay prompts */}
       {s.essay_prompts && s.essay_prompts.length > 0 && (
         <Card className="mb-6">
@@ -185,6 +289,7 @@ export default async function ScholarshipDetailPage(props: {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground mb-4">이 문항에 맞춰 AI가 초안을 생성합니다</p>
             {s.essay_prompts.map((ep, i) => (
               <div key={i} className="space-y-1">
                 <div className="flex items-center gap-2 text-sm font-medium">

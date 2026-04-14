@@ -1,4 +1,54 @@
 export type ScholarshipOrgType = 'government' | 'foundation' | 'local_gov' | 'university'
+
+// Shared form / API types
+export type EssayContent = Record<string, string>
+
+export interface AutofillResult {
+  university: string
+  department: string
+  grade: number
+  degree_type: 'undergraduate' | 'master' | 'doctorate'
+  region: string
+  interests: string
+  bio_keywords: string
+  awards: string
+  volunteering: string
+  work_experience: string
+  projects: string
+  leadership: string
+  motivation: string
+  experiences: string
+}
+
+export interface ProfileUpdateData {
+  university: string
+  department: string
+  grade: string
+  semester: string
+  gpa_by_grade: Record<string, string>
+  gpa_scale: string
+  income_quintile: string
+  region: string
+  degree_type: string
+  interests: string
+  bio_keywords: string
+  experiences: string
+  awards: string
+  volunteering: string
+  work_experience: string
+  projects: string
+  leadership: string
+  motivation: string
+}
+
+export interface ScholarshipFilters {
+  degree_type?: string
+  region?: string
+  org_type?: string
+  keyword?: string
+  gpa?: string
+  income_quintile?: string
+}
 export type DegreeType = 'undergraduate' | 'master' | 'doctorate' | 'all'
 export type AmountType = 'full_tuition' | 'half_tuition' | 'fixed' | 'variable'
 
@@ -25,6 +75,17 @@ export interface Scholarship {
   source_url: string
   is_active: boolean
   extra_requirements: string | null
+  // 크롤링 추가 필드 (AI 추천용)
+  external_id: string | null
+  selection_method: string | null
+  selection_count: string | null
+  required_documents: string | null
+  application_method: string | null
+  eligibility_details: string | null
+  benefits_details: string | null
+  contact_info: string | null
+  crawl_source: string | null
+  crawled_at: string | null
   created_at: string
   updated_at: string
 }
@@ -35,6 +96,7 @@ export interface Profile {
   university: string | null
   department: string | null
   grade: number | null
+  semester: number | null
   gpa: number | null
   gpa_by_grade: Record<string, number> | null
   gpa_scale: number

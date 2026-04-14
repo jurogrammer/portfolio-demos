@@ -2,6 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/types/database";
+import type { ProfileUpdateData } from "@/types/database";
+import { profileUpdateSchema } from "@/lib/schemas";
 
 export async function getProfile(): Promise<Profile | null> {
   const supabase = await createClient();
@@ -25,29 +27,14 @@ export async function getProfile(): Promise<Profile | null> {
   return data ?? null;
 }
 
-export interface ProfileUpdateData {
-  university: string;
-  department: string;
-  grade: string;
-  gpa_by_grade: Record<string, string>;
-  gpa_scale: string;
-  income_quintile: string;
-  region: string;
-  degree_type: string;
-  interests: string;
-  bio_keywords: string;
-  experiences: string;
-  awards: string;
-  volunteering: string;
-  work_experience: string;
-  projects: string;
-  leadership: string;
-  motivation: string;
-}
-
 export async function updateProfile(
   data: ProfileUpdateData
 ): Promise<{ error?: string }> {
+  const parsed = profileUpdateSchema.safeParse(data);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않습니다." };
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -78,6 +65,7 @@ export async function updateProfile(
     university: data.university || null,
     department: data.department || null,
     grade: data.grade ? parseInt(data.grade, 10) : null,
+    semester: data.semester ? parseInt(data.semester, 10) : null,
     gpa: averageGpa,
     gpa_by_grade: Object.keys(gpaByGrade).length > 0 ? gpaByGrade : {},
     gpa_scale: scale,

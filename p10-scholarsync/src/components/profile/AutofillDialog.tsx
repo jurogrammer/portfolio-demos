@@ -3,25 +3,15 @@
 import { useState, useTransition, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, X, ImagePlus } from "lucide-react";
-import type { AutofillResult } from "@/app/api/profile/autofill/route";
-
-const textareaClass =
-  "flex min-h-[160px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50 resize-y";
+import type { AutofillResult } from "@/types/database";
+import { cn, fileToDataUrl } from "@/lib/utils";
+import { textareaClass } from "@/lib/styles";
 
 const MAX_IMAGES = 5;
 const MAX_IMAGE_SIZE = 4 * 1024 * 1024; // 4MB
 
 interface Props {
   onResult: (data: AutofillResult) => void;
-}
-
-function fileToDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 }
 
 export default function AutofillDialog({ onResult }: Props) {
@@ -150,7 +140,7 @@ export default function AutofillDialog({ onResult }: Props) {
         onChange={(e) => setText(e.target.value)}
         onPaste={handlePaste}
         placeholder={"텍스트를 붙여넣거나, 이미지를 Ctrl+V로 붙여넣으세요.\n\n예시:\n저는 경희대학교 산업경영공학과 3학년에 재학 중인 홍길동입니다. 서울에 거주하고 있으며..."}
-        className={textareaClass}
+        className={cn(textareaClass, "min-h-[160px]")}
         rows={6}
         disabled={isPending}
       />

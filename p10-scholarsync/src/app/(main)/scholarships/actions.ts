@@ -1,18 +1,13 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { Scholarship } from '@/types/database'
-
-export interface ScholarshipFilters {
-  degree_type?: string
-  region?: string
-  org_type?: string
-  keyword?: string
-  gpa?: string
-  income_quintile?: string
-}
+import type { Scholarship, ScholarshipFilters } from '@/types/database'
+import { scholarshipFiltersSchema } from '@/lib/schemas'
 
 export async function searchScholarships(filters: ScholarshipFilters): Promise<Scholarship[]> {
+  const parsed = scholarshipFiltersSchema.safeParse(filters)
+  if (!parsed.success) return []
+  filters = parsed.data
   const supabase = await createClient()
   let query = supabase.from('ss_scholarships').select('*').eq('is_active', true)
 
